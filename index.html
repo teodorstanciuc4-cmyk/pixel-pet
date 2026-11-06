@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Pixel Companion</title>
+<style>
+  * { box-sizing: border-box; user-select: none; margin: 0; padding: 0; }
+  body {
+    background: #0f131a;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, sans-serif;
+    overflow: hidden;
+  }
+  #pip-btn {
+    position: absolute;
+    top: 60px;
+    background: #00d592;
+    color: #0b1118;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: 800;
+    font-size: 15px;
+    box-shadow: 0 4px 15px rgba(0, 213, 146, 0.4);
+    cursor: pointer;
+    z-index: 100;
+  }
+  canvas#petCanvas {
+    image-rendering: pixelated;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+  #pipVideo {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 1px; height: 1px;
+  }
+</style>
+</head>
+<body>
+
+<button id="pip-btn">📲 Put Companion on Wallpaper</button>
+
+<canvas id="petCanvas" width="300" height="300"></canvas>
+<video id="pipVideo" playsinline muted autoplay></video>
+
+<script>
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playBeep(freq, type = 'triangle', duration = 0.05) {
+  try {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  } catch(e) {}
+}
+
+const C = {
+  _: 'transparent', K: '#2b2d35', G: '#1b6953', M: '#00d592', L: '#a4fb6c',
+  P: '#d7aaff', W: '#ffffff', F: '#fec38b', T: '#ff6c8b', H: '#ff267d', B: '#00ffa6'
+};
+
+const baseSprite = [
+  "____KPPK____KPPK", "____KWWK____KWWK", "____KWKK____KWKK", "___KMMMMMMMMMMMK",
+  "__KGGMMMMMMMMMMK", "_KGGMKMKMMKMKMMK", "_KGGMMMMMMMMMMMK", "_KGGKTFFFFFFTKKK",
+  "_KGGKFFFFFFFFMKK", "_KGKFFKFFFFKFFMK", "_KGKFFFFKKFFFFMK", "_KGKTFFFFFFFFTMK",
+  "KKGGKLLLLLLLLMKK", "KGGGKLLHHLLLLMKK", "KKGGKLHHHHHLLMKK", "_KGKKLHHHHHLLMKK",
+  "__KK_KLHHHLLMKK_", "______KLLLLMK___", "_____KBBM_KBBM__", "_____KKKK_KKKK__"
+];
+
+const canvas = document.getElementById('petCanvas');
+const ctx = canvas.getContext('2d');
+const pixelSize = 9;
+
+let animState = 'idle';
+let frameTick = 0, bounceY = 0, isTalking = false, mouthOpen = false;
+let bubbleText = "Ribbit! I am live on your iPhone!";
+let bubbleVisible = true, bubbleTimer = 150;
+let fly = { active: false, x: 20, y: 120, targetX: 130, targetY: 170 };
+let tongueProgress = 0;
+
+const dialoguePool = [
+  "Streak check! Have you practiced today?",
+  "Blink your eyes and drink some water!",
+  "Posture check! Un-hunch your back!",
+  "I am watching your progress from here!",
+  "*Happy frog noises*",
+  "10 minutes of study. No excuses!"
+];
+
+function triggerSpeech(text) {
+  bubbleText = text;
+  bubbleVisible = true;
+  bubbleTimer = 140;
+  isTalking = true;
+}
+
+setInterval(() => {
+  const roll = Math.random();
+  if (roll < 0.4) {
+    fly.active = true;
+    fly.x = Math.random() < 0.5 ? 10 : 280;
+    fly.y = 100 + Math.random() * 60;
+    fly.targetX = 145 + (Math.random() * 30 - 15);
+    fly.targetY = 165 + (Math.random() * 20 - 10);
+    tongueProgress = 0;
+  } else if (roll < 0.75) {
+    animState = 'alert';
+    playBeep(880, 'sine', 0.12);
+    triggerSpeech(dialoguePool[Math.floor(Math.random() * dialoguePool.length)]);
+    setTimeout(() => { if (animState === 'alert') animState = 'idle'; }, 3000);
+  } else {
+    animState = 'sleep';
+    triggerSpeech("Power nap time... zzz");
+    setTimeout(() => { if (animState === 'sleep') animState = 'idle'; }, 4500);
+  }
+}, 16000);
+
+function drawFrame() {
+  frameTick++;
+  ctx.fillStyle = '#161c24';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  if (animState === 'idle') {
+    bounceY = Math.sin(frameTick * 0.1) * 3;
+    if (Math.random() < 0.01) { animState = 'blink'; setTimeout(() => animState = 'idle', 140); }
+  } else if (animState === 'sleep') {
+    bounceY = Math.sin(frameTick * 0.04) * 1.5;
+  } else if (animState === 'happy') {
+    bounceY = -Math.abs(Math.sin(frameTick * 0.3) * 10);
+  }
+
+  const xOffset = 78, yOffset = 85 + bounceY;
+
+  for (let r = 0; r < baseSprite.length; r++) {
+    for (let c = 0; c < baseSprite[0].length; c++) {
+      let char = baseSprite[r][c];
+      if ((animState === 'blink' || animState === 'sleep') && (r === 9 || r === 10) && (c >= 5 && c <= 11)) char = (r === 10) ? 'K' : 'F';
+      if ((isTalking && mouthOpen || animState === 'tongue') && r === 10 && (c >= 6 && c <= 8)) char = 'T';
+      if (char === 'H' && (frameTick % 12 < 4)) char = 'W';
+
+      if (C[char] && C[char] !== 'transparent') {
+        ctx.fillStyle = C[char];
+        ctx.fillRect(xOffset + c * pixelSize, yOffset + r * pixelSize, pixelSize, pixelSize);
+      }
+    }
+  }
+
+  if (animState === 'alert') {
+    ctx.fillStyle = '#ffcc00';
+    ctx.fillRect(xOffset + 66, yOffset - 22, 10, 14);
+    ctx.fillRect(xOffset + 66, yOffset - 4, 10, 4);
+  }
+
+  if (animState === 'sleep') {
+    ctx.fillStyle = '#7ebdff';
+    ctx.font = 'bold 15px monospace';
+    ctx.fillText("z", xOffset + 130, yOffset - (frameTick % 25));
+    ctx.fillText("Z", xOffset + 142, yOffset - 12 - (frameTick % 35));
+  }
+
+  if (fly.active) {
+    fly.x += (fly.targetX - fly.x) * 0.06;
+    fly.y += (fly.targetY - fly.y) * 0.06;
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(fly.x, fly.y - 2, 3, 3);
+    ctx.fillStyle = '#ff3b30'; ctx.fillRect(fly.x, fly.y, 4, 4);
+
+    if (Math.abs(fly.x - fly.targetX) < 15 && animState !== 'tongue') {
+      animState = 'tongue';
+      tongueProgress = 0;
+    }
+    if (animState === 'tongue') {
+      tongueProgress += 8;
+      ctx.fillStyle = '#ff5485';
+      ctx.fillRect(xOffset + 68, yOffset + 95, (fly.x - (xOffset + 68)) * (tongueProgress / 50), 7);
+      if (tongueProgress >= 50) {
+        playBeep(140, 'square', 0.1);
+        fly.active = false;
+        animState = 'happy';
+        setTimeout(() => animState = 'idle', 600);
+      }
+    }
+  }
+
+  if (bubbleVisible) {
+    bubbleTimer--;
+    if (bubbleTimer <= 0) { bubbleVisible = false; isTalking = false; }
+    else {
+      if (frameTick % 4 === 0) mouthOpen = !mouthOpen;
+      ctx.fillStyle = '#ffffff'; ctx.strokeStyle = '#2b2d35'; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.roundRect(15, 12, 270, 58, 10); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.moveTo(140, 70); ctx.lineTo(150, 80); ctx.lineTo(160, 70); ctx.fill();
+      ctx.fillStyle = '#11141a'; ctx.font = 'bold 12px -apple-system, sans-serif'; ctx.textAlign = 'center';
+      if (bubbleText.length > 32) {
+        ctx.fillText(bubbleText.substring(0, 30) + "-", 150, 36);
+        ctx.fillText(bubbleText.substring(30), 150, 54);
+      } else {
+        ctx.fillText(bubbleText, 150, 44);
+      }
+    }
+  }
+}
+setInterval(drawFrame, 1000 / 30);
+
+const pipBtn = document.getElementById('pip-btn');
+const pipVideo = document.getElementById('pipVideo');
+pipBtn.addEventListener('click', async () => {
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  const stream = canvas.captureStream(30);
+  pipVideo.srcObject = stream;
+  await pipVideo.play();
+  if (document.pictureInPictureEnabled && !pipVideo.webkitSupportsPresentationMode) {
+    await pipVideo.requestPictureInPicture();
+  } else if (pipVideo.webkitSupportsPresentationMode) {
+    pipVideo.webkitSetPresentationMode('picture-in-picture');
+  }
+});
+
+canvas.addEventListener('click', () => {
+  animState = 'happy';
+  triggerSpeech(dialoguePool[Math.floor(Math.random() * dialoguePool.length)]);
+  playBeep(440, 'sine', 0.08);
+  setTimeout(() => { if (animState === 'happy') animState = 'idle'; }, 800);
+});
+</script>
+</body>
+</html>
