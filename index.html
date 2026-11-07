@@ -293,6 +293,7 @@
 </head>
 <body>
 
+  <!-- SINGLE CLEAN WRAPPER -->
   <div class="screen-wrapper">
     <div class="stasis-header">
       <div id="countdown-label">START: 08.11.2026</div>
@@ -357,7 +358,7 @@
     </div>
   </div>
 
-  <!-- MODAL: ACT / FLOWCHART BLUEPRINT -->
+  <!-- FLOWCHART BLUEPRINT MODAL -->
   <div id="blueprint-modal" class="ut-modal">
     <div class="ut-modal-box">
       <div style="font-size:0.5rem; color:var(--ut-yellow); margin-bottom:4px;">* SELECT SUBCATEGORY BLUEPRINT</div>
@@ -374,7 +375,7 @@
     </div>
   </div>
 
-  <!-- MODAL: MERCY / POWERS -->
+  <!-- MERCY / POWERS MODAL -->
   <div id="powers-modal" class="ut-modal">
     <div class="ut-modal-box">
       <div style="font-size:0.5rem; color:var(--ut-yellow); margin-bottom:6px;">* UNLOCKED POWERS</div>
@@ -386,9 +387,7 @@
   </div>
 
   <script>
-    /* =========================================================================
-       1. CORE ENGINE STATE INITIALIZATION (SAFE AT TOP)
-       ========================================================================= */
+    /* 1. STATE INITIALIZATION */
     const STATE = {
       activeTrack: 0,
       highestTrack: 0,
@@ -412,9 +411,7 @@
       try { localStorage.setItem("frog_sans_master_save", JSON.stringify(STATE)); } catch (e) {}
     }
 
-    /* =========================================================================
-       2. WEBAUDIO SOUND SYSTEM
-       ========================================================================= */
+    /* 2. AUDIO SYNTHESIS */
     let audioContext = null;
     function getAudio() {
       if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -475,9 +472,7 @@
       });
     }
 
-    /* =========================================================================
-       3. CALENDAR & DEADLINE ENGINE (Starts 08.11.2026, Sunday-to-Sunday)
-       ========================================================================= */
+    /* 3. CALENDAR & DEADLINE ENGINE */
     const LAUNCH_DATE = new Date("2026-11-08T00:00:00");
 
     function updateCalendarSchedule() {
@@ -511,9 +506,7 @@
     setInterval(updateCalendarSchedule, 1000);
     updateCalendarSchedule();
 
-    /* =========================================================================
-       4. 30 STRICT PROGRESSION TRACKS & CUSTOM FLOWCHARTS
-       ========================================================================= */
+    /* 4. TRACKS & CUSTOM FLOWCHARTS */
     const TRACK_NAMES = [
       "Values", "Roles", "Traits", "Framing", "States", "Conversation Loops",
       "Fear", "Anger", "Shame", "Pride", "Desire", "Active Listening",
@@ -630,9 +623,7 @@
       }))
     }));
 
-    /* =========================================================================
-       5. ORIGINAL FROGGY SPRITE & CANVAS ENGINE
-       ========================================================================= */
+    /* 5. CANVAS SPRITE RENDERING */
     const canvas = document.getElementById("pixelCanvas");
     const ctx = canvas.getContext("2d");
     ctx.imageSmoothingEnabled = false;
@@ -669,7 +660,6 @@
     }
 
     function renderScene() {
-      // 1. Clear Arena & Draw Green Grid
       ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -688,7 +678,7 @@
         ctx.stroke();
       }
 
-      // 2. Bookshelf
+      // Bookshelf
       drawPixelRect(8, 60, 24, 48, P.black);
       ctx.strokeStyle = P.white;
       ctx.strokeRect(8, 60, 24, 48);
@@ -697,7 +687,7 @@
       drawPixelRect(11, 83, 18, 5, "#fce373");
       drawPixelRect(11, 92, 18, 5, "#ff597b");
 
-      // Desk & Lamp (Progression Unlocks)
+      // Desk & Lamp Unlocks
       if (STATE.highestTrack >= 1) {
         drawPixelRect(150, 84, 42, 24, P.black);
         ctx.strokeRect(150, 84, 42, 24);
@@ -708,7 +698,7 @@
         drawPixelRect(173, 54, 12, 6, "#ffff00");
       }
 
-      // 3. Render Froggy Sprite
+      // Sprite
       if (STATE.isSleeping) {
         drawPixelRect(80, 80, 48, 26, P.black);
         ctx.strokeStyle = P.white;
@@ -729,15 +719,11 @@
       const legOffset = (frog.state === "WALK") ? (Math.floor(frame / 6) % 2 === 0 ? 2 : -2) : 0;
       const shrugOffset = (face === "SHRUG") ? -3 : 0;
 
-      // Outer outline box
       drawPixelRect(fx, fy + shrugOffset, 26, 36, P.outline);
-
-      // Green Hood Base
       drawPixelRect(fx + 2, fy + 2 + shrugOffset, 22, 32, P.greenMain);
       drawPixelRect(fx + 2, fy + 2 + shrugOffset, 6, 32, P.greenDark);
       drawPixelRect(fx + 10, fy + 2 + shrugOffset, 12, 32, P.greenBright);
 
-      // Hood Frog Eyes
       drawPixelRect(fx + 3, fy - 6 + shrugOffset, 7, 7, P.white);
       drawPixelRect(fx + 16, fy - 6 + shrugOffset, 7, 7, P.white);
 
@@ -749,11 +735,9 @@
         drawPixelRect(fx + 18, fy - 4 + shrugOffset, 3, 3, P.black);
       }
 
-      // Peach Face
       drawPixelRect(fx + 4, fy + 6 + shrugOffset, 18, 15, P.pinkTrim);
       drawPixelRect(fx + 6, fy + 8 + shrugOffset, 14, 11, P.skin);
 
-      // Facial Expressions
       if (face === "EMPTY") {
         drawPixelRect(fx + 8, fy + 10 + shrugOffset, 3, 4, P.black);
         drawPixelRect(fx + 15, fy + 10 + shrugOffset, 3, 4, P.black);
@@ -768,28 +752,23 @@
         drawPixelRect(fx + 15, fy + 10 + shrugOffset, 3, 4, P.black);
       }
 
-      // Cheeks
       drawPixelRect(fx + 5, fy + 14 + shrugOffset, 2, 2, P.pinkTrim);
       drawPixelRect(fx + 19, fy + 14 + shrugOffset, 2, 2, P.pinkTrim);
 
-      // Talking Mouth
       if (mouthOpen) {
         drawPixelRect(fx + 11, fy + 16 + shrugOffset, 5, 3, P.black);
       } else {
         drawPixelRect(fx + 10, fy + 17 + shrugOffset, 7, 1, P.black);
       }
 
-      // Yellow Belly with Pink Heart
       drawPixelRect(fx + 5, fy + 22 + shrugOffset, 16, 11, P.bellyYellow);
       drawPixelRect(fx + 10, fy + 24 + shrugOffset, 6, 6, P.bellyPink);
 
-      // Shrug Hands
       if (face === "SHRUG") {
         drawPixelRect(fx - 4, fy + 16, 5, 6, P.greenMain);
         drawPixelRect(fx + 25, fy + 16, 5, 6, P.greenMain);
       }
 
-      // Animated Stepping Feet
       drawPixelRect(fx + 3, fy + 35 + legOffset, 7, 3, P.greenDark);
       drawPixelRect(fx + 16, fy + 35 - legOffset, 7, 3, P.greenDark);
     }
@@ -820,12 +799,10 @@
     setInterval(updateWanderingAI, 30);
     renderScene();
 
-    /* =========================================================================
-       6. DIALOGUE & TYPEWRITER ENGINE
-       ========================================================================= */
+    /* 6. DIALOGUE SYSTEM (PRESERVED SANS PERSONALITY) */
     const SANS_BANTER = [
       {
-        text: "* heya. what're you sweating about? week 1 doesn't launch until 08.11.2026. take a nap, kiddo.",
+        text: "* heya. what're you sweating about? week 1 doesn't even launch until 08.11.2026. take a nap, kiddo.",
         facePlan: [ {at: 0, f: "GRIN"}, {at: 20, f: "WINK"}, {at: 55, f: "SHRUG"} ],
         c1: "aren't we supposed to prepare?",
         r1: "* prepare? i'm already a professional at doing nothing. inspect the flowcharts below.",
@@ -916,9 +893,7 @@
       triggerDialogue(Math.floor(Math.random() * SANS_BANTER.length));
     }
 
-    /* =========================================================================
-       7. BUTTONS & SUBCATEGORY FLOWCHART MODAL
-       ========================================================================= */
+    /* 7. SUBCATEGORY FLOWCHART MODAL */
     function handleActMenu(subIndex = 0) {
       playAudioBlip(380);
       const curTrack = TRACKS[STATE.activeTrack];
@@ -966,9 +941,7 @@
       document.getElementById(id).style.display = "none";
     }
 
-    /* =========================================================================
-       8. PROGRESSION UI ENGINE
-       ========================================================================= */
+    /* 8. TRACK NAVIGATION & LIST */
     function stepTrack(delta) {
       const next = STATE.activeTrack + delta;
       if (next < 0) return;
@@ -1015,9 +988,7 @@
       });
     }
 
-    /* =========================================================================
-       9. CAMERA OCR SCANNER & PROGRESSION VALIDATOR (FIGHT)
-       ========================================================================= */
+    /* 9. CAMERA OCR SCANNER */
     const cameraInput = document.getElementById("camera-input");
     cameraInput.addEventListener("change", (e) => {
       const file = e.target.files[0];
@@ -1093,7 +1064,6 @@
       }
     }
 
-    // Initialize!
     refreshUI();
     triggerDialogue(0);
   </script>
