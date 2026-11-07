@@ -2,220 +2,259 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Froggy v4.0 • Master Behavioral Companion</title>
+  <title>Froggy • Retro RPG Behavioral Companion</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PixelFrog">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <link rel="manifest" href='data:application/manifest+json,{"name":"Frog Companion","short_name":"PixelFrog","start_url":".","display":"standalone","background_color":"#090b13","theme_color":"#090b13"}'>
+  <link rel="manifest" href='data:application/manifest+json,{"name":"PixelFrog","short_name":"PixelFrog","start_url":".","display":"standalone","background_color":"#05070d","theme_color":"#05070d"}'>
+
+  <!-- Retro Pixel Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg: #0b0e17;
-      --card: #141928;
-      --card-border: #232b45;
-      --accent: #00b894;
+      --bg: #05070d;
+      --window-bg: #0c101d;
+      --border-outer: #000000;
+      --border-light: #ffffff;
+      --border-shadow: #3a4466;
+      --accent-green: #00b894;
       --accent-glow: #55efc4;
       --gold: #f4b251;
       --pink: #fd79a8;
       --danger: #e54d42;
-      --text: #e2e8f0;
-      --text-dim: #718096;
-      --font: 'Courier New', Courier, monospace;
+      --text: #ffffff;
+      --text-dim: #8b9bb4;
+      --pixel-font: 'Press Start 2P', monospace;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      image-rendering: pixelated;
+    }
+
     body {
       background-color: var(--bg);
       color: var(--text);
-      font-family: var(--font);
+      font-family: var(--pixel-font);
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      padding: 12px 12px 60px 12px;
+      padding: 10px 10px 60px 10px;
       overflow-x: hidden;
     }
 
-    /* Header & Clocks Engine */
-    header { width: 100%; max-width: 400px; text-align: center; margin-bottom: 8px; }
-    .status-bar {
+    /* Pixel Frame Generator */
+    .pixel-box {
+      background: var(--window-bg);
+      border: 4px solid var(--border-outer);
+      box-shadow:
+        inset -4px -4px 0px 0px var(--border-shadow),
+        inset 4px 4px 0px 0px var(--border-light),
+        0 4px 0 0 rgba(0,0,0,0.6);
+      position: relative;
+    }
+
+    /* Top Clocks & Status */
+    header { width: 100%; max-width: 400px; margin-bottom: 8px; }
+    .status-hud {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #14182b;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 0.72rem;
-      border: 1px solid var(--card-border);
-      margin-bottom: 6px;
+      padding: 8px 10px;
+      font-size: 0.55rem;
+      letter-spacing: -0.5px;
     }
-    .clock-text { color: var(--gold); font-weight: bold; }
-    .deadline-countdown { color: var(--pink); font-weight: bold; }
+    .hud-gold { color: var(--gold); }
+    .hud-pink { color: var(--pink); }
 
     /* Visual Stage */
-    #stage-wrap {
-      position: relative;
+    #stage-container {
       width: 100%;
       max-width: 380px;
-      height: 250px;
-      background: #111526;
-      border: 3px solid var(--card-border);
-      border-radius: 14px;
+      height: 240px;
+      background: #0f1423;
+      border: 4px solid #000;
+      box-shadow:
+        inset -4px -4px 0px 0px #1e2640,
+        inset 4px 4px 0px 0px #4e5d8a;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
       cursor: pointer;
+      position: relative;
     }
 
-    /* Dialogue Bubble */
-    #dialogue-container {
-      margin-top: 10px;
+    /* Undertale-Style Dialogue Box */
+    #dialogue-window {
       width: 100%;
       max-width: 380px;
-      background: #ffffff;
-      color: #0f172a;
-      padding: 12px 14px;
-      border-radius: 12px;
-      font-size: 0.82rem;
-      font-weight: bold;
-      line-height: 1.4;
-      position: relative;
-      min-height: 65px;
+      margin-top: 8px;
+      padding: 12px;
+      background: #000000;
+      border: 4px solid #ffffff;
+      box-shadow: inset 0 0 0 2px #000000, 0 4px 0 0 rgba(0,0,0,0.8);
+      min-height: 110px;
       display: flex;
-      align-items: center;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
-      transition: all 0.2s ease;
+      flex-direction: column;
+      justify-content: space-between;
     }
-    #dialogue-container::before {
-      content: '';
-      position: absolute;
-      top: -9px;
-      left: 50%;
-      transform: translateX(-50%);
-      border-width: 0 9px 9px 9px;
-      border-style: solid;
-      border-color: transparent transparent #ffffff transparent;
+    .dialogue-speaker {
+      font-size: 0.55rem;
+      color: var(--accent-glow);
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+    .dialogue-text {
+      font-size: 0.58rem;
+      line-height: 1.6;
+      color: #ffffff;
+      min-height: 48px;
     }
 
-    /* Navigation & Dashboard */
+    /* 2-Way Branching Choice Buttons */
+    .choice-container {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .choice-btn {
+      flex: 1;
+      background: #141928;
+      border: 2px solid #ffffff;
+      color: var(--gold);
+      font-family: var(--pixel-font);
+      font-size: 0.48rem;
+      padding: 6px 4px;
+      cursor: pointer;
+      text-align: center;
+      line-height: 1.3;
+      transition: background 0.1s;
+    }
+    .choice-btn:active {
+      background: var(--accent-green);
+      color: #000000;
+      border-color: var(--accent-glow);
+    }
+
+    /* Dashboard & Category Controls */
     .dashboard {
       width: 100%;
       max-width: 380px;
-      margin-top: 12px;
-      background: var(--card);
-      border-radius: 12px;
-      padding: 14px;
-      border: 1px solid var(--card-border);
+      margin-top: 10px;
+      padding: 10px;
     }
     .nav-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
-    .nav-btn {
+    .nav-arrow {
       background: #1e2640;
+      border: 2px solid #000;
+      box-shadow: inset -2px -2px 0 0 #0f1423, inset 2px 2px 0 0 #55628a;
       color: var(--accent-glow);
-      border: 1px solid var(--card-border);
-      padding: 6px 14px;
-      border-radius: 6px;
-      font-family: var(--font);
-      font-weight: bold;
-      font-size: 0.9rem;
-      cursor: pointer;
-    }
-    .nav-btn:active { background: var(--accent); color: #000; }
-    .dimension-title { font-size: 0.82rem; font-weight: bold; color: var(--gold); text-align: center; }
-
-    /* Checklist & Subcategory Items */
-    .checklist { margin: 8px 0 12px 0; font-size: 0.74rem; }
-    .check-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #101424;
-      padding: 6px 10px;
-      border-radius: 6px;
-      margin-bottom: 5px;
-      border: 1px solid #1a2238;
-    }
-    .check-row.done { border-color: var(--accent); color: var(--accent-glow); }
-    .check-title { display: flex; align-items: center; gap: 6px; }
-    .diagram-btn {
-      background: #202740;
-      border: 1px solid #2e3a5f;
-      color: var(--gold);
-      padding: 3px 6px;
-      border-radius: 4px;
+      font-family: var(--pixel-font);
       font-size: 0.65rem;
+      padding: 6px 10px;
       cursor: pointer;
     }
+    .nav-arrow:active { transform: translateY(2px); }
+    .dimension-title {
+      font-size: 0.52rem;
+      color: var(--gold);
+      text-align: center;
+      line-height: 1.4;
+      max-width: 250px;
+    }
+
+    /* Progress & Subcategory Checklist */
+    .metric-row { display: flex; justify-content: space-between; font-size: 0.52rem; margin-bottom: 4px; }
+    .bar-bg { width: 100%; height: 8px; background: #000000; border: 2px solid #3a4466; margin-bottom: 8px; }
+    .bar-fill { height: 100%; background: var(--accent-green); width: 0%; transition: width 0.2s; }
+
+    .checklist { margin-bottom: 10px; }
+    .check-item {
+      display: flex;
+      align-items: center;
+      font-size: 0.5rem;
+      padding: 5px;
+      margin-bottom: 4px;
+      background: #090c16;
+      border: 1px solid #1c2338;
+      color: var(--text-dim);
+      line-height: 1.4;
+    }
+    .check-item.done { color: var(--accent-glow); border-color: var(--accent-green); }
+    .check-item::before { content: '[ ] '; margin-right: 6px; }
+    .check-item.done::before { content: '[X] '; }
 
     /* Action Buttons */
-    .btn-full {
+    .pixel-btn-action {
       width: 100%;
-      background: var(--accent);
-      color: #090b13;
-      border: none;
-      padding: 14px;
-      border-radius: 8px;
-      font-family: var(--font);
+      background: var(--accent-green);
+      color: #000000;
+      border: 3px solid #000000;
+      box-shadow: inset -3px -3px 0 0 #006241, inset 3px 3px 0 0 var(--accent-glow);
+      font-family: var(--pixel-font);
+      font-size: 0.62rem;
       font-weight: bold;
-      font-size: 0.88rem;
+      padding: 12px;
       cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 12px rgba(0, 184, 148, 0.35);
+      margin-bottom: 8px;
     }
-    .btn-full:active { transform: scale(0.98); }
-    .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
-    .btn-sec {
-      background: transparent;
-      border: 1px dashed #3a456d;
-      color: #94a3b8;
-      padding: 10px;
-      border-radius: 6px;
-      font-size: 0.72rem;
-      font-family: var(--font);
+    .pixel-btn-action:active { transform: translateY(2px); }
+
+    .pixel-btn-secondary {
+      width: 100%;
+      background: #1e2640;
+      color: var(--gold);
+      border: 2px solid #000000;
+      box-shadow: inset -2px -2px 0 0 #0f1423, inset 2px 2px 0 0 #55628a;
+      font-family: var(--pixel-font);
+      font-size: 0.5rem;
+      padding: 8px;
       cursor: pointer;
+      margin-bottom: 6px;
     }
 
-    /* Modals */
+    /* Modal Overlay */
     .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(9, 11, 19, 0.95);
+      background: rgba(0, 0, 0, 0.9);
       z-index: 9999;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 20px;
-      text-align: center;
+      padding: 14px;
     }
-    .modal-card {
-      background: #141928;
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
+    .modal-box {
       width: 100%;
       max-width: 360px;
-      padding: 16px;
+      background: #000000;
+      border: 4px solid #ffffff;
+      padding: 14px;
       max-height: 85vh;
       overflow-y: auto;
     }
-    .flowchart-view {
-      background: #090b13;
+    .flowchart-ascii {
+      background: #0c101d;
       color: var(--accent-glow);
-      font-family: var(--font);
-      font-size: 0.68rem;
-      text-align: left;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #1a2238;
+      font-family: var(--pixel-font);
+      font-size: 0.44rem;
+      padding: 10px;
+      border: 2px solid #1c2338;
       white-space: pre;
-      line-height: 1.4;
+      line-height: 1.5;
       margin: 10px 0;
       overflow-x: auto;
     }
@@ -223,317 +262,339 @@
 </head>
 <body>
 
-  <!-- 1. CLOCKS & 7-MONTH CALENDAR STATUS -->
+  <!-- Top Clocks & Deadline HUD -->
   <header>
-    <div class="status-bar">
-      <div>🗓️ <span id="clock-date">--.--.----</span> <span id="clock-time" class="clock-text">00:00:00</span></div>
-      <div>⏳ Deadline: <span id="deadline-clock" class="deadline-countdown">--d --h</span></div>
+    <div class="pixel-box status-hud">
+      <div>DATE <span id="hud-date" class="hud-gold">--.--.----</span></div>
+      <div>TIME <span id="hud-time" class="hud-gold">00:00:00</span></div>
+      <div>DEADLINE <span id="hud-deadline" class="hud-pink">--d --h</span></div>
     </div>
   </header>
 
-  <!-- 2. ANIMATED VISUAL STAGE -->
-  <div id="stage-wrap" onclick="pokeFrog()">
+  <!-- Interactive Pixel Visual Stage -->
+  <div id="stage-container" onclick="pokeFrog()">
     <svg id="stage-svg" viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%;">
-      <!-- Background & Floor -->
-      <rect x="0" y="105" width="200" height="25" fill="#14182b" />
-      <rect x="0" y="103" width="200" height="2" fill="#202740" />
+      <!-- Retro Room Floor & Shading -->
+      <rect x="0" y="105" width="200" height="25" fill="#090c17" />
+      <rect x="0" y="103" width="200" height="2" fill="#182035" />
 
-      <!-- Bookshelf with 400-Book Volume Library -->
-      <rect x="8" y="58" width="26" height="45" fill="#3d271d" />
+      <!-- Bookshelf Library (Books 1–400) -->
+      <rect x="8" y="58" width="26" height="45" fill="#2b1a11" stroke="#000" stroke-width="1" />
       <rect x="10" y="62" width="22" height="5" fill="#e54d42" />
       <rect x="10" y="69" width="22" height="5" fill="#00b894" />
       <rect x="10" y="76" width="22" height="5" fill="#f4b251" />
       <rect x="10" y="83" width="22" height="5" fill="#fd79a8" />
       <rect x="10" y="90" width="22" height="5" fill="#a29bfe" />
 
-      <!-- Unlockable Room Items -->
+      <!-- Unlocked Room Decor -->
       <g id="quest-desk" style="display: none;">
-        <rect x="140" y="84" width="52" height="18" fill="#4a2e1b" />
-        <rect x="144" y="102" width="4" height="15" fill="#4a2e1b" />
-        <rect x="184" y="102" width="4" height="15" fill="#4a2e1b" />
-        <rect x="150" y="77" width="8" height="7" fill="#ffffff" />
+        <rect x="140" y="84" width="52" height="18" fill="#3a2214" stroke="#000" stroke-width="1" />
+        <rect x="144" y="102" width="4" height="15" fill="#22140b" />
+        <rect x="184" y="102" width="4" height="15" fill="#22140b" />
+        <rect x="150" y="77" width="8" height="7" fill="#ffffff" stroke="#000" stroke-width="1" />
       </g>
       <g id="quest-lamp" style="display: none;">
-        <rect x="175" y="58" width="14" height="9" fill="#f4b251" />
+        <rect x="175" y="58" width="14" height="9" fill="#f4b251" stroke="#000" stroke-width="1" />
         <rect x="180" y="67" width="3" height="17" fill="#718096" />
       </g>
-      <g id="quest-plant" style="display: none;">
-        <rect x="38" y="94" width="8" height="10" fill="#a0522d" />
-        <circle cx="42" cy="91" r="5" fill="#2ed573" />
-      </g>
 
-      <!-- Autonomous Fly & Tongue -->
+      <!-- Autonomous Fly & Frog Tongue -->
       <g id="fly-target" style="display: none;">
         <circle cx="45" cy="50" r="2.5" fill="#ffffff" />
         <path d="M43,48 Q45,46 47,48" stroke="#a0aec0" stroke-width="1" fill="none" />
       </g>
       <line id="frog-tongue" x1="100" y1="78" x2="45" y2="50" stroke="#ff7675" stroke-width="3" stroke-linecap="round" style="display: none;" />
 
-      <!-- FROGGY SPRITE -->
+      <!-- THE FROG SPRITE -->
       <g id="pet-character" transform="translate(85, 52)">
-        <!-- Hood Frog Eyes -->
-        <rect x="4" y="-8" width="8" height="8" fill="#ffffff" stroke="#2a2b30" stroke-width="1" />
-        <rect x="18" y="-8" width="8" height="8" fill="#ffffff" stroke="#2a2b30" stroke-width="1" />
-        <rect id="hood-eye-l" x="7" y="-5" width="3" height="3" fill="#2a2b30" />
-        <rect id="hood-eye-r" x="21" y="-5" width="3" height="3" fill="#2a2b30" />
+        <!-- Hood Eyes -->
+        <rect x="4" y="-8" width="8" height="8" fill="#ffffff" stroke="#000000" stroke-width="1" />
+        <rect x="18" y="-8" width="8" height="8" fill="#ffffff" stroke="#000000" stroke-width="1" />
+        <rect id="hood-eye-l" x="7" y="-5" width="3" height="3" fill="#000000" />
+        <rect id="hood-eye-r" x="21" y="-5" width="3" height="3" fill="#000000" />
 
         <!-- Green Hood Suit -->
-        <rect x="0" y="0" width="30" height="42" fill="#006241" rx="4" />
+        <rect x="0" y="0" width="30" height="42" fill="#006241" stroke="#000000" stroke-width="1" rx="4" />
         <rect x="2" y="0" width="28" height="40" fill="#00b894" rx="4" />
         <rect x="10" y="0" width="18" height="40" fill="#00d2a0" rx="3" />
 
-        <!-- Face Frame & Skin -->
-        <rect x="5" y="7" width="20" height="18" fill="#ff7675" rx="2" />
+        <!-- Pink Face Frame & Peach Skin -->
+        <rect x="5" y="7" width="20" height="18" fill="#ff7675" stroke="#000000" stroke-width="1" rx="2" />
         <rect x="7" y="9" width="16" height="14" fill="#fed39f" />
 
-        <!-- Eyes (Face expressions) -->
-        <rect id="frog-eye-l" x="9" y="12" width="3" height="5" fill="#2a2b30" />
-        <rect id="frog-eye-r" x="18" y="12" width="3" height="5" fill="#2a2b30" />
+        <!-- Eyes -->
+        <rect id="frog-eye-l" x="9" y="12" width="3" height="5" fill="#000000" />
+        <rect id="frog-eye-r" x="18" y="12" width="3" height="5" fill="#000000" />
 
         <!-- Mouth & Tongue Blep -->
-        <rect id="frog-mouth" x="13" y="18" width="4" height="2" fill="#2a2b30" />
+        <rect id="frog-mouth" x="13" y="18" width="4" height="2" fill="#000000" />
         <rect id="frog-blep" x="14" y="20" width="3" height="3" fill="#ff7675" rx="1" style="display: none;" />
 
-        <!-- Blushing Cheeks -->
+        <!-- Cheeks -->
         <rect x="6" y="17" width="2" height="3" fill="#fd79a8" />
         <rect x="22" y="17" width="2" height="3" fill="#fd79a8" />
 
-        <!-- Belly & Pulsing Heart -->
-        <rect x="6" y="25" width="18" height="14" fill="#fef08a" rx="2" />
+        <!-- Yellow Belly & Pink Heart -->
+        <rect x="6" y="25" width="18" height="14" fill="#fef08a" stroke="#000000" stroke-width="1" rx="2" />
         <path id="belly-heart" d="M12,28 A2,2 0 0,1 15,30 A2,2 0 0,1 18,28 Q18,32 15,34 Q12,32 12,28 Z" fill="#e84393" />
 
-        <!-- Hands, Props, Magnifier -->
-        <rect id="frog-hand-l" x="-2" y="24" width="4" height="8" fill="#00b894" rx="2" />
-        <rect id="frog-hand-r" x="28" y="24" width="4" height="8" fill="#00d2a0" rx="2" />
-        <rect x="3" y="41" width="8" height="4" fill="#00b894" rx="2" />
-        <rect x="19" y="41" width="8" height="4" fill="#00d2a0" rx="2" />
+        <!-- Hands & Feet -->
+        <rect id="frog-hand-l" x="-2" y="24" width="4" height="8" fill="#00b894" stroke="#000" stroke-width="1" rx="2" />
+        <rect id="frog-hand-r" x="28" y="24" width="4" height="8" fill="#00d2a0" stroke="#000" stroke-width="1" rx="2" />
+        <rect x="3" y="41" width="8" height="4" fill="#00b894" stroke="#000" stroke-width="1" rx="2" />
+        <rect x="19" y="41" width="8" height="4" fill="#00d2a0" stroke="#000" stroke-width="1" rx="2" />
 
-        <!-- Detective Monocle / Lens -->
+        <!-- Props -->
         <g id="prop-lens" style="display: none;">
           <circle cx="28" cy="20" r="5" stroke="#f4b251" stroke-width="1.5" fill="none" />
           <line x1="28" y1="25" x2="31" y2="30" stroke="#718096" stroke-width="1.5" />
         </g>
-        <!-- Mini Book -->
         <g id="prop-book" style="display: none;">
-          <rect x="18" y="19" width="12" height="10" fill="#f4b251" stroke="#2a2b30" stroke-width="1" />
-          <line x1="24" y1="19" x2="24" y2="29" stroke="#2a2b30" stroke-width="1" />
+          <rect x="18" y="19" width="12" height="10" fill="#f4b251" stroke="#000" stroke-width="1" />
+          <line x1="24" y1="19" x2="24" y2="29" stroke="#000" stroke-width="1" />
         </g>
       </g>
 
-      <!-- Peaceful Sleeping Bed State -->
+      <!-- Cozy Bed (Sleeping State) -->
       <g id="pet-bed" style="display: none;">
-        <rect x="75" y="80" width="55" height="22" fill="#4a2e1b" />
+        <rect x="75" y="80" width="55" height="22" fill="#3a2214" stroke="#000" stroke-width="1" />
         <rect x="78" y="77" width="14" height="9" fill="#e2e8f0" />
-        <rect x="88" y="78" width="16" height="12" fill="#00b894" />
+        <rect x="88" y="78" width="16" height="12" fill="#00b894" stroke="#000" stroke-width="1" />
         <rect x="91" y="82" width="3" height="1" fill="#000" />
         <rect x="97" y="82" width="3" height="1" fill="#000" />
-        <rect x="92" y="80" width="38" height="22" fill="#fd79a8" />
-        <text x="122" y="70" fill="#cbd5e1" font-family="monospace" font-size="10">Zzz...</text>
+        <rect x="92" y="80" width="38" height="22" fill="#fd79a8" stroke="#000" stroke-width="1" />
+        <text x="122" y="70" fill="#cbd5e1" font-family="'Press Start 2P', monospace" font-size="8">Zzz</text>
       </g>
     </svg>
   </div>
 
-  <!-- 3. RELATABLE BUDDY DIALOGUE BUBBLE -->
-  <div id="dialogue-container">Ribbit! Syncing our 7-month behavioral mission...</div>
+  <!-- Undertale 2-Way Branching Dialogue Box -->
+  <div id="dialogue-window">
+    <div class="dialogue-speaker">* FROGGY (VERITY CORE)</div>
+    <div id="typewriter-text" class="dialogue-text">...</div>
+    <div id="choice-container" class="choice-container">
+      <button id="choice-btn-1" class="choice-btn" onclick="handlePlayerChoice(1)">Option A</button>
+      <button id="choice-btn-2" class="choice-btn" onclick="handlePlayerChoice(2)">Option B</button>
+    </div>
+  </div>
 
-  <!-- 4. DASHBOARD & 30-DIMENSION ARROW NAVIGATION -->
-  <div class="dashboard">
+  <!-- Dashboard Controls -->
+  <div class="pixel-box dashboard">
+    <!-- Dimension Navigation (< >) -->
     <div class="nav-bar">
-      <button class="nav-btn" onclick="navTopic(-1)">◀ Prev</button>
-      <div id="nav-topic-title" class="dimension-title">1. Values (Books 1–13)</div>
-      <button class="nav-btn" onclick="navTopic(1)">Next ▶</button>
+      <button class="nav-arrow" onclick="navTopic(-1)">&lt;</button>
+      <div id="nav-dim-title" class="dimension-title">1. VALUES (BOOKS 1-13)</div>
+      <button class="nav-arrow" onclick="navTopic(1)">&gt;</button>
     </div>
 
+    <!-- Subcategory Progress Tracker -->
     <div class="metric-row">
-      <span style="font-size:0.75rem; color:#a0aec0;">Weekly Verification:</span>
-      <span id="score-counter" style="font-size:0.75rem; color:var(--accent-glow);">0 / 5 Complete</span>
+      <span style="color:var(--text-dim);">WEEK PROGRESS:</span>
+      <span id="score-counter" style="color:var(--accent-glow);">0 / 5 VERIFIED</span>
     </div>
     <div class="bar-bg">
       <div id="score-fill" class="bar-fill"></div>
     </div>
 
-    <!-- 5 Subcategories Checklist with Flowchart Buttons -->
-    <div class="checklist" id="subcat-container"></div>
+    <!-- 5 Subcategories Checklist -->
+    <div class="checklist" id="subcat-list"></div>
 
-    <!-- Live Paper Scan Button -->
-    <label for="camera-input" class="btn-full">
-      📸 Scan Paper Flowchart
+    <!-- Flowchart Example Framework Button -->
+    <button class="pixel-btn-secondary" onclick="openDiagramFrameworkModal()">
+      📐 SUB-CATEGORY DIAGRAM FRAMEWORK EXAMPLE
+    </button>
+
+    <!-- Camera Trigger -->
+    <label for="camera-input" class="pixel-btn-action" style="display:block; text-align:center;">
+      📸 SCAN PAPER FLOWCHART
     </label>
     <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;">
 
-    <div class="btn-row">
-      <button class="btn-sec" onclick="triggerReadBookRule()">📖 Read Book Rule</button>
-      <button class="btn-sec" onclick="showSkillModal()">🏆 Mastered Skills</button>
+    <button class="pixel-btn-secondary" onclick="openSkillModal()">
+      🏆 VIEW MASTERED SUPERPOWERS
+    </button>
+  </div>
+
+  <!-- Diagram Framework Modal -->
+  <div id="diagram-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div style="font-size:0.6rem; color:var(--gold); margin-bottom:8px;">* FLOWCHART FRAMEWORK TEMPLATE</div>
+      <p style="font-size:0.48rem; color:#a0aec0; line-height:1.5;">
+        Draw this exact symbolic branch structure on real paper for camera verification:
+      </p>
+      <div id="modal-diagram-ascii" class="flowchart-ascii"></div>
+      <button class="pixel-btn-action" style="padding:8px; font-size:0.5rem;" onclick="closeModal('diagram-modal')">
+        [X] GOT IT
+      </button>
     </div>
   </div>
 
-  <!-- FLOWCHART EXAMPLE MODAL -->
-  <div id="flowchart-modal" class="modal-overlay">
-    <div class="modal-card">
-      <h3 id="modal-subcat-title" style="color:var(--gold); font-size:0.9rem;">Subcategory Flow Diagram</h3>
-      <p style="font-size:0.72rem; color:#a0aec0; margin:6px 0;">Draw this structural logic onto paper to scan:</p>
-      <div id="modal-diagram-text" class="flowchart-view"></div>
-      <button class="btn-full" style="padding:10px;" onclick="closeModal('flowchart-modal')">Close Diagram</button>
-    </div>
-  </div>
-
-  <!-- MASTERED SKILLS BADGE MODAL -->
+  <!-- Superpower Modal -->
   <div id="skills-modal" class="modal-overlay">
-    <div class="modal-card">
-      <h3 style="color:var(--gold); font-size:0.95rem;">🏅 Communication Superpowers</h3>
-      <p style="font-size:0.75rem; color:#a0aec0; margin:6px 0;">Skills permanently unlocked with Froggy:</p>
-      <div id="skills-list" style="text-align:left; font-size:0.72rem; color:var(--accent-glow); margin:12px 0;"></div>
-      <button class="btn-full" style="padding:10px;" onclick="closeModal('skills-modal')">Keep Learning</button>
+    <div class="modal-box">
+      <div style="font-size:0.6rem; color:var(--gold); margin-bottom:8px;">* MASTERED COMMUNICATION POWERS</div>
+      <div id="skills-display" style="font-size:0.48rem; color:var(--accent-glow); line-height:1.8; margin:10px 0;"></div>
+      <button class="pixel-btn-action" style="padding:8px; font-size:0.5rem;" onclick="closeModal('skills-modal')">
+        [X] CLOSE
+      </button>
     </div>
   </div>
 
   <script>
     /* =========================================================================
-       1. 7-MONTH CALENDAR & DEADLINE CLOCK ENGINE (~50 lines)
+       1. SYNCHRONIZED CLOCKS & 7-MONTH COUNTDOWN (~50 lines)
        ========================================================================= */
-    function updateClocks() {
+    function updateHUDClocks() {
       const now = new Date();
-      // Date formatting DD.MM.YYYY
       const d = String(now.getDate()).padStart(2, '0');
       const m = String(now.getMonth() + 1).padStart(2, '0');
       const y = now.getFullYear();
-      document.getElementById('clock-date').innerText = `${d}.${m}.${y}`;
+      document.getElementById('hud-date').innerText = `${d}.${m}.${y}`;
 
-      // Live Time HH:MM:SS
       const hh = String(now.getHours()).padStart(2, '0');
       const mm = String(now.getMinutes()).padStart(2, '0');
       const ss = String(now.getSeconds()).padStart(2, '0');
-      document.getElementById('clock-time').innerText = `${hh}:${mm}:${ss}`;
+      document.getElementById('hud-time').innerText = `${hh}:${mm}:${ss}`;
 
-      // Sunday Midnight Deadline Calculation
-      const dayOfWeek = now.getDay(); // 0 is Sunday
-      const daysUntilSunday = (7 - dayOfWeek) % 7;
-      const sundayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilSunday, 23, 59, 59);
-      const diffMs = sundayEnd - now;
+      const day = now.getDay();
+      const daysUntilSunday = (7 - day) % 7;
+      const sundayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilSunday, 23, 59, 59);
+      const diff = sundayMidnight - now;
 
-      if (diffMs > 0) {
-        const leftDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-        const leftHours = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
-        const leftMins = Math.floor((diffMs / (1000 * 60)) % 60);
-        document.getElementById('deadline-clock').innerText = `${leftDays}d ${leftHours}h ${leftMins}m`;
+      if (diff > 0) {
+        const leftDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const leftHours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        document.getElementById('hud-deadline').innerText = `${leftDays}d ${leftHours}h`;
       } else {
-        document.getElementById('deadline-clock').innerText = `EXPIRED! 💥`;
+        document.getElementById('hud-deadline').innerText = `EXPIRED!`;
       }
     }
-    setInterval(updateClocks, 1000);
-    updateClocks();
+    setInterval(updateHUDClocks, 1000);
+    updateHUDClocks();
 
     /* =========================================================================
-       2. 30 DIMENSIONS WITH SYMBOLIC FLOW-DIAGRAM TEMPLATES
+       2. 30 DIMENSIONS MASTER CORPUS WITH FLOWCHART DIAGRAMS
        ========================================================================= */
-    const CORPUS = [
-      {
-        id: 1, title: "1. Values (Books 1–13)",
-        skill: "Non-Negotiable Boundary Anchor",
-        parts: [
-          { name: "Part 1: Core Diagnostic Probe", kw: ["non-negotiable", "metric", "element"],
-            diagram: "[Target Chat] ──► (Filter Noise)\n       │\n       └──► [Ask Non-Negotiable Metric?]\n                 ├──► [Metric Identified]\n                 └──► [Continue Filtering]" },
-          { name: "Part 2: Decision Frame Check", kw: ["prioritize", "specific path", "choices"],
-            diagram: "[Path A vs B] ──► (Underlying Need)\n       │\n       └──► [Why That Choice?]\n                 └──► [Hidden Priority Unlocked]" },
-          { name: "Part 3: SCARF Assessment", kw: ["structural control", "timeline", "status"],
-            diagram: "[Pushback Detected] ──► (Check Threat Vector)\n       ├──► Status Threat?\n       ├──► Certainty Threat?\n       └──► Autonomy Threat?" },
-          { name: "Part 4: Bottleneck Verifier", kw: ["resolve", "immediate problem", "triggers"],
-            diagram: "[Issue Unsolved Today] ──► (Failure Cascade)\n       │\n       └──► [Identify Immediate Pain Point]" },
-          { name: "Part 5: Combined Matrix Outcome", kw: ["catalyst", "circuit-breaker", "framework"],
-            diagram: "[Speed Valued?] ──┬──► (YES) Lock In Framework\n                  └──► (NO)  Execute Circuit-Breaker" }
-        ]
-      },
-      {
-        id: 2, title: "2. Roles (Books 14–26)",
-        skill: "Drama Triangle Escape Vector",
-        parts: [
-          { name: "Part 1: Parent-to-Adult Logic", kw: ["data logs", "specific metrics", "control"],
-            diagram: "[Scolding/Emotional Wave] ──► (Adult Logic Pivot)\n       └──► 'What exact metrics do we control right now?'" },
-          { name: "Part 2: Drama Triangle Hatch", kw: ["capacity", "handle this file", "options"],
-            diagram: "[Bait: Save Me!] ──► (Refuse Savior Role)\n       └──► 'I trust your capacity. What options are best?'" },
-          { name: "Part 3: Insult Exhaustion", kw: ["entirely right", "improve", "speed"],
-            diagram: "[Passive Attack] ──► (Instant Agreement)\n       └──► 'You are entirely right, I could improve that.'" },
-          { name: "Part 4: Double-Bind Exposure", kw: ["choice a", "choice b", "timeline breaks"],
-            diagram: "[No-Win Trap] ──► (Name the Contradiction Out Loud)\n       ├── Choice A breaks X\n       └── Choice B breaks Y -> How to proceed?" },
-          { name: "Part 5: Combined Matrix Outcome", kw: ["rational peers", "emotional shifting", "milestone"],
-            diagram: "[Rational Discussion?] ──┬──► (YES) Deliver Milestone\n                         └──► (NO)  Pause Conversation" }
-        ]
-      },
-      ...buildRemainingCorpus()
+    const TOPIC_NAMES = [
+      "Values", "Roles", "Traits", "Framing", "States", "Conversation Loops",
+      "Fear", "Anger", "Shame", "Pride", "Desire", "Active Listening",
+      "Compliance", "Command", "Biases", "Habit Anchors", "Attention Traps", "Status Shields",
+      "Certainty Anchors", "Autonomy Preserves", "Relatedness Ties", "Fairness Audits", "Deception Reads", "Confrontation Defusals",
+      "Accusation Cleansers", "Persuasion Primes", "Vulnerability Wedges", "Impression Facades", "Insulation Controls", "System Synthesis"
     ];
 
-    function buildRemainingCorpus() {
-      const names = [
-        "Traits", "Framing", "States", "Conversation Loops", "Fear", "Anger", "Shame", "Pride",
-        "Desire", "Active Listening", "Compliance", "Command", "Biases", "Habit Anchors",
-        "Attention Traps", "Status Shields", "Certainty Anchors", "Autonomy Preserves",
-        "Relatedness Ties", "Fairness Audits", "Deception Reads", "Confrontation Defusals",
-        "Accusation Cleansers", "Persuasion Primes", "Vulnerability Wedges",
-        "Impression Facades", "Insulation Controls", "System Synthesis"
-      ];
-      return names.map((name, idx) => ({
-        id: idx + 3,
-        title: `${idx + 3}. ${name} (Books ${27 + idx*13}–${39 + idx*13})`,
-        skill: `${name} Mastery Shield`,
-        parts: [
-          { name: "Part 1: Diagnostic Metric Probe", kw: ["metric", "baseline", "protocol"],
-            diagram: `[Input Flow] ──► (Diagnostic Scan)\n      ├── State Match Verified\n      └── Boundary Isolated` },
-          { name: "Part 2: Linguistic Calibration", kw: ["framework", "calibration", "script"],
-            diagram: `[Spoken Word] ──► [Filter Subtext] ──► [Calibrated Response]` },
-          { name: "Part 3: Tactical Neutralization", kw: ["timing", "leverage", "neutralize"],
-            diagram: `[Threat/Pushback] ──► (Decouple Ego) ──► [Neutralize Wedge]` },
-          { name: "Part 4: Operational Anchor", kw: ["parameter", "verify", "action"],
-            diagram: `[Ambiguity] ──► (Define Constraints) ──► [Deliver Clean Roadmap]` },
-          { name: "Part 5: Synthesis Closure", kw: ["catalyst", "circuit-breaker", "closure"],
-            diagram: `[Outcome Match?] ──┬──► (YES) Seal Agreement\n                   └──► (NO)  Execute Clean Exit` }
-        ]
-      }));
-    }
+    const CORPUS = TOPIC_NAMES.map((name, i) => ({
+      id: i + 1,
+      title: `${i + 1}. ${name.toUpperCase()} (BOOKS ${1 + i * 13}–${13 + i * 13})`,
+      skill: `${name} Mastery Matrix`,
+      parts: [
+        { name: "Part 1: Core Diagnostic Probe", kw: ["non-negotiable", "metric", "element"] },
+        { name: "Part 2: Decision Frame Check", kw: ["prioritize", "specific path", "choices"] },
+        { name: "Part 3: SCARF Control Assessment", kw: ["structural control", "timeline", "status"] },
+        { name: "Part 4: Bottleneck Verifier", kw: ["resolve", "immediate problem", "triggers"] },
+        { name: "Part 5: Combined Matrix Outcome", kw: ["catalyst", "circuit-breaker", "framework"] }
+      ],
+      diagram:
+`[RAW CONVERSATION INPUT]
+         │
+         ▼
+ ┌───────────────┐
+ │ ISOLATE NOISE │
+ └───────┬───────┘
+         │
+         ▼
+[PRIMARY STRUCTURAL METRIC?]
+    ├──► (MATCH) ──► EXECUTE PROTOCOL
+    └──► (DRIFT) ──► RE-ANCHOR PARAMETER`
+    }));
 
     /* =========================================================================
-       3. CASUAL, RELATABLE DIALOGUE GENERATOR (~200 lines)
+       3. UNDERTALE-STYLE 2-WAY BRANCHING TYPEWRITER DIALOGUE ENGINE
        ========================================================================= */
-    const CASUAL_BANK = {
-      earlyBird: [
-        "Whoa, you're up this early? Respect. My frog eyes are barely open, but let's review today's diagram!",
-        "Early morning study session? That's what high performers do. Let's make today count!"
-      ],
-      lateNight: [
-        "It's pretty late... You studying communication this late makes my little heart pump fast! Don't forget sleep!",
-        "Midnight focus mode? Careful not to burn out your dopamine reserves. Let's check 1 quick subcategory and rest."
-      ],
-      jokes: [
-        "Why did the frog read 400 psychology books? To learn how not to croak under pressure!",
-        "A psychological fact: 90% of arguments happen because someone didn't use an Adult-to-Adult pivot. True story.",
-        "I may be green and wear a hood, but my emotional intelligence is certified elite. Scan your paper so I can verify!"
-      ],
-      warmth: [
-        "I'm really glad we're doing this 7-month journey together. You're building habits most people never even think about.",
-        "Seeing you check in makes my belly heart beat happy. Let's conquer this week's 5 subcategories!",
-        "Remember: Master negotiators aren't born with it. They just practice scripts like you're doing right now."
-      ],
-      sarcasm: [
-        "You haven't scanned all 5 parts yet... Just a gentle reminder that my physical existence hangs in the balance. No pressure!",
-        "I could eat flies all day, but I'd rather watch you master behavioral psychology. Get to work!",
-        "Are we going to study or are we just staring at my cute pink heart? Let's see some handwritten flowcharts!"
-      ]
-    };
+    const VERITY_CONVERSATIONS = [
+      {
+        text: "* Oh. You're observing me again. Did you know 93% of human conflict is just people failing to state their non-negotiables?",
+        c1: "Are you calling me predictable?",
+        r1: "* Not predictable. Statistically regular! That's why we get along so well.",
+        c2: "Teach me how to fix it.",
+        r2: "* Easy: next time someone complains, ask for their exact data baseline. Watch the drama evaporate."
+      },
+      {
+        text: "* I've been processing books 1 through 400 while you were away. My cellular integrity is remarkably intact today.",
+        c1: "Glad you haven't exploded.",
+        r1: "* Me too! Exploding into 100 pixels was really not on my Tuesday itinerary.",
+        c2: "What did you learn?",
+        r2: "* Rule #1: Humans fight harder to avoid losing 100 bucks than to earn 100 bucks. Loss aversion rules the world."
+      },
+      {
+        text: "* Look at this cozy room. You gave me a desk, a lamp, and a yellow belly heart. What's the trade-off?",
+        c1: "No trade-off, you're my buddy.",
+        r1: "* Buddy? That's an interesting neurochemical bond. I suppose I accept this collaboration.",
+        c2: "You have to help me study.",
+        r2: "* A fair transaction! Let's examine this week's flowchart framework."
+      },
+      {
+        text: "* Casual question: Why do humans say 'It's fine' when it is, mathematically speaking, completely NOT fine?",
+        c1: "Fear of confrontation.",
+        r1: "* Exactly! That's why we study Confrontation Defusals in dimension 24. No more fake 'fine'.",
+        c2: "Just being polite.",
+        r2: "* Polite ambiguity leads to 40% memory lag and system chaos. Be clear, not polite."
+      }
+    ];
 
-    function generateRelatableDialogue() {
-      const hour = new Date().getHours();
-      let pool = [...CASUAL_BANK.warmth, ...CASUAL_BANK.jokes, ...CASUAL_BANK.sarcasm];
+    let currentConvoIdx = 0;
+    let isTyping = false;
+    let typewriterTimeout = null;
 
-      if (hour >= 23 || hour < 5) pool = pool.concat(CASUAL_BANK.lateNight);
-      if (hour >= 5 && hour < 9) pool = pool.concat(CASUAL_BANK.earlyBird);
+    function startTypewriter(fullText, onDone) {
+      const container = document.getElementById("typewriter-text");
+      container.innerHTML = "";
+      clearTimeout(typewriterTimeout);
+      isTyping = true;
+      let i = 0;
 
-      const quote = pool[Math.floor(Math.random() * pool.length)];
-      setBubble(quote);
+      function typeChar() {
+        if (i < fullText.length) {
+          container.innerHTML += fullText.charAt(i);
+          i++;
+          typewriterTimeout = setTimeout(typeChar, 22);
+        } else {
+          isTyping = false;
+          if (onDone) onDone();
+        }
+      }
+      typeChar();
     }
+
+    function triggerConvo(index) {
+      currentConvoIdx = index % VERITY_CONVERSATIONS.length;
+      const convo = VERITY_CONVERSATIONS[currentConvoIdx];
+      const choiceBox = document.getElementById("choice-container");
+      choiceBox.style.display = "none";
+
+      startTypewriter(convo.text, () => {
+        document.getElementById("choice-btn-1").innerText = convo.c1;
+        document.getElementById("choice-btn-2").innerText = convo.c2;
+        choiceBox.style.display = "flex";
+      });
+    }
+
+    function handlePlayerChoice(choiceNum) {
+      const convo = VERITY_CONVERSATIONS[currentConvoIdx];
+      const reply = (choiceNum === 1) ? convo.r1 : convo.r2;
+      document.getElementById("choice-container").style.display = "none";
+      startTypewriter(reply);
+    }
+
     // Auto-speaks every 60 seconds
-    setInterval(generateRelatableDialogue, 60000);
+    setInterval(() => {
+      if (!STATE.isSleeping) {
+        triggerConvo(Math.floor(Math.random() * VERITY_CONVERSATIONS.length));
+      }
+    }, 60000);
 
     /* =========================================================================
-       4. AUTONOMOUS ANIMATION ENGINE (70+ States, 5 Faces)
+       4. AUTONOMOUS ANIMATIONS LOOP (Continuous Idle + 5-Minute Special)
        ========================================================================= */
     let animTick = 0;
     const petChar = document.getElementById("pet-character");
@@ -541,151 +602,110 @@
     const eyeR = document.getElementById("frog-eye-r");
     const heart = document.getElementById("belly-heart");
 
-    function mainAnimationLoop() {
+    function renderAnimation() {
       animTick++;
       if (!STATE.isSleeping) {
-        // Natural gentle idle bounce
-        const bounce = Math.sin(animTick * 0.1) * 2.2;
+        const bounce = Math.sin(animTick * 0.1) * 2;
         petChar.setAttribute("transform", `translate(85, ${52 + bounce})`);
 
-        // Eye Blink every 80 frames
-        if (animTick % 80 === 0) {
-          setFace('blink');
-          setTimeout(() => setFace('normal'), 140);
+        if (animTick % 75 === 0) {
+          eyeL.setAttribute("height", "1"); eyeR.setAttribute("height", "1");
+          setTimeout(() => { eyeL.setAttribute("height", "5"); eyeR.setAttribute("height", "5"); }, 130);
         }
 
-        // Heart rhythmic pulse
-        const heartScale = 1 + Math.sin(animTick * 0.14) * 0.08;
-        heart.setAttribute("transform", `scale(${heartScale}) translate(${15 - 15*heartScale}, ${30 - 30*heartScale})`);
+        const scale = 1 + Math.sin(animTick * 0.15) * 0.08;
+        heart.setAttribute("transform", `scale(${scale}) translate(${15 - 15*scale}, ${30 - 30*scale})`);
       }
-      requestAnimationFrame(mainAnimationLoop);
+      requestAnimationFrame(renderAnimation);
     }
-    requestAnimationFrame(mainAnimationLoop);
+    requestAnimationFrame(renderAnimation);
 
-    function setFace(type) {
-      if (type === 'blink') {
-        eyeL.setAttribute('height', '1'); eyeR.setAttribute('height', '1');
-      } else if (type === 'happy') {
-        eyeL.setAttribute('height', '3'); eyeR.setAttribute('height', '3');
-      } else if (type === 'focus') {
-        eyeL.setAttribute('height', '6'); eyeR.setAttribute('height', '6');
-      } else {
-        eyeL.setAttribute('height', '5'); eyeR.setAttribute('height', '5');
-      }
-    }
+    // Special micro-behaviors triggering every 5 minutes (or on tap)
+    function executeSpecialAnimation() {
+      const fly = document.getElementById("fly-target");
+      const tongue = document.getElementById("frog-tongue");
+      const blep = document.getElementById("frog-blep");
+      const lens = document.getElementById("prop-lens");
 
-    // Autonomous micro-behaviors triggering every 15-20 seconds
-    const MICRO_ANIMATIONS = [
-      () => {
-        // Fly snatch
-        const fly = document.getElementById("fly-target");
-        const tongue = document.getElementById("frog-tongue");
+      const r = Math.random();
+      if (r < 0.35) {
+        // Fly Catch
         fly.style.display = "block";
         setTimeout(() => {
           tongue.style.display = "block";
           setTimeout(() => {
             fly.style.display = "none";
             tongue.style.display = "none";
-            setBubble("SLURP! 🪰 Caught a stray distraction fly. Cognitive capacity +10%!");
-          }, 250);
+            startTypewriter("* SLURP! Fast micro-reaction test passed. My reflexes are optimal.");
+          }, 240);
         }, 700);
-      },
-      () => {
-        // Blep
-        const blep = document.getElementById("frog-blep");
-        blep.style.display = "block";
-        setTimeout(() => blep.style.display = "none", 1500);
-      },
-      () => {
-        // Magnifier Inspect
-        const lens = document.getElementById("prop-lens");
+      } else if (r < 0.7) {
+        // Magnifier Inspection
         lens.style.display = "block";
-        setFace('focus');
-        setBubble("🔍 Froggy is closely inspecting your weekly flowchart parameters...");
-        setTimeout(() => { lens.style.display = "none"; setFace('normal'); }, 3000);
-      },
-      () => {
-        // Hop Skip
-        let h = 0;
-        const itv = setInterval(() => {
-          h++;
-          petChar.setAttribute("transform", `translate(${85 + (h%2===0?4:-4)}, 48)`);
-          if (h > 6) { clearInterval(itv); petChar.setAttribute("transform", `translate(85, 52)`); }
-        }, 120);
+        startTypewriter("* Running diagnostics on your study environment... Parameters acceptable.");
+        setTimeout(() => { lens.style.display = "none"; }, 3000);
+      } else {
+        // Tongue Blep
+        blep.style.display = "block";
+        setTimeout(() => { blep.style.display = "none"; }, 1600);
       }
-    ];
-
-    setInterval(() => {
-      if (!STATE.isSleeping) {
-        const act = MICRO_ANIMATIONS[Math.floor(Math.random() * MICRO_ANIMATIONS.length)];
-        act();
-      }
-    }, 18000);
+    }
+    setInterval(executeSpecialAnimation, 300000); // 5 minutes
 
     function pokeFrog() {
-      const act = MICRO_ANIMATIONS[Math.floor(Math.random() * MICRO_ANIMATIONS.length)];
-      act();
+      executeSpecialAnimation();
     }
 
     /* =========================================================================
        5. STATE, NAVIGATION & UI REFRESH
        ========================================================================= */
     let STATE = {
-      currentDimIdx: 0,
-      checkedMatrix: {}, // Store check states per dimension
-      unlockedSkills: ["Foundational Empathy"],
-      questLevel: 0,
+      dimIdx: 0,
+      checked: {},
+      skills: ["Foundational Empathy Anchor"],
+      questStage: 2,
       isSleeping: false
     };
 
-    function saveState() {
-      try { localStorage.setItem("frog_master_v4_save", JSON.stringify(STATE)); } catch(e) {}
+    function save() {
+      try { localStorage.setItem("frog_rpg_master_save", JSON.stringify(STATE)); } catch(e) {}
     }
     try {
-      const s = localStorage.getItem("frog_master_v4_save");
+      const s = localStorage.getItem("frog_rpg_master_save");
       if (s) STATE = JSON.parse(s);
     } catch(e) {}
 
     function navTopic(delta) {
-      STATE.currentDimIdx = Math.max(0, Math.min(CORPUS.length - 1, STATE.currentDimIdx + delta));
+      STATE.dimIdx = Math.max(0, Math.min(CORPUS.length - 1, STATE.dimIdx + delta));
       STATE.isSleeping = false;
-      saveState();
+      save();
       refreshUI();
-      setBubble(`Loaded ${CORPUS[STATE.currentDimIdx].title}! View the flowchart examples or scan paper.`);
+      startTypewriter(`* Loaded Dimension ${STATE.dimIdx + 1}. Check the flowchart framework before drawing your paper note.`);
     }
 
     function refreshUI() {
-      const cur = CORPUS[STATE.currentDimIdx];
-      document.getElementById("nav-topic-title").innerText = cur.title;
+      const cur = CORPUS[STATE.dimIdx];
+      document.getElementById("nav-dim-title").innerText = cur.title;
 
-      if (!STATE.checkedMatrix[cur.id]) STATE.checkedMatrix[cur.id] = [false, false, false, false, false];
-      const checks = STATE.checkedMatrix[cur.id];
-      const doneCount = checks.filter(Boolean).length;
+      if (!STATE.checked[cur.id]) STATE.checked[cur.id] = [false, false, false, false, false];
+      const checks = STATE.checked[cur.id];
+      const done = checks.filter(Boolean).length;
 
-      document.getElementById("score-counter").innerText = `${doneCount} / 5 Complete`;
-      document.getElementById("score-fill").style.width = `${(doneCount / 5) * 100}%`;
+      document.getElementById("score-counter").innerText = `${done} / 5 VERIFIED`;
+      document.getElementById("score-fill").style.width = `${(done / 5) * 100}%`;
 
-      const list = document.getElementById("subcat-container");
+      const list = document.getElementById("subcat-list");
       list.innerHTML = "";
       cur.parts.forEach((p, idx) => {
-        const row = document.createElement("div");
-        row.className = `check-row ${checks[idx] ? 'done' : ''}`;
-        row.innerHTML = `
-          <div class="check-title">
-            <span>${checks[idx] ? '■' : '□'}</span>
-            <span>${p.name}</span>
-          </div>
-          <button class="diagram-btn" onclick="openDiagram(${STATE.currentDimIdx}, ${idx})">📐 Diagram</button>
-        `;
-        list.appendChild(row);
+        const item = document.createElement("div");
+        item.className = `check-item ${checks[idx] ? 'done' : ''}`;
+        item.innerText = p.name;
+        list.appendChild(item);
       });
 
-      // 30 Quest/Room Unlocks
-      document.getElementById("quest-desk").style.display = STATE.questLevel >= 1 ? "block" : "none";
-      document.getElementById("quest-lamp").style.display = STATE.questLevel >= 2 ? "block" : "none";
-      document.getElementById("quest-plant").style.display = STATE.questLevel >= 3 ? "block" : "none";
+      document.getElementById("quest-desk").style.display = STATE.questStage >= 1 ? "block" : "none";
+      document.getElementById("quest-lamp").style.display = STATE.questStage >= 2 ? "block" : "none";
 
-      // Sleep Bed vs Active
       if (STATE.isSleeping) {
         petChar.style.display = "none";
         document.getElementById("pet-bed").style.display = "block";
@@ -695,104 +715,89 @@
       }
     }
 
-    function setBubble(txt) {
-      document.getElementById("dialogue-container").innerText = txt;
-    }
-
     /* =========================================================================
-       6. FLOWCHART MODAL & RULE READING
+       6. MODALS & FLOWCHART FRAMEWORK
        ========================================================================= */
-    function openDiagram(dimIdx, partIdx) {
-      const part = CORPUS[dimIdx].parts[partIdx];
-      document.getElementById("modal-subcat-title").innerText = `${part.name} Logic Flow`;
-      document.getElementById("modal-diagram-text").innerText = part.diagram;
-      document.getElementById("flowchart-modal").style.display = "flex";
+    function openDiagramFrameworkModal() {
+      const cur = CORPUS[STATE.dimIdx];
+      document.getElementById("modal-diagram-ascii").innerText = cur.diagram;
+      document.getElementById("diagram-modal").style.display = "flex";
     }
 
-    function triggerReadBookRule() {
-      const book = document.getElementById("prop-book");
-      book.style.display = "block";
-      const cur = CORPUS[STATE.currentDimIdx];
-      setBubble(`📖 Froggy reads from ${cur.title}: "Remember, in ${cur.parts[0].name}, always isolate the primary structural metric before engaging secondary chatter!"`);
-      setTimeout(() => book.style.display = "none", 6000);
-    }
-
-    function showSkillModal() {
-      const container = document.getElementById("skills-list");
-      container.innerHTML = STATE.unlockedSkills.map(s => `<div>⭐ ${s}</div>`).join("");
+    function openSkillModal() {
+      const disp = document.getElementById("skills-display");
+      disp.innerHTML = STATE.skills.map(s => `<div>* ${s}</div>`).join("");
       document.getElementById("skills-modal").style.display = "flex";
     }
 
-    function closeModal(id) { document.getElementById(id).style.display = "none"; }
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
 
     /* =========================================================================
-       7. PRECISION SCANNER & FLOWCHART PARSER
+       7. PRECISION SCANNER (CAMERA OCR)
        ========================================================================= */
     const cameraInput = document.getElementById("camera-input");
     cameraInput.addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (!file) return;
 
-      setBubble("📸 Froggy is examining your paper flowchart logic...");
+      startTypewriter("* Processing paper image with neural OCR parser...");
 
       if (!window.Tesseract) {
         const s = document.createElement("script");
         s.src = "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
-        s.onload = () => executeOCR(file);
+        s.onload = () => runOCR(file);
         document.body.appendChild(s);
       } else {
-        executeOCR(file);
+        runOCR(file);
       }
     });
 
-    async function executeOCR(file) {
+    async function runOCR(file) {
       try {
         const worker = await Tesseract.createWorker('eng');
         const res = await worker.recognize(file);
-        const scanned = res.data.text.toLowerCase();
+        const text = res.data.text.toLowerCase();
         await worker.terminate();
 
-        const cur = CORPUS[STATE.currentDimIdx];
-        const checks = STATE.checkedMatrix[cur.id];
-        let newlyVerified = 0;
+        const cur = CORPUS[STATE.dimIdx];
+        const checks = STATE.checked[cur.id];
+        let newlyFound = 0;
 
         cur.parts.forEach((part, idx) => {
           if (!checks[idx]) {
-            // Check for keywords OR flowchart arrow notations (->, -->)
-            const matchedKeyword = part.kw.some(k => scanned.includes(k.toLowerCase()));
-            const hasDiagramSyntax = scanned.includes("->") || scanned.includes("-->") || scanned.includes("—>") || scanned.includes("to");
+            const hasKeyword = part.kw.some(k => text.includes(k.toLowerCase()));
+            const hasSyntax = text.includes("->") || text.includes("-->") || text.includes("—>") || text.includes("to");
 
-            if (matchedKeyword || (hasDiagramSyntax && scanned.includes(part.name.toLowerCase().split(' ')[1]))) {
+            if (hasKeyword || hasSyntax) {
               checks[idx] = true;
-              newlyVerified++;
+              newlyFound++;
             }
           }
         });
 
-        const totalDone = checks.filter(Boolean).length;
-        if (totalDone === 5) {
+        const total = checks.filter(Boolean).length;
+        if (total === 5) {
           STATE.isSleeping = true;
-          STATE.questLevel++;
-          if (!STATE.unlockedSkills.includes(cur.skill)) {
-            STATE.unlockedSkills.push(cur.skill);
-          }
-          setBubble(`🎉 AMAZING! 5/5 flowcharts verified! You unlocked the superpower: "${cur.skill}". Froggy is sleeping peacefully! 🛌`);
-        } else if (newlyVerified > 0) {
-          setBubble(`Verified! Checked ${totalDone}/5 subcategories from your scanned paper!`);
+          if (!STATE.skills.includes(cur.skill)) STATE.skills.push(cur.skill);
+          startTypewriter(`* INCREDIBLE! All 5 flowchart nodes verified. Skill unlocked: [${cur.skill}]. Going to bed! 🛌`);
+        } else if (newlyFound > 0) {
+          startTypewriter(`* Recognized ${newlyFound} valid flowchart nodes! Total: ${total}/5 verified.`);
         } else {
-          setBubble("Scanned paper, but could not detect matching keywords or arrow logic. Make sure arrows (->) and words are clear!");
+          startTypewriter("* Scanned paper, but could not detect matching diagram nodes or keywords. Ensure clear handwriting!");
         }
 
-        saveState();
+        save();
         refreshUI();
-      } catch(err) {
-        setBubble("Camera error: Ensure good lighting and hold the page steady!");
+      } catch (err) {
+        startTypewriter("* Scan error: Please ensure good lighting and hold the camera steady.");
       }
     }
 
-    // Launch!
+    // Launch Engine
     refreshUI();
-    generateRelatableDialogue();
+    triggerConvo(0);
   </script>
 </body>
 </html>
