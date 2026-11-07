@@ -2,33 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Froggy • Retro RPG Behavioral Companion</title>
+  <title>FROGGY • UNDERTALE BEHAVIORAL MATRIX</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PixelFrog">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <link rel="manifest" href='data:application/manifest+json,{"name":"PixelFrog","short_name":"PixelFrog","start_url":".","display":"standalone","background_color":"#05070d","theme_color":"#05070d"}'>
+  <link rel="manifest" href='data:application/manifest+json,{"name":"PixelFrog","short_name":"PixelFrog","start_url":".","display":"standalone","background_color":"#000000","theme_color":"#000000"}'>
 
-  <!-- Retro Pixel Font -->
+  <!-- Google Fonts: 8-Bit Press Start 2P -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
   <style>
+    /* =========================================================================
+       1. UNDERTALE RETRO THEME STYLING
+       ========================================================================= */
     :root {
-      --bg: #05070d;
-      --window-bg: #0c101d;
-      --border-outer: #000000;
-      --border-light: #ffffff;
-      --border-shadow: #3a4466;
-      --accent-green: #00b894;
-      --accent-glow: #55efc4;
-      --gold: #f4b251;
-      --pink: #fd79a8;
-      --danger: #e54d42;
-      --text: #ffffff;
-      --text-dim: #8b9bb4;
-      --pixel-font: 'Press Start 2P', monospace;
+      --ut-bg: #000000;
+      --ut-border: #ffffff;
+      --ut-yellow: #ffff00;
+      --ut-orange: #ff9900;
+      --ut-red: #ff0000;
+      --ut-green: #00ff00;
+      --ut-cyan: #00ffff;
+      --ut-gray: #555555;
+      --ut-dark-gray: #222222;
+      --ut-font: 'Press Start 2P', monospace;
     }
 
     * {
@@ -41,196 +41,210 @@
     }
 
     body {
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: var(--pixel-font);
+      background-color: var(--ut-bg);
+      color: #ffffff;
+      font-family: var(--ut-font);
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      padding: 10px 10px 60px 10px;
+      padding: 10px 8px 60px 8px;
       overflow-x: hidden;
     }
 
-    /* Pixel Frame Generator */
-    .pixel-box {
-      background: var(--window-bg);
-      border: 4px solid var(--border-outer);
-      box-shadow:
-        inset -4px -4px 0px 0px var(--border-shadow),
-        inset 4px 4px 0px 0px var(--border-light),
-        0 4px 0 0 rgba(0,0,0,0.6);
-      position: relative;
+    /* Scanline effect */
+    body::before {
+      content: " ";
+      display: block;
+      position: fixed;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 4px;
+      z-index: 999;
+      pointer-events: none;
+      opacity: 0.4;
     }
 
-    /* Top Clocks & Status */
-    header { width: 100%; max-width: 400px; margin-bottom: 8px; }
-    .status-hud {
+    /* Header Status HUD */
+    header {
+      width: 100%;
+      max-width: 420px;
+      margin-bottom: 8px;
+    }
+
+    .ut-hud {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border: 3px solid var(--ut-border);
       padding: 8px 10px;
-      font-size: 0.55rem;
-      letter-spacing: -0.5px;
+      font-size: 0.52rem;
+      background: #000;
     }
-    .hud-gold { color: var(--gold); }
-    .hud-pink { color: var(--pink); }
+    .hud-gold { color: var(--ut-yellow); }
+    .hud-red { color: var(--ut-red); }
 
     /* Visual Stage */
     #stage-container {
       width: 100%;
-      max-width: 380px;
-      height: 240px;
-      background: #0f1423;
-      border: 4px solid #000;
-      box-shadow:
-        inset -4px -4px 0px 0px #1e2640,
-        inset 4px 4px 0px 0px #4e5d8a;
+      max-width: 420px;
+      height: 220px;
+      background: #000000;
+      border: 4px solid var(--ut-border);
+      position: relative;
       overflow: hidden;
       cursor: pointer;
-      position: relative;
     }
 
-    /* Undertale-Style Dialogue Box */
+    /* Dialogue Window */
     #dialogue-window {
       width: 100%;
-      max-width: 380px;
+      max-width: 420px;
       margin-top: 8px;
-      padding: 12px;
       background: #000000;
-      border: 4px solid #ffffff;
-      box-shadow: inset 0 0 0 2px #000000, 0 4px 0 0 rgba(0,0,0,0.8);
-      min-height: 110px;
+      border: 4px solid var(--ut-border);
+      padding: 12px;
+      min-height: 125px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
-    .dialogue-speaker {
-      font-size: 0.55rem;
-      color: var(--accent-glow);
+
+    .speaker-tag {
+      font-size: 0.52rem;
+      color: var(--ut-yellow);
       margin-bottom: 6px;
-      letter-spacing: 0.5px;
     }
-    .dialogue-text {
+
+    .typewriter-content {
       font-size: 0.58rem;
       line-height: 1.6;
       color: #ffffff;
-      min-height: 48px;
+      min-height: 52px;
+      word-break: break-word;
     }
 
-    /* 2-Way Branching Choice Buttons */
-    .choice-container {
+    /* 2-Way Choice Buttons */
+    .choices-row {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       margin-top: 8px;
     }
+
     .choice-btn {
       flex: 1;
-      background: #141928;
-      border: 2px solid #ffffff;
-      color: var(--gold);
-      font-family: var(--pixel-font);
+      background: #000000;
+      border: 2px solid var(--ut-border);
+      color: #ffffff;
+      font-family: var(--ut-font);
       font-size: 0.48rem;
-      padding: 6px 4px;
+      padding: 8px 4px;
       cursor: pointer;
-      text-align: center;
+      text-align: left;
       line-height: 1.3;
-      transition: background 0.1s;
     }
-    .choice-btn:active {
-      background: var(--accent-green);
-      color: #000000;
-      border-color: var(--accent-glow);
+    .choice-btn:hover, .choice-btn:active {
+      color: var(--ut-yellow);
+      border-color: var(--ut-yellow);
+    }
+    .choice-btn::before {
+      content: "❤️ ";
+      color: var(--ut-red);
     }
 
-    /* Dashboard & Category Controls */
+    /* Undertale Action Buttons (TALK, DIAGRAM, SCAN, STATS) */
+    .ut-menu-row {
+      width: 100%;
+      max-width: 420px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .ut-btn {
+      background: #000000;
+      border: 3px solid var(--ut-orange);
+      color: var(--ut-orange);
+      font-family: var(--ut-font);
+      font-size: 0.62rem;
+      padding: 12px 6px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+    }
+    .ut-btn:hover, .ut-btn:active {
+      background: var(--ut-orange);
+      color: #000000;
+    }
+
+    /* Navigation & Curriculum Dashboard */
     .dashboard {
       width: 100%;
-      max-width: 380px;
-      margin-top: 10px;
+      max-width: 420px;
+      margin-top: 8px;
+      border: 4px solid var(--ut-border);
+      background: #000000;
       padding: 10px;
     }
+
     .nav-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 8px;
     }
+
     .nav-arrow {
-      background: #1e2640;
-      border: 2px solid #000;
-      box-shadow: inset -2px -2px 0 0 #0f1423, inset 2px 2px 0 0 #55628a;
-      color: var(--accent-glow);
-      font-family: var(--pixel-font);
+      background: #000000;
+      border: 2px solid var(--ut-border);
+      color: var(--ut-yellow);
+      font-family: var(--ut-font);
       font-size: 0.65rem;
       padding: 6px 10px;
       cursor: pointer;
     }
-    .nav-arrow:active { transform: translateY(2px); }
-    .dimension-title {
-      font-size: 0.52rem;
-      color: var(--gold);
-      text-align: center;
-      line-height: 1.4;
-      max-width: 250px;
+    .nav-arrow:active {
+      background: var(--ut-yellow);
+      color: #000;
     }
 
-    /* Progress & Subcategory Checklist */
-    .metric-row { display: flex; justify-content: space-between; font-size: 0.52rem; margin-bottom: 4px; }
-    .bar-bg { width: 100%; height: 8px; background: #000000; border: 2px solid #3a4466; margin-bottom: 8px; }
-    .bar-fill { height: 100%; background: var(--accent-green); width: 0%; transition: width 0.2s; }
+    .dimension-title {
+      font-size: 0.52rem;
+      color: var(--ut-yellow);
+      text-align: center;
+      line-height: 1.4;
+      max-width: 270px;
+    }
 
-    .checklist { margin-bottom: 10px; }
+    /* Subcategories Checklist */
+    .checklist { margin: 8px 0; }
     .check-item {
       display: flex;
       align-items: center;
       font-size: 0.5rem;
       padding: 5px;
       margin-bottom: 4px;
-      background: #090c16;
-      border: 1px solid #1c2338;
-      color: var(--text-dim);
+      background: #0d0d0d;
+      border: 1px solid #333333;
+      color: #888888;
       line-height: 1.4;
     }
-    .check-item.done { color: var(--accent-glow); border-color: var(--accent-green); }
-    .check-item::before { content: '[ ] '; margin-right: 6px; }
-    .check-item.done::before { content: '[X] '; }
-
-    /* Action Buttons */
-    .pixel-btn-action {
-      width: 100%;
-      background: var(--accent-green);
-      color: #000000;
-      border: 3px solid #000000;
-      box-shadow: inset -3px -3px 0 0 #006241, inset 3px 3px 0 0 var(--accent-glow);
-      font-family: var(--pixel-font);
-      font-size: 0.62rem;
-      font-weight: bold;
-      padding: 12px;
-      cursor: pointer;
-      margin-bottom: 8px;
+    .check-item.done {
+      color: var(--ut-green);
+      border-color: var(--ut-green);
     }
-    .pixel-btn-action:active { transform: translateY(2px); }
+    .check-item::before { content: "[ ] "; margin-right: 6px; }
+    .check-item.done::before { content: "[*] "; color: var(--ut-yellow); }
 
-    .pixel-btn-secondary {
-      width: 100%;
-      background: #1e2640;
-      color: var(--gold);
-      border: 2px solid #000000;
-      box-shadow: inset -2px -2px 0 0 #0f1423, inset 2px 2px 0 0 #55628a;
-      font-family: var(--pixel-font);
-      font-size: 0.5rem;
-      padding: 8px;
-      cursor: pointer;
-      margin-bottom: 6px;
-    }
-
-    /* Modal Overlay */
+    /* Modals */
     .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.9);
+      background: rgba(0, 0, 0, 0.95);
       z-index: 9999;
       flex-direction: column;
       justify-content: center;
@@ -239,20 +253,20 @@
     }
     .modal-box {
       width: 100%;
-      max-width: 360px;
+      max-width: 380px;
       background: #000000;
-      border: 4px solid #ffffff;
+      border: 4px solid var(--ut-border);
       padding: 14px;
       max-height: 85vh;
       overflow-y: auto;
     }
-    .flowchart-ascii {
-      background: #0c101d;
-      color: var(--accent-glow);
-      font-family: var(--pixel-font);
+    .ascii-tree {
+      background: #0d0d0d;
+      color: var(--ut-green);
+      font-family: var(--ut-font);
       font-size: 0.44rem;
       padding: 10px;
-      border: 2px solid #1c2338;
+      border: 2px solid #333;
       white-space: pre;
       line-height: 1.5;
       margin: 10px 0;
@@ -262,48 +276,45 @@
 </head>
 <body>
 
-  <!-- Top Clocks & Deadline HUD -->
+  <!-- 1. RETRO HUD CLOCKS & DEADLINE -->
   <header>
-    <div class="pixel-box status-hud">
-      <div>DATE <span id="hud-date" class="hud-gold">--.--.----</span></div>
-      <div>TIME <span id="hud-time" class="hud-gold">00:00:00</span></div>
-      <div>DEADLINE <span id="hud-deadline" class="hud-pink">--d --h</span></div>
+    <div class="ut-hud">
+      <div>LV 1 <span class="hud-gold">EXP <span id="exp-count">0</span>/5</span></div>
+      <div>TIME <span id="clock-display" class="hud-gold">00:00:00</span></div>
+      <div>DEADLINE <span id="deadline-display" class="hud-red">--d --h</span></div>
     </div>
   </header>
 
-  <!-- Interactive Pixel Visual Stage -->
+  <!-- 2. VISUAL STAGE & REACTIVE FROGGY PORTRAIT -->
   <div id="stage-container" onclick="pokeFrog()">
     <svg id="stage-svg" viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%;">
-      <!-- Retro Room Floor & Shading -->
-      <rect x="0" y="105" width="200" height="25" fill="#090c17" />
-      <rect x="0" y="103" width="200" height="2" fill="#182035" />
+      <!-- Retro Floor Line -->
+      <line x1="0" y1="108" x2="200" y2="108" stroke="#ffffff" stroke-width="2" />
 
-      <!-- Bookshelf Library (Books 1–400) -->
-      <rect x="8" y="58" width="26" height="45" fill="#2b1a11" stroke="#000" stroke-width="1" />
-      <rect x="10" y="62" width="22" height="5" fill="#e54d42" />
-      <rect x="10" y="69" width="22" height="5" fill="#00b894" />
-      <rect x="10" y="76" width="22" height="5" fill="#f4b251" />
-      <rect x="10" y="83" width="22" height="5" fill="#fd79a8" />
-      <rect x="10" y="90" width="22" height="5" fill="#a29bfe" />
+      <!-- Bookshelf Stack (Books 1–400) -->
+      <rect x="8" y="60" width="26" height="47" fill="#000000" stroke="#ffffff" stroke-width="1.5" />
+      <line x1="10" y1="70" x2="32" y2="70" stroke="#ff0000" stroke-width="3" />
+      <line x1="10" y1="78" x2="32" y2="78" stroke="#00ff00" stroke-width="3" />
+      <line x1="10" y1="86" x2="32" y2="86" stroke="#ffff00" stroke-width="3" />
+      <line x1="10" y1="94" x2="32" y2="94" stroke="#00ffff" stroke-width="3" />
+      <line x1="10" y1="102" x2="32" y2="102" stroke="#ff00ff" stroke-width="3" />
 
-      <!-- Unlocked Room Decor -->
+      <!-- Quest Desk & Lamp -->
       <g id="quest-desk" style="display: none;">
-        <rect x="140" y="84" width="52" height="18" fill="#3a2214" stroke="#000" stroke-width="1" />
-        <rect x="144" y="102" width="4" height="15" fill="#22140b" />
-        <rect x="184" y="102" width="4" height="15" fill="#22140b" />
-        <rect x="150" y="77" width="8" height="7" fill="#ffffff" stroke="#000" stroke-width="1" />
+        <rect x="140" y="86" width="50" height="21" fill="#000000" stroke="#ffffff" stroke-width="1.5" />
+        <rect x="148" y="78" width="8" height="8" fill="#ffffff" stroke="#000000" stroke-width="1" />
       </g>
       <g id="quest-lamp" style="display: none;">
-        <rect x="175" y="58" width="14" height="9" fill="#f4b251" stroke="#000" stroke-width="1" />
-        <rect x="180" y="67" width="3" height="17" fill="#718096" />
+        <line x1="175" y1="86" x2="175" y2="65" stroke="#ffffff" stroke-width="2" />
+        <polygon points="170,65 180,65 185,55 165,55" fill="#ffff00" stroke="#ffffff" stroke-width="1" />
       </g>
 
-      <!-- Autonomous Fly & Frog Tongue -->
+      <!-- Autonomous Fly & Tongue -->
       <g id="fly-target" style="display: none;">
         <circle cx="45" cy="50" r="2.5" fill="#ffffff" />
-        <path d="M43,48 Q45,46 47,48" stroke="#a0aec0" stroke-width="1" fill="none" />
+        <line x1="42" y1="48" x2="48" y2="48" stroke="#aaaaaa" stroke-width="1" />
       </g>
-      <line id="frog-tongue" x1="100" y1="78" x2="45" y2="50" stroke="#ff7675" stroke-width="3" stroke-linecap="round" style="display: none;" />
+      <line id="frog-tongue" x1="100" y1="80" x2="45" y2="50" stroke="#ff5555" stroke-width="3" stroke-linecap="round" style="display: none;" />
 
       <!-- THE FROG SPRITE -->
       <g id="pet-character" transform="translate(85, 52)">
@@ -322,32 +333,49 @@
         <rect x="5" y="7" width="20" height="18" fill="#ff7675" stroke="#000000" stroke-width="1" rx="2" />
         <rect x="7" y="9" width="16" height="14" fill="#fed39f" />
 
-        <!-- Eyes -->
-        <rect id="frog-eye-l" x="9" y="12" width="3" height="5" fill="#000000" />
-        <rect id="frog-eye-r" x="18" y="12" width="3" height="5" fill="#000000" />
+        <!-- Facial Expressions (Neutral, Wink, Shock, Analytical) -->
+        <g id="face-neutral">
+          <rect id="frog-eye-l" x="9" y="12" width="3" height="5" fill="#000000" />
+          <rect id="frog-eye-r" x="18" y="12" width="3" height="5" fill="#000000" />
+          <rect id="frog-mouth" x="13" y="18" width="4" height="2" fill="#000000" />
+        </g>
+        <g id="face-wink" style="display: none;">
+          <rect x="9" y="14" width="4" height="2" fill="#000000" />
+          <rect x="18" y="12" width="3" height="5" fill="#000000" />
+          <polygon points="13,18 17,18 15,20" fill="#000000" />
+        </g>
+        <g id="face-shock" style="display: none;">
+          <rect x="8" y="11" width="4" height="6" fill="#000000" />
+          <rect x="18" y="11" width="4" height="6" fill="#000000" />
+          <circle cx="15" cy="19" r="2.5" fill="#000000" />
+        </g>
+        <g id="face-think" style="display: none;">
+          <rect x="9" y="12" width="3" height="3" fill="#000000" />
+          <rect x="18" y="13" width="3" height="4" fill="#000000" />
+          <line x1="12" y1="19" x2="17" y2="17" stroke="#000000" stroke-width="1.5" />
+        </g>
 
-        <!-- Mouth & Tongue Blep -->
-        <rect id="frog-mouth" x="13" y="18" width="4" height="2" fill="#000000" />
+        <!-- Tongue Blep -->
         <rect id="frog-blep" x="14" y="20" width="3" height="3" fill="#ff7675" rx="1" style="display: none;" />
 
         <!-- Cheeks -->
         <rect x="6" y="17" width="2" height="3" fill="#fd79a8" />
         <rect x="22" y="17" width="2" height="3" fill="#fd79a8" />
 
-        <!-- Yellow Belly & Pink Heart -->
+        <!-- Yellow Belly & Pink Heart (Interactive Undertale SOUL) -->
         <rect x="6" y="25" width="18" height="14" fill="#fef08a" stroke="#000000" stroke-width="1" rx="2" />
-        <path id="belly-heart" d="M12,28 A2,2 0 0,1 15,30 A2,2 0 0,1 18,28 Q18,32 15,34 Q12,32 12,28 Z" fill="#e84393" />
+        <path id="belly-soul" d="M12,28 A2,2 0 0,1 15,30 A2,2 0 0,1 18,28 Q18,32 15,34 Q12,32 12,28 Z" fill="#e84393" />
 
-        <!-- Hands & Feet -->
-        <rect id="frog-hand-l" x="-2" y="24" width="4" height="8" fill="#00b894" stroke="#000" stroke-width="1" rx="2" />
-        <rect id="frog-hand-r" x="28" y="24" width="4" height="8" fill="#00d2a0" stroke="#000" stroke-width="1" rx="2" />
-        <rect x="3" y="41" width="8" height="4" fill="#00b894" stroke="#000" stroke-width="1" rx="2" />
-        <rect x="19" y="41" width="8" height="4" fill="#00d2a0" stroke="#000" stroke-width="1" rx="2" />
+        <!-- Feet & Hands -->
+        <rect x="-2" y="24" width="4" height="8" fill="#00b894" rx="2" />
+        <rect x="28" y="24" width="4" height="8" fill="#00d2a0" rx="2" />
+        <rect x="3" y="41" width="8" height="4" fill="#00b894" rx="2" />
+        <rect x="19" y="41" width="8" height="4" fill="#00d2a0" rx="2" />
 
         <!-- Props -->
         <g id="prop-lens" style="display: none;">
-          <circle cx="28" cy="20" r="5" stroke="#f4b251" stroke-width="1.5" fill="none" />
-          <line x1="28" y1="25" x2="31" y2="30" stroke="#718096" stroke-width="1.5" />
+          <circle cx="28" cy="20" r="5" stroke="#ffff00" stroke-width="1.5" fill="none" />
+          <line x1="28" y1="25" x2="31" y2="30" stroke="#ffffff" stroke-width="1.5" />
         </g>
         <g id="prop-book" style="display: none;">
           <rect x="18" y="19" width="12" height="10" fill="#f4b251" stroke="#000" stroke-width="1" />
@@ -357,123 +385,163 @@
 
       <!-- Cozy Bed (Sleeping State) -->
       <g id="pet-bed" style="display: none;">
-        <rect x="75" y="80" width="55" height="22" fill="#3a2214" stroke="#000" stroke-width="1" />
-        <rect x="78" y="77" width="14" height="9" fill="#e2e8f0" />
-        <rect x="88" y="78" width="16" height="12" fill="#00b894" stroke="#000" stroke-width="1" />
-        <rect x="91" y="82" width="3" height="1" fill="#000" />
-        <rect x="97" y="82" width="3" height="1" fill="#000" />
-        <rect x="92" y="80" width="38" height="22" fill="#fd79a8" stroke="#000" stroke-width="1" />
-        <text x="122" y="70" fill="#cbd5e1" font-family="'Press Start 2P', monospace" font-size="8">Zzz</text>
+        <rect x="75" y="82" width="55" height="24" fill="#000000" stroke="#ffffff" stroke-width="2" />
+        <rect x="78" y="79" width="14" height="9" fill="#ffffff" />
+        <rect x="88" y="80" width="16" height="12" fill="#00b894" />
+        <line x1="90" y1="84" x2="94" y2="84" stroke="#000" stroke-width="1.5" />
+        <line x1="96" y1="84" x2="100" y2="84" stroke="#000" stroke-width="1.5" />
+        <rect x="92" y="82" width="38" height="24" fill="#ff7675" stroke="#ffffff" stroke-width="1" />
+        <text x="122" y="70" fill="#ffff00" font-family="'Press Start 2P', monospace" font-size="8">Zzz</text>
       </g>
     </svg>
   </div>
 
-  <!-- Undertale 2-Way Branching Dialogue Box -->
+  <!-- 3. UNDERTALE 2-WAY BRANCHING DIALOGUE ENGINE -->
   <div id="dialogue-window">
-    <div class="dialogue-speaker">* FROGGY (VERITY CORE)</div>
-    <div id="typewriter-text" class="dialogue-text">...</div>
-    <div id="choice-container" class="choice-container">
-      <button id="choice-btn-1" class="choice-btn" onclick="handlePlayerChoice(1)">Option A</button>
-      <button id="choice-btn-2" class="choice-btn" onclick="handlePlayerChoice(2)">Option B</button>
+    <div class="speaker-tag">* FROGGY (VERITY CORE)</div>
+    <div id="dialogue-text-target" class="typewriter-content">* ...</div>
+    <div id="choices-box" class="choices-row" style="display: none;">
+      <button id="choice-1" class="choice-btn" onclick="chooseResponse(1)">Option A</button>
+      <button id="choice-2" class="choice-btn" onclick="chooseResponse(2)">Option B</button>
     </div>
   </div>
 
-  <!-- Dashboard Controls -->
-  <div class="pixel-box dashboard">
-    <!-- Dimension Navigation (< >) -->
+  <!-- 4. UNDERTALE RETRO MENU BUTTONS -->
+  <div class="ut-menu-row">
+    <button class="ut-btn" onclick="playBeep(440); triggerRandomDialogue()">❤️ TALK</button>
+    <button class="ut-btn" onclick="playBeep(520); openDiagramFramework()">📐 DIAGRAM</button>
+    <label for="camera-input" class="ut-btn" style="cursor: pointer;">
+      📸 SCAN
+    </label>
+    <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;">
+    <button class="ut-btn" onclick="playBeep(600); openStatsModal()">🏆 STATS</button>
+  </div>
+
+  <!-- 5. 30-DIMENSION ACADEMIC DASHBOARD -->
+  <div class="dashboard">
     <div class="nav-bar">
       <button class="nav-arrow" onclick="navTopic(-1)">&lt;</button>
-      <div id="nav-dim-title" class="dimension-title">1. VALUES (BOOKS 1-13)</div>
+      <div id="nav-topic-title" class="dimension-title">1. VALUES (BOOKS 1–13)</div>
       <button class="nav-arrow" onclick="navTopic(1)">&gt;</button>
     </div>
 
-    <!-- Subcategory Progress Tracker -->
-    <div class="metric-row">
-      <span style="color:var(--text-dim);">WEEK PROGRESS:</span>
-      <span id="score-counter" style="color:var(--accent-glow);">0 / 5 VERIFIED</span>
-    </div>
-    <div class="bar-bg">
-      <div id="score-fill" class="bar-fill"></div>
-    </div>
-
-    <!-- 5 Subcategories Checklist -->
     <div class="checklist" id="subcat-list"></div>
-
-    <!-- Flowchart Example Framework Button -->
-    <button class="pixel-btn-secondary" onclick="openDiagramFrameworkModal()">
-      📐 SUB-CATEGORY DIAGRAM FRAMEWORK EXAMPLE
-    </button>
-
-    <!-- Camera Trigger -->
-    <label for="camera-input" class="pixel-btn-action" style="display:block; text-align:center;">
-      📸 SCAN PAPER FLOWCHART
-    </label>
-    <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;">
-
-    <button class="pixel-btn-secondary" onclick="openSkillModal()">
-      🏆 VIEW MASTERED SUPERPOWERS
-    </button>
   </div>
 
-  <!-- Diagram Framework Modal -->
+  <!-- DIAGRAM FRAMEWORK MODAL -->
   <div id="diagram-modal" class="modal-overlay">
     <div class="modal-box">
-      <div style="font-size:0.6rem; color:var(--gold); margin-bottom:8px;">* FLOWCHART FRAMEWORK TEMPLATE</div>
-      <p style="font-size:0.48rem; color:#a0aec0; line-height:1.5;">
-        Draw this exact symbolic branch structure on real paper for camera verification:
+      <div style="font-size:0.55rem; color:var(--ut-yellow); margin-bottom:8px;">* FLOWCHART FRAMEWORK TREE</div>
+      <p style="font-size:0.46rem; color:#aaa; line-height:1.5;">
+        Draw this symbolic logic tree on real paper for camera scanning:
       </p>
-      <div id="modal-diagram-ascii" class="flowchart-ascii"></div>
-      <button class="pixel-btn-action" style="padding:8px; font-size:0.5rem;" onclick="closeModal('diagram-modal')">
-        [X] GOT IT
+      <div id="diagram-tree-text" class="ascii-tree"></div>
+      <button class="ut-btn" style="width:100%; padding:8px; font-size:0.5rem;" onclick="closeModal('diagram-modal')">
+        [ * RESUME ]
       </button>
     </div>
   </div>
 
-  <!-- Superpower Modal -->
-  <div id="skills-modal" class="modal-overlay">
+  <!-- STATS & BADGES MODAL -->
+  <div id="stats-modal" class="modal-overlay">
     <div class="modal-box">
-      <div style="font-size:0.6rem; color:var(--gold); margin-bottom:8px;">* MASTERED COMMUNICATION POWERS</div>
-      <div id="skills-display" style="font-size:0.48rem; color:var(--accent-glow); line-height:1.8; margin:10px 0;"></div>
-      <button class="pixel-btn-action" style="padding:8px; font-size:0.5rem;" onclick="closeModal('skills-modal')">
-        [X] CLOSE
+      <div style="font-size:0.55rem; color:var(--ut-yellow); margin-bottom:8px;">* PSYCHOLOGICAL PROFILE</div>
+      <div id="stats-content" style="font-size:0.48rem; color:#fff; line-height:1.8; margin:10px 0;"></div>
+      <button class="ut-btn" style="width:100%; padding:8px; font-size:0.5rem;" onclick="closeModal('stats-modal')">
+        [ * RETURN ]
       </button>
     </div>
   </div>
 
   <script>
     /* =========================================================================
-       1. SYNCHRONIZED CLOCKS & 7-MONTH COUNTDOWN (~50 lines)
+       1. SYNTHESIZED UNDERTALE AUDIO ENGINE (Web Audio API)
        ========================================================================= */
-    function updateHUDClocks() {
-      const now = new Date();
-      const d = String(now.getDate()).padStart(2, '0');
-      const m = String(now.getMonth() + 1).padStart(2, '0');
-      const y = now.getFullYear();
-      document.getElementById('hud-date').innerText = `${d}.${m}.${y}`;
+    let audioCtx = null;
 
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return audioCtx;
+    }
+
+    // Iconic retro speech blip sound
+    function playSpeechBlip() {
+      try {
+        const ctx = getAudioContext();
+        if (ctx.state === 'suspended') ctx.resume();
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        // 8-bit square wave with slight frequency modulation
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(140 + Math.random() * 20, ctx.currentTime);
+
+        gain.gain.setValueAtTime(0.04, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start();
+        osc.stop(ctx.currentTime + 0.04);
+      } catch (e) {}
+    }
+
+    // Menu button beep
+    function playBeep(freq = 440) {
+      try {
+        const ctx = getAudioContext();
+        if (ctx.state === 'suspended') ctx.resume();
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+
+        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start();
+        osc.stop(ctx.currentTime + 0.08);
+      } catch (e) {}
+    }
+
+    /* =========================================================================
+       2. REAL-TIME CLOCKS & SUNDAY DEADLINE SYNCHRONIZATION
+       ========================================================================= */
+    function syncClocks() {
+      const now = new Date();
       const hh = String(now.getHours()).padStart(2, '0');
       const mm = String(now.getMinutes()).padStart(2, '0');
       const ss = String(now.getSeconds()).padStart(2, '0');
-      document.getElementById('hud-time').innerText = `${hh}:${mm}:${ss}`;
+      document.getElementById('clock-display').innerText = `${hh}:${mm}:${ss}`;
 
+      // Calculate Sunday Midnight
       const day = now.getDay();
-      const daysUntilSunday = (7 - day) % 7;
-      const sundayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilSunday, 23, 59, 59);
-      const diff = sundayMidnight - now;
+      const daysLeft = (7 - day) % 7;
+      const sunday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysLeft, 23, 59, 59);
+      const diff = sunday - now;
 
       if (diff > 0) {
-        const leftDays = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const leftHours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        document.getElementById('hud-deadline').innerText = `${leftDays}d ${leftHours}h`;
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        document.getElementById('deadline-display').innerText = `${d}d ${h}h`;
       } else {
-        document.getElementById('hud-deadline').innerText = `EXPIRED!`;
+        document.getElementById('deadline-display').innerText = `EXPIRED!`;
       }
     }
-    setInterval(updateHUDClocks, 1000);
-    updateHUDClocks();
+    setInterval(syncClocks, 1000);
+    syncClocks();
 
     /* =========================================================================
-       2. 30 DIMENSIONS MASTER CORPUS WITH FLOWCHART DIAGRAMS
+       3. 30 DIMENSIONS MASTER CORPUS WITH FLOWCHART TREES
        ========================================================================= */
     const TOPIC_NAMES = [
       "Values", "Roles", "Traits", "Framing", "States", "Conversation Loops",
@@ -504,160 +572,186 @@
          │
          ▼
 [PRIMARY STRUCTURAL METRIC?]
-    ├──► (MATCH) ──► EXECUTE PROTOCOL
-    └──► (DRIFT) ──► RE-ANCHOR PARAMETER`
+    ├──► (MATCH) ──► EXECUTE CATALYST
+    └──► (DRIFT) ──► ENGAGE CIRCUIT-BREAKER`
     }));
 
     /* =========================================================================
-       3. UNDERTALE-STYLE 2-WAY BRANCHING TYPEWRITER DIALOGUE ENGINE
+       4. UNDERTALE BRANCHING TYPEWRITER DIALOGUE ENGINE
        ========================================================================= */
-    const VERITY_CONVERSATIONS = [
+    const CONVERSATIONS = [
       {
-        text: "* Oh. You're observing me again. Did you know 93% of human conflict is just people failing to state their non-negotiables?",
+        face: "neutral",
+        text: "* You're back. Did you know 93% of human conflict is people refusing to state their primary metric?",
         c1: "Are you calling me predictable?",
         r1: "* Not predictable. Statistically regular! That's why we get along so well.",
         c2: "Teach me how to fix it.",
-        r2: "* Easy: next time someone complains, ask for their exact data baseline. Watch the drama evaporate."
+        r2: "* Easy: Next time someone complains, ask for their exact data baseline. Watch the drama evaporate."
       },
       {
-        text: "* I've been processing books 1 through 400 while you were away. My cellular integrity is remarkably intact today.",
+        face: "wink",
+        text: "* I processed books 1 through 400 while you were idle. My cellular cohesion is remarkably intact.",
         c1: "Glad you haven't exploded.",
         r1: "* Me too! Exploding into 100 pixels was really not on my Tuesday itinerary.",
         c2: "What did you learn?",
-        r2: "* Rule #1: Humans fight harder to avoid losing 100 bucks than to earn 100 bucks. Loss aversion rules the world."
+        r2: "* Rule #1: Humans fight harder to avoid losing 100 bucks than to earn 100 bucks. Loss aversion rules all."
       },
       {
-        text: "* Look at this cozy room. You gave me a desk, a lamp, and a yellow belly heart. What's the trade-off?",
-        c1: "No trade-off, you're my buddy.",
-        r1: "* Buddy? That's an interesting neurochemical bond. I suppose I accept this collaboration.",
-        c2: "You have to help me study.",
-        r2: "* A fair transaction! Let's examine this week's flowchart framework."
-      },
-      {
-        text: "* Casual question: Why do humans say 'It's fine' when it is, mathematically speaking, completely NOT fine?",
+        face: "think",
+        text: "* Casual query: Why do humans say 'It's fine' when it is, mathematically speaking, completely NOT fine?",
         c1: "Fear of confrontation.",
         r1: "* Exactly! That's why we study Confrontation Defusals in dimension 24. No more fake 'fine'.",
         c2: "Just being polite.",
-        r2: "* Polite ambiguity leads to 40% memory lag and system chaos. Be clear, not polite."
+        r2: "* Polite ambiguity causes 40% memory lag and system chaos. Be clear, not polite."
+      },
+      {
+        face: "shock",
+        text: "* Look at this room. You gave me a desk, a lamp, and an 8-bit SOUL. What is the catch here?",
+        c1: "No catch, you're my buddy.",
+        r1: "* Buddy? That's an interesting neurochemical bond. I suppose I accept this collaboration.",
+        c2: "You have to help me study.",
+        r2: "* A fair transaction! Let's examine this week's flowchart framework."
       }
     ];
 
     let currentConvoIdx = 0;
     let isTyping = false;
-    let typewriterTimeout = null;
+    let typeTimer = null;
 
-    function startTypewriter(fullText, onDone) {
-      const container = document.getElementById("typewriter-text");
-      container.innerHTML = "";
-      clearTimeout(typewriterTimeout);
+    function setFrogFace(faceType) {
+      document.getElementById('face-neutral').style.display = 'none';
+      document.getElementById('face-wink').style.display = 'none';
+      document.getElementById('face-shock').style.display = 'none';
+      document.getElementById('face-think').style.display = 'none';
+
+      if (faceType === 'wink') document.getElementById('face-wink').style.display = 'block';
+      else if (faceType === 'shock') document.getElementById('face-shock').style.display = 'block';
+      else if (faceType === 'think') document.getElementById('face-think').style.display = 'block';
+      else document.getElementById('face-neutral').style.display = 'block';
+    }
+
+    function typeWriterText(text, callback) {
+      const target = document.getElementById("dialogue-text-target");
+      target.innerHTML = "";
+      clearTimeout(typeTimer);
       isTyping = true;
       let i = 0;
 
-      function typeChar() {
-        if (i < fullText.length) {
-          container.innerHTML += fullText.charAt(i);
+      function step() {
+        if (i < text.length) {
+          target.innerHTML += text.charAt(i);
+          // Play retro speech sound on alphanumeric characters
+          if (/[a-zA-Z0-9]/.test(text.charAt(i))) {
+            playSpeechBlip();
+          }
           i++;
-          typewriterTimeout = setTimeout(typeChar, 22);
+          typeTimer = setTimeout(step, 24);
         } else {
           isTyping = false;
-          if (onDone) onDone();
+          if (callback) callback();
         }
       }
-      typeChar();
+      step();
     }
 
-    function triggerConvo(index) {
-      currentConvoIdx = index % VERITY_CONVERSATIONS.length;
-      const convo = VERITY_CONVERSATIONS[currentConvoIdx];
-      const choiceBox = document.getElementById("choice-container");
-      choiceBox.style.display = "none";
+    function triggerConvo(idx) {
+      currentConvoIdx = idx % CONVERSATIONS.length;
+      const convo = CONVERSATIONS[currentConvoIdx];
+      const choicesBox = document.getElementById("choices-box");
+      choicesBox.style.display = "none";
 
-      startTypewriter(convo.text, () => {
-        document.getElementById("choice-btn-1").innerText = convo.c1;
-        document.getElementById("choice-btn-2").innerText = convo.c2;
-        choiceBox.style.display = "flex";
+      setFrogFace(convo.face);
+
+      typeWriterText(convo.text, () => {
+        document.getElementById("choice-1").innerText = convo.c1;
+        document.getElementById("choice-2").innerText = convo.c2;
+        choicesBox.style.display = "flex";
       });
     }
 
-    function handlePlayerChoice(choiceNum) {
-      const convo = VERITY_CONVERSATIONS[currentConvoIdx];
-      const reply = (choiceNum === 1) ? convo.r1 : convo.r2;
-      document.getElementById("choice-container").style.display = "none";
-      startTypewriter(reply);
+    function chooseResponse(opt) {
+      playBeep(650);
+      const convo = CONVERSATIONS[currentConvoIdx];
+      const reply = (opt === 1) ? convo.r1 : convo.r2;
+      document.getElementById("choices-box").style.display = "none";
+      setFrogFace(opt === 1 ? 'wink' : 'think');
+      typeWriterText(reply);
     }
 
-    // Auto-speaks every 60 seconds
+    function triggerRandomDialogue() {
+      triggerConvo(Math.floor(Math.random() * CONVERSATIONS.length));
+    }
+
+    // Autonomous conversation prompt every 60 seconds
     setInterval(() => {
       if (!STATE.isSleeping) {
-        triggerConvo(Math.floor(Math.random() * VERITY_CONVERSATIONS.length));
+        triggerRandomDialogue();
       }
     }, 60000);
 
     /* =========================================================================
-       4. AUTONOMOUS ANIMATIONS LOOP (Continuous Idle + 5-Minute Special)
+       5. AUTONOMOUS ANIMATIONS & SPECIAL BEHAVIORS
        ========================================================================= */
-    let animTick = 0;
+    let animFrame = 0;
     const petChar = document.getElementById("pet-character");
-    const eyeL = document.getElementById("frog-eye-l");
-    const eyeR = document.getElementById("frog-eye-r");
-    const heart = document.getElementById("belly-heart");
+    const soul = document.getElementById("belly-soul");
 
-    function renderAnimation() {
-      animTick++;
+    function mainAnimationLoop() {
+      animFrame++;
       if (!STATE.isSleeping) {
-        const bounce = Math.sin(animTick * 0.1) * 2;
+        const bounce = Math.sin(animFrame * 0.1) * 2;
         petChar.setAttribute("transform", `translate(85, ${52 + bounce})`);
 
-        if (animTick % 75 === 0) {
-          eyeL.setAttribute("height", "1"); eyeR.setAttribute("height", "1");
-          setTimeout(() => { eyeL.setAttribute("height", "5"); eyeR.setAttribute("height", "5"); }, 130);
-        }
-
-        const scale = 1 + Math.sin(animTick * 0.15) * 0.08;
-        heart.setAttribute("transform", `scale(${scale}) translate(${15 - 15*scale}, ${30 - 30*scale})`);
+        // Soul rhythmic pulse
+        const scale = 1 + Math.sin(animFrame * 0.16) * 0.08;
+        soul.setAttribute("transform", `scale(${scale}) translate(${15 - 15*scale}, ${30 - 30*scale})`);
       }
-      requestAnimationFrame(renderAnimation);
+      requestAnimationFrame(mainAnimationLoop);
     }
-    requestAnimationFrame(renderAnimation);
+    requestAnimationFrame(mainAnimationLoop);
 
-    // Special micro-behaviors triggering every 5 minutes (or on tap)
-    function executeSpecialAnimation() {
+    // Special micro-behaviors triggering every 5 minutes (or on poke)
+    function runSpecialBehavior() {
       const fly = document.getElementById("fly-target");
       const tongue = document.getElementById("frog-tongue");
       const blep = document.getElementById("frog-blep");
       const lens = document.getElementById("prop-lens");
 
-      const r = Math.random();
-      if (r < 0.35) {
-        // Fly Catch
+      const rand = Math.random();
+      if (rand < 0.35) {
+        // Fly snatch
         fly.style.display = "block";
         setTimeout(() => {
           tongue.style.display = "block";
+          playBeep(700);
           setTimeout(() => {
             fly.style.display = "none";
             tongue.style.display = "none";
-            startTypewriter("* SLURP! Fast micro-reaction test passed. My reflexes are optimal.");
+            typeWriterText("* SLURP! Fast micro-reaction test passed. My reflexes are optimal.");
           }, 240);
         }, 700);
-      } else if (r < 0.7) {
-        // Magnifier Inspection
+      } else if (rand < 0.7) {
+        // Magnifier Inspect
         lens.style.display = "block";
-        startTypewriter("* Running diagnostics on your study environment... Parameters acceptable.");
-        setTimeout(() => { lens.style.display = "none"; }, 3000);
+        setFrogFace('think');
+        typeWriterText("* Running diagnostics on your study environment... Parameters acceptable.");
+        setTimeout(() => { lens.style.display = "none"; setFrogFace('neutral'); }, 3000);
       } else {
-        // Tongue Blep
+        // Blep
         blep.style.display = "block";
+        playBeep(500);
         setTimeout(() => { blep.style.display = "none"; }, 1600);
       }
     }
-    setInterval(executeSpecialAnimation, 300000); // 5 minutes
+    setInterval(runSpecialBehavior, 300000); // 5 minutes
 
     function pokeFrog() {
-      executeSpecialAnimation();
+      playBeep(580);
+      runSpecialBehavior();
     }
 
     /* =========================================================================
-       5. STATE, NAVIGATION & UI REFRESH
+       6. STATE, NAVIGATION & UI REFRESH
        ========================================================================= */
     let STATE = {
       dimIdx: 0,
@@ -667,32 +761,32 @@
       isSleeping: false
     };
 
-    function save() {
-      try { localStorage.setItem("frog_rpg_master_save", JSON.stringify(STATE)); } catch(e) {}
+    function saveState() {
+      try { localStorage.setItem("frog_undertale_save", JSON.stringify(STATE)); } catch(e) {}
     }
     try {
-      const s = localStorage.getItem("frog_rpg_master_save");
+      const s = localStorage.getItem("frog_undertale_save");
       if (s) STATE = JSON.parse(s);
     } catch(e) {}
 
     function navTopic(delta) {
+      playBeep(480);
       STATE.dimIdx = Math.max(0, Math.min(CORPUS.length - 1, STATE.dimIdx + delta));
       STATE.isSleeping = false;
-      save();
+      saveState();
       refreshUI();
-      startTypewriter(`* Loaded Dimension ${STATE.dimIdx + 1}. Check the flowchart framework before drawing your paper note.`);
+      typeWriterText(`* Loaded Dimension ${STATE.dimIdx + 1}. Check the flowchart framework before drawing your note.`);
     }
 
     function refreshUI() {
       const cur = CORPUS[STATE.dimIdx];
-      document.getElementById("nav-dim-title").innerText = cur.title;
+      document.getElementById("nav-topic-title").innerText = cur.title;
 
       if (!STATE.checked[cur.id]) STATE.checked[cur.id] = [false, false, false, false, false];
       const checks = STATE.checked[cur.id];
       const done = checks.filter(Boolean).length;
 
-      document.getElementById("score-counter").innerText = `${done} / 5 VERIFIED`;
-      document.getElementById("score-fill").style.width = `${(done / 5) * 100}%`;
+      document.getElementById("exp-count").innerText = done;
 
       const list = document.getElementById("subcat-list");
       list.innerHTML = "";
@@ -716,33 +810,41 @@
     }
 
     /* =========================================================================
-       6. MODALS & FLOWCHART FRAMEWORK
+       7. MODALS & FLOWCHART FRAMEWORK
        ========================================================================= */
-    function openDiagramFrameworkModal() {
+    function openDiagramFramework() {
       const cur = CORPUS[STATE.dimIdx];
-      document.getElementById("modal-diagram-ascii").innerText = cur.diagram;
+      document.getElementById("diagram-tree-text").innerText = cur.diagram;
       document.getElementById("diagram-modal").style.display = "flex";
     }
 
-    function openSkillModal() {
-      const disp = document.getElementById("skills-display");
-      disp.innerHTML = STATE.skills.map(s => `<div>* ${s}</div>`).join("");
-      document.getElementById("skills-modal").style.display = "flex";
+    function openStatsModal() {
+      const content = document.getElementById("stats-content");
+      content.innerHTML = `
+        <div>* LV 1 (Psychological Observer)</div>
+        <div>* AFFECTION: 100/100</div>
+        <div>* DIMENSION: ${STATE.dimIdx + 1} / 30</div>
+        <div style="margin-top:6px; color:var(--ut-yellow);">* UNLOCKED POWERS:</div>
+        ${STATE.skills.map(s => `<div>  - ${s}</div>`).join('')}
+      `;
+      document.getElementById("stats-modal").style.display = "flex";
     }
 
     function closeModal(id) {
+      playBeep(350);
       document.getElementById(id).style.display = "none";
     }
 
     /* =========================================================================
-       7. PRECISION SCANNER (CAMERA OCR)
+       8. PRECISION CAMERA SCANNER (OCR ENGINE)
        ========================================================================= */
     const cameraInput = document.getElementById("camera-input");
     cameraInput.addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (!file) return;
 
-      startTypewriter("* Processing paper image with neural OCR parser...");
+      playBeep(520);
+      typeWriterText("* Processing paper image with neural OCR parser...");
 
       if (!window.Tesseract) {
         const s = document.createElement("script");
@@ -781,21 +883,24 @@
         if (total === 5) {
           STATE.isSleeping = true;
           if (!STATE.skills.includes(cur.skill)) STATE.skills.push(cur.skill);
-          startTypewriter(`* INCREDIBLE! All 5 flowchart nodes verified. Skill unlocked: [${cur.skill}]. Going to bed! 🛌`);
+          setFrogFace('wink');
+          typeWriterText(`* VICTORY! All 5 flowchart nodes verified. Superpower unlocked: [${cur.skill}]. Going to bed! 🛌`);
         } else if (newlyFound > 0) {
-          startTypewriter(`* Recognized ${newlyFound} valid flowchart nodes! Total: ${total}/5 verified.`);
+          setFrogFace('think');
+          typeWriterText(`* Recognized ${newlyFound} valid flowchart nodes! Total: ${total}/5 verified.`);
         } else {
-          startTypewriter("* Scanned paper, but could not detect matching diagram nodes or keywords. Ensure clear handwriting!");
+          setFrogFace('shock');
+          typeWriterText("* Scanned paper, but could not detect matching diagram nodes or keywords. Ensure clear handwriting!");
         }
 
-        save();
+        saveState();
         refreshUI();
       } catch (err) {
-        startTypewriter("* Scan error: Please ensure good lighting and hold the camera steady.");
+        typeWriterText("* Scan error: Please ensure good lighting and hold the camera steady.");
       }
     }
 
-    // Launch Engine
+    // Launch!
     refreshUI();
     triggerConvo(0);
   </script>
