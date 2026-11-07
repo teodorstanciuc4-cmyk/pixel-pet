@@ -99,7 +99,7 @@
     }
 
     .dialogue-text {
-      font-size: 0.53rem;
+      font-size: 0.52rem;
       line-height: 1.6;
       color: var(--ut-white);
       min-height: 50px;
@@ -209,7 +209,7 @@
     .nav-arrow:disabled { color: var(--ut-gray); border-color: var(--ut-gray); }
 
     .track-title {
-      font-size: 0.46rem;
+      font-size: 0.44rem;
       color: var(--ut-yellow);
       text-align: center;
       max-width: 250px;
@@ -218,20 +218,22 @@
 
     .subcat-list { margin-top: 6px; }
     .subcat-item {
-      font-size: 0.44rem;
+      font-size: 0.42rem;
       padding: 6px;
       border: 1px solid #222;
       background: #050505;
       color: #aaa;
       margin-bottom: 4px;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       cursor: pointer;
+      line-height: 1.4;
     }
     .subcat-item:hover { border-color: var(--ut-orange); color: var(--ut-white); }
     .subcat-item.done { color: #00ff66; border-color: #00aa44; }
-    .subcat-item::before { content: "[ ] "; margin-right: 6px; color: var(--ut-gray); }
-    .subcat-item.done::before { content: "[*] "; color: var(--ut-yellow); }
+    .subcat-header-line::before { content: "[ ] "; margin-right: 4px; color: var(--ut-gray); }
+    .subcat-item.done .subcat-header-line::before { content: "[*] "; color: var(--ut-yellow); }
+    .subcat-book-tag { font-size: 0.36rem; color: #ff9900; margin-left: 14px; }
 
     .ut-modal {
       display: none;
@@ -242,16 +244,16 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 12px;
+      padding: 10px;
     }
 
     .ut-modal-box {
       width: 100%;
-      max-width: 420px;
+      max-width: 430px;
       background: #000;
       border: 4px solid var(--ut-white);
-      padding: 12px;
-      max-height: 90vh;
+      padding: 10px;
+      max-height: 92vh;
       overflow-y: auto;
     }
 
@@ -259,7 +261,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 4px;
-      margin: 8px 0;
+      margin: 6px 0;
     }
 
     .subcat-pill-btn {
@@ -267,8 +269,8 @@
       border: 1px solid #444;
       color: #aaa;
       font-family: var(--font-pixel);
-      font-size: 0.4rem;
-      padding: 6px;
+      font-size: 0.38rem;
+      padding: 5px;
       cursor: pointer;
     }
     .subcat-pill-btn.active {
@@ -281,19 +283,35 @@
       background: #050505;
       color: #00ff66;
       font-family: var(--font-pixel);
-      font-size: 0.36rem;
-      padding: 8px;
+      font-size: 0.35rem;
+      padding: 6px;
       border: 2px solid #333;
       white-space: pre;
       line-height: 1.4;
-      margin: 8px 0;
+      margin: 6px 0;
       overflow-x: auto;
     }
+
+    .rules-section {
+      margin-top: 10px;
+      border-top: 2px dashed #444;
+      padding-top: 8px;
+    }
+
+    .rule-card {
+      background: #080808;
+      border: 1px solid #222;
+      padding: 5px;
+      margin-bottom: 5px;
+      font-size: 0.38rem;
+      line-height: 1.4;
+    }
+    .rule-title { color: var(--ut-yellow); margin-bottom: 2px; }
+    .rule-desc { color: #88ffaa; }
   </style>
 </head>
 <body>
 
-  <!-- SINGLE CLEAN WRAPPER -->
   <div class="screen-wrapper">
     <div class="stasis-header">
       <div id="countdown-label">START: 08.11.2026</div>
@@ -358,18 +376,26 @@
     </div>
   </div>
 
-  <!-- FLOWCHART BLUEPRINT MODAL -->
+  <!-- ACT BLUEPRINT & 20 NON-NEGOTIABLE RULES MODAL -->
   <div id="blueprint-modal" class="ut-modal">
     <div class="ut-modal-box">
-      <div style="font-size:0.5rem; color:var(--ut-yellow); margin-bottom:4px;">* SELECT SUBCATEGORY BLUEPRINT</div>
-      <p style="font-size:0.41rem; color:#aaa; line-height:1.4;">
-        Flowchart structure: (Start) -> Inputs -> Decision -> True/False -> (Stop)
+      <div style="font-size:0.48rem; color:var(--ut-yellow); margin-bottom:4px;">* SUBCATEGORY FLOWCHART & RULES</div>
+      <p style="font-size:0.4rem; color:#aaa; line-height:1.4;">
+        Pick a subcategory to inspect its assigned books and verification flowchart:
       </p>
 
       <div class="subcat-selector-bar" id="blueprint-tabs"></div>
       <div id="ascii-mount" class="ascii-blueprint"></div>
 
-      <button class="btn-undertale" style="width:100%; padding:8px;" onclick="closeModal('blueprint-modal')">
+      <!-- 20 NON-NEGOTIABLE RULES REFERENCE -->
+      <div class="rules-section">
+        <div style="font-size:0.46rem; color:var(--ut-orange); margin-bottom:6px;">
+          * 20 NON-NEGOTIABLE COMMUNICATION RULES
+        </div>
+        <div id="rules-mount"></div>
+      </div>
+
+      <button class="btn-undertale" style="width:100%; padding:8px; margin-top:8px;" onclick="closeModal('blueprint-modal')">
         * [ RETURN ]
       </button>
     </div>
@@ -506,7 +532,35 @@
     setInterval(updateCalendarSchedule, 1000);
     updateCalendarSchedule();
 
-    /* 4. TRACKS & CUSTOM FLOWCHARTS */
+    /* =========================================================================
+       4. 20 NON-NEGOTIABLE COMMUNICATION RULES & MEANINGS
+       ========================================================================= */
+    const NON_NEGOTIABLE_RULES = [
+      { id: 1, name: "Emotion Precedes Logic", meaning: "A person in emotional hijack cannot process rational facts. Lower heart rate before arguing data." },
+      { id: 2, name: "Adult-to-Adult State Lock", meaning: "Never reply to Child tantrum or Parent judgment with emotion; answer purely in calm adult inquiry." },
+      { id: 3, name: "The SCARF Status Shield", meaning: "Attacking someone's status triggers visceral threat. Protect their standing before presenting a flaw." },
+      { id: 4, name: "Isolate the Noise Word", meaning: "Ignore subjective insults ('you always'); extract and solve the single operational bottleneck." },
+      { id: 5, name: "Framing Controls the Outcome", meaning: "The person who establishes the frame of reference dictates the acceptable solutions." },
+      { id: 6, name: "Non-Violent Specificity", meaning: "Replace moral judgments with unarguable camera observations and time-bound requests." },
+      { id: 7, name: "Tactical Silence Pressure", meaning: "Pausing 3 to 4 seconds after an outburst transfers the psychological burden back to the speaker." },
+      { id: 8, name: "Dynamic Labeling Defusal", meaning: "Labeling their emotion ('It seems like you feel unheard') immediately neutralizes amygdala flare-ups." },
+      { id: 9, name: "Autonomy Preservation", meaning: "Humans instinctively resist commands. Offer two constrained choices to preserve their agency." },
+      { id: 10, name: "Identity Insulation", meaning: "Critique the output or system, never the individual's inherent identity, talent, or worth." },
+      { id: 11, name: "Certainty Anchoring", meaning: "Ambiguity breeds paranoia. Clearly outline exact milestones, boundaries, and next checkpoints." },
+      { id: 12, name: "Fairness Parity", meaning: "Perceived unfairness triggers stronger negative pain than physical loss. Equalize terms explicitly." },
+      { id: 13, name: "Relatedness In-Group Bridge", meaning: "If viewed as out-group, your best offer is rejected. Establish shared tribal stakes first." },
+      { id: 14, name: "Circuit-Breaker Recess", meaning: "When emotional friction spikes past tolerance delta, execute a hard 15-minute recess." },
+      { id: 15, name: "Proactive Accusation Audit", meaning: "List every negative thought they could harbor against you upfront before they can weaponize it." },
+      { id: 16, name: "Sunk Cost Decoupling", meaning: "Never let past lost resources justify continuing an operational dead-end. Evaluate current reality only." },
+      { id: 17, name: "Priming Trap Neutralization", meaning: "The first metric mentioned anchors everything. Counter-anchor immediately with verifiable criteria." },
+      { id: 18, name: "Confirmation Bias Bypass", meaning: "Ask 'What condition would prove your plan wrong?' rather than attacking their existing beliefs." },
+      { id: 19, name: "70/30 Active Inquiry Ratio", meaning: "Spend 70% of conversation gathering diagnostic input and 30% calibrating the solution." },
+      { id: 20, name: "Mutual Synthesis Closure", meaning: "Never close a loop without mutual, recorded, written verification criteria for completion." }
+    ];
+
+    /* =========================================================================
+       5. 30 TRACKS (400 BOOKS DISTRIBUTED ACROSS SUBCATEGORIES)
+       ========================================================================= */
     const TRACK_NAMES = [
       "Values", "Roles", "Traits", "Framing", "States", "Conversation Loops",
       "Fear", "Anger", "Shame", "Pride", "Desire", "Active Listening",
@@ -515,53 +569,77 @@
       "Accusation Cleansers", "Persuasion Primes", "Vulnerability Wedges", "Impression Facades", "Insulation Controls", "System Synthesis"
     ];
 
-    const SUBCAT_TEMPLATES = [
-      {
-        part: "Part 1: Core Diagnostic Probe",
-        input1: "Raw Utterance Data",
-        input2: "Primary Trigger Vector",
-        decision: "Trigger Match Target Metric?",
-        trueStatement: "Lock Non-Negotiable Criterion",
-        falseStatement: "Reroute to Passive Listener",
-        kw: ["non-negotiable", "metric", "element"]
-      },
-      {
-        part: "Part 2: Decision Frame Check",
-        input1: "Stakeholder Framing",
-        input2: "Alternative Choice Paths",
-        decision: "Does Option Align to Goal?",
-        trueStatement: "Prioritize Optimal Pathway",
-        falseStatement: "Trigger Reframing Inversion",
-        kw: ["prioritize", "specific path", "choices"]
-      },
-      {
-        part: "Part 3: SCARF Control Assessment",
-        input1: "Status/Certainty Signals",
-        input2: "Autonomy/Relatedness Check",
-        decision: "Structural Threat Detected?",
-        trueStatement: "Deploy Status Shield Anchor",
-        falseStatement: "Maintain Direct Momentum",
-        kw: ["structural control", "timeline", "status"]
-      },
-      {
-        part: "Part 4: Bottleneck Verifier",
-        input1: "Bottleneck Frequency",
-        input2: "Emotional Friction Log",
-        decision: "Friction > Threshold Delta?",
-        trueStatement: "Execute Circuit-Breaker Exit",
-        falseStatement: "Sustain Conversational Loop",
-        kw: ["resolve", "immediate problem", "triggers"]
-      },
-      {
-        part: "Part 5: Combined Matrix Outcome",
-        input1: "Synthesized Evidence Log",
-        input2: "Behavioral Matrix Weights",
-        decision: "Synthesis Complete (5/5)?",
-        trueStatement: "Seal Final Action Matrix",
-        falseStatement: "Iterate Probe Diagnostic",
-        kw: ["catalyst", "circuit-breaker", "framework"]
-      }
-    ];
+    const TRACKS = TRACK_NAMES.map((name, i) => {
+      const startBook = 1 + (i * 13);
+      const endBook = Math.min(400, 13 + (i * 13));
+
+      // 13 books mapped specifically across the 5 subcategories
+      const parts = [
+        {
+          name: "Part 1: Core Diagnostic Probe",
+          books: `Books ${startBook}–${startBook + 2}`,
+          ruleAnchor: NON_NEGOTIABLE_RULES[(i * 2) % 20],
+          kw: ["diagnostic", "probe", "metric", "element", "non-negotiable"],
+          input1: `${name} Raw Utterance`,
+          input2: `Diagnostic Metric (Bk ${startBook})`,
+          decision: `Criteria Matched?`,
+          trueStatement: `Lock Non-Negotiable Criterion`,
+          falseStatement: `Trigger Active Inquiry Loop`
+        },
+        {
+          name: "Part 2: Decision Frame Check",
+          books: `Books ${startBook + 3}–${startBook + 4}`,
+          ruleAnchor: NON_NEGOTIABLE_RULES[(i * 2 + 1) % 20],
+          kw: ["frame", "decision", "prioritize", "choices", "pathway"],
+          input1: `Stakeholder Frame (Bk ${startBook + 3})`,
+          input2: `Alternative Paths`,
+          decision: `Aligns to Primary Value?`,
+          trueStatement: `Prioritize Optimal Pathway`,
+          falseStatement: `Invert Comparison Frame`
+        },
+        {
+          name: "Part 3: SCARF Control Assessment",
+          books: `Books ${startBook + 5}–${startBook + 7}`,
+          ruleAnchor: NON_NEGOTIABLE_RULES[(i * 2 + 2) % 20],
+          kw: ["scarf", "status", "threat", "autonomy", "control"],
+          input1: `Status/Certainty Check`,
+          input2: `Autonomy Vector (Bk ${startBook + 5})`,
+          decision: `Threat Delta Detected?`,
+          trueStatement: `Deploy Status Shield Anchor`,
+          falseStatement: `Sustain Conversational Parity`
+        },
+        {
+          name: "Part 4: Bottleneck Verifier",
+          books: `Books ${startBook + 8}–${startBook + 9}`,
+          ruleAnchor: NON_NEGOTIABLE_RULES[(i * 2 + 3) % 20],
+          kw: ["bottleneck", "friction", "breaker", "resolve", "trigger"],
+          input1: `Friction Frequency`,
+          input2: `Bottleneck Node (Bk ${startBook + 8})`,
+          decision: `Friction > Threshold?`,
+          trueStatement: `Execute Circuit-Breaker Recess`,
+          falseStatement: `Resolve Immediate Node`
+        },
+        {
+          name: "Part 5: Combined Matrix Outcome",
+          books: `Books ${startBook + 10}–${endBook}`,
+          ruleAnchor: NON_NEGOTIABLE_RULES[(i * 2 + 4) % 20],
+          kw: ["matrix", "synthesis", "catalyst", "framework", "closure"],
+          input1: `Evidence Log (Bk ${startBook + 10})`,
+          input2: `Synthesis Weights (Bk ${endBook})`,
+          decision: `Synthesis Complete (5/5)?`,
+          trueStatement: `Seal Final Action Matrix`,
+          falseStatement: `Iterate Diagnostic Probe`
+        }
+      ];
+
+      return {
+        id: i + 1,
+        name: name,
+        title: `TRACK ${i + 1}: ${name.toUpperCase()} (BOOKS ${startBook}–${endBook})`,
+        powerBadge: `${name} Mastery Matrix`,
+        parts: parts
+      };
+    });
 
     function buildCustomFlowchartASCII(trackName, sub) {
       return `   +------------------------------------+
@@ -584,7 +662,7 @@
              /\\                
             /  \\               
            /    \\              
-    < ${sub.decision} >
+    < ${sub.decision.padEnd(20, ' ')} >
            \\    /              
             \\  /   --[ True ]-->+----------------------------------+
              \\/                 | [/ STATEMENT 2 /]:               |
@@ -603,27 +681,11 @@
    +-----------------------------+------+
    |               ( STOP )             |
    +------------------------------------+
-   * TRACK: ${trackName}
-   * NODES: DRAW ON PAPER & USE [ FIGHT ]`;
+   * TRACK: ${trackName} | ${sub.books}
+   * RULE: [Rule ${sub.ruleAnchor.id}] ${sub.ruleAnchor.name}`;
     }
 
-    const TRACKS = TRACK_NAMES.map((name, i) => ({
-      id: i + 1,
-      name: name,
-      title: `TRACK ${i + 1}: ${name.toUpperCase()} (BOOKS ${1 + i * 13}–${13 + i * 13})`,
-      powerBadge: `${name} Mastery Matrix`,
-      parts: SUBCAT_TEMPLATES.map((tmpl) => ({
-        name: tmpl.part,
-        kw: tmpl.kw,
-        input1: `${name} ${tmpl.input1}`,
-        input2: `${name} ${tmpl.input2}`,
-        decision: tmpl.decision,
-        trueStatement: tmpl.trueStatement,
-        falseStatement: tmpl.falseStatement
-      }))
-    }));
-
-    /* 5. CANVAS SPRITE RENDERING */
+    /* 6. ORIGINAL FROGGY SPRITE ENGINE */
     const canvas = document.getElementById("pixelCanvas");
     const ctx = canvas.getContext("2d");
     ctx.imageSmoothingEnabled = false;
@@ -799,7 +861,7 @@
     setInterval(updateWanderingAI, 30);
     renderScene();
 
-    /* 6. DIALOGUE SYSTEM (PRESERVED SANS PERSONALITY) */
+    /* 7. DIALOGUE SYSTEM (SANS PERSONALITY PRESERVED) */
     const SANS_BANTER = [
       {
         text: "* heya. what're you sweating about? week 1 doesn't even launch until 08.11.2026. take a nap, kiddo.",
@@ -893,19 +955,20 @@
       triggerDialogue(Math.floor(Math.random() * SANS_BANTER.length));
     }
 
-    /* 7. SUBCATEGORY FLOWCHART MODAL */
+    /* 8. ACT BLUEPRINT & 20 NON-NEGOTIABLE RULES */
     function handleActMenu(subIndex = 0) {
       playAudioBlip(380);
       const curTrack = TRACKS[STATE.activeTrack];
       STATE.selectedSubcatIdx = subIndex;
 
+      // Render Subcategory Tabs
       const tabsMount = document.getElementById("blueprint-tabs");
       tabsMount.innerHTML = "";
 
       curTrack.parts.forEach((p, idx) => {
         const btn = document.createElement("button");
         btn.className = `subcat-pill-btn ${idx === STATE.selectedSubcatIdx ? 'active' : ''}`;
-        btn.innerText = `Part ${idx + 1}`;
+        btn.innerText = `Part ${idx + 1} (${p.books})`;
         btn.onclick = () => {
           playAudioBlip(240);
           handleActMenu(idx);
@@ -913,9 +976,20 @@
         tabsMount.appendChild(btn);
       });
 
+      // Flowchart Display
       const selectedPart = curTrack.parts[STATE.selectedSubcatIdx];
       const asciiDiagram = buildCustomFlowchartASCII(curTrack.name, selectedPart);
       document.getElementById("ascii-mount").innerText = asciiDiagram;
+
+      // Populate 20 Non-Negotiable Rules List
+      const rulesMount = document.getElementById("rules-mount");
+      rulesMount.innerHTML = "";
+      NON_NEGOTIABLE_RULES.forEach(r => {
+        const div = document.createElement("div");
+        div.className = "rule-card";
+        div.innerHTML = `<div class="rule-title">* Rule ${r.id}: ${r.name}</div><div class="rule-desc">${r.meaning}</div>`;
+        rulesMount.appendChild(div);
+      });
 
       document.getElementById("blueprint-modal").style.display = "flex";
     }
@@ -941,7 +1015,7 @@
       document.getElementById(id).style.display = "none";
     }
 
-    /* 8. TRACK NAVIGATION & LIST */
+    /* 9. PROGRESSION TRACKS ENGINE */
     function stepTrack(delta) {
       const next = STATE.activeTrack + delta;
       if (next < 0) return;
@@ -982,13 +1056,18 @@
       cur.parts.forEach((p, idx) => {
         const item = document.createElement("div");
         item.className = `subcat-item ${c[idx] ? 'done' : ''}`;
-        item.innerText = p.name;
+        item.innerHTML = `
+          <div class="subcat-header-line">${p.name}</div>
+          <div class="subcat-book-tag">📖 ${p.books} | Rule ${p.ruleAnchor.id}</div>
+        `;
         item.onclick = () => handleActMenu(idx);
         mount.appendChild(item);
       });
     }
 
-    /* 9. CAMERA OCR SCANNER */
+    /* =========================================================================
+       10. OCR VALIDATOR WITH EXACT "WHERE IT FAILED" FEEDBACK
+       ========================================================================= */
     const cameraInput = document.getElementById("camera-input");
     cameraInput.addEventListener("change", (e) => {
       const file = e.target.files[0];
@@ -1014,26 +1093,34 @@
       try {
         const worker = await Tesseract.createWorker('eng');
         const res = await worker.recognize(file);
-        const text = res.data.text.toLowerCase();
+        const text = res.data.text.toLowerCase().trim();
         await worker.terminate();
 
         const cur = TRACKS[STATE.activeTrack];
         const checks = STATE.checks[cur.id];
         let found = 0;
+        let missingParts = [];
+
+        // Check for flowchart connector arrows
+        const hasArrows = text.includes("->") || text.includes("-->") || text.includes("=>") || text.includes("to") || text.includes(">");
 
         cur.parts.forEach((part, idx) => {
           if (!checks[idx]) {
             const hasKeyword = part.kw.some(k => text.includes(k.toLowerCase()));
-            const hasArrows = text.includes("->") || text.includes("-->") || text.includes("to");
+            const hasRuleMatch = text.includes(`rule ${part.ruleAnchor.id}`) || text.includes(part.ruleAnchor.name.toLowerCase());
 
-            if (hasKeyword || hasArrows) {
+            if (hasArrows && (hasKeyword || hasRuleMatch)) {
               checks[idx] = true;
               found++;
+            } else {
+              missingParts.push({ partIdx: idx + 1, name: part.name, books: part.books, kw: part.kw[0] });
             }
           }
         });
 
         const total = checks.filter(Boolean).length;
+
+        // SPECIFIC DIAGNOSTIC FEEDBACK: TELL THEM WHERE IT FAILED
         if (total === 5) {
           STATE.isSleeping = true;
           if (!STATE.powers.includes(cur.powerBadge)) STATE.powers.push(cur.powerBadge);
@@ -1042,14 +1129,30 @@
             text: `* nice work, kiddo. 5/5 verified. unlocked [${cur.powerBadge}]. time for a well-deserved nap. 🛌`,
             facePlan: [{at: 0, f: "WINK"}, {at: 40, f: "GRIN"}]
           });
-        } else if (found > 0) {
+        } else if (!hasArrows) {
+          // Failure Reason 1: No flowchart arrows drawn
           runTypewriterWithFaces({
-            text: `* hit! recognized ${found} valid flowchart nodes. total: ${total}/5 complete.`,
+            text: "* miss! where are your arrows? couldn't detect (->) connectors. connect your boxes so i know where the logic flows, kiddo.",
+            facePlan: [{at: 0, f: "DERP"}]
+          });
+        } else if (found > 0) {
+          // Success on some, pinpoint next failure
+          const nextFail = missingParts[0];
+          runTypewriterWithFaces({
+            text: `* hit! recognized ${found} node(s) (${total}/5). but Part ${nextFail.partIdx} (${nextFail.books}) is still missing '${nextFail.kw}'. check act tab.`,
             facePlan: [{at: 0, f: "GRIN"}]
           });
-        } else {
+        } else if (text.length < 10) {
+          // Failure Reason 2: Blurry/Empty Photo
           runTypewriterWithFaces({
-            text: "* miss! couldn't detect flowchart arrows (->) or keywords. draw cleaner nodes, kiddo.",
+            text: "* miss! couldn't read any clear text on the paper. check your lighting and hold the camera steady, kiddo.",
+            facePlan: [{at: 0, f: "SHRUG"}]
+          });
+        } else {
+          // Failure Reason 3: Flowchart failed specific subcategory criteria
+          const firstFail = missingParts[0];
+          runTypewriterWithFaces({
+            text: `* miss on Part ${firstFail.partIdx} (${firstFail.books})! missing criteria for [${firstFail.kw}]. check your condition node in act.`,
             facePlan: [{at: 0, f: "EMPTY"}]
           });
         }
