@@ -2,33 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>FROGGY • UNDERTALE BEHAVIORAL MATRIX</title>
+  <title>FROGGY v5.0 • PIXEL RPG COMPANION</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PixelFrog">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <link rel="manifest" href='data:application/manifest+json,{"name":"PixelFrog","short_name":"PixelFrog","start_url":".","display":"standalone","background_color":"#000000","theme_color":"#000000"}'>
 
-  <!-- Google Fonts: 8-Bit Press Start 2P -->
+  <!-- Retro Pixel Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
   <style>
     /* =========================================================================
-       1. UNDERTALE RETRO THEME STYLING
+       1. TRUE 8-BIT RETRO PIXEL UI & PALETTE
        ========================================================================= */
     :root {
-      --ut-bg: #000000;
-      --ut-border: #ffffff;
-      --ut-yellow: #ffff00;
-      --ut-orange: #ff9900;
-      --ut-red: #ff0000;
-      --ut-green: #00ff00;
-      --ut-cyan: #00ffff;
-      --ut-gray: #555555;
-      --ut-dark-gray: #222222;
-      --ut-font: 'Press Start 2P', monospace;
+      --bg: #05070a;
+      --panel: #0d121d;
+      --border-dark: #000000;
+      --border-light: #ffffff;
+      --border-gray: #4b587a;
+      --green-main: #00b894;
+      --green-glow: #55efc4;
+      --yellow: #feca57;
+      --pink: #ff6b81;
+      --red: #ff4757;
+      --font-pixel: 'Press Start 2P', monospace;
     }
 
     * {
@@ -38,12 +39,13 @@
       user-select: none;
       -webkit-tap-highlight-color: transparent;
       image-rendering: pixelated;
+      shape-rendering: crispEdges;
     }
 
     body {
-      background-color: var(--ut-bg);
+      background-color: var(--bg);
       color: #ffffff;
-      font-family: var(--ut-font);
+      font-family: var(--font-pixel);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -52,108 +54,96 @@
       overflow-x: hidden;
     }
 
-    /* Scanline effect */
-    body::before {
-      content: " ";
-      display: block;
-      position: fixed;
-      top: 0; left: 0; bottom: 0; right: 0;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-      background-size: 100% 4px;
-      z-index: 999;
-      pointer-events: none;
-      opacity: 0.4;
+    /* Chunky Pixel Box Border */
+    .pixel-frame {
+      background: var(--panel);
+      border: 4px solid var(--border-dark);
+      box-shadow:
+        inset -4px -4px 0px 0px var(--border-gray),
+        inset 4px 4px 0px 0px var(--border-light),
+        0 4px 0 0 #000;
+      position: relative;
     }
 
-    /* Header Status HUD */
-    header {
-      width: 100%;
-      max-width: 420px;
-      margin-bottom: 8px;
-    }
-
-    .ut-hud {
+    /* HUD Bar */
+    header { width: 100%; max-width: 420px; margin-bottom: 8px; }
+    .hud-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border: 3px solid var(--ut-border);
       padding: 8px 10px;
       font-size: 0.52rem;
       background: #000;
+      border: 3px solid #fff;
     }
-    .hud-gold { color: var(--ut-yellow); }
-    .hud-red { color: var(--ut-red); }
+    .hud-yellow { color: var(--yellow); }
+    .hud-pink { color: var(--pink); }
 
     /* Visual Stage */
     #stage-container {
       width: 100%;
       max-width: 420px;
-      height: 220px;
-      background: #000000;
-      border: 4px solid var(--ut-border);
+      height: 230px;
+      background: #090d16;
+      border: 4px solid #fff;
+      box-shadow: 0 6px 0 0 #000;
       position: relative;
       overflow: hidden;
       cursor: pointer;
     }
 
-    /* Dialogue Window */
+    /* Undertale Dialogue Window */
     #dialogue-window {
       width: 100%;
       max-width: 420px;
       margin-top: 8px;
-      background: #000000;
-      border: 4px solid var(--ut-border);
+      background: #000;
+      border: 4px solid #fff;
       padding: 12px;
-      min-height: 125px;
+      min-height: 130px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      box-shadow: 0 6px 0 0 #000;
     }
-
-    .speaker-tag {
+    .speaker-name {
       font-size: 0.52rem;
-      color: var(--ut-yellow);
+      color: var(--green-glow);
       margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
     }
-
-    .typewriter-content {
+    .typewriter-body {
       font-size: 0.58rem;
       line-height: 1.6;
-      color: #ffffff;
-      min-height: 52px;
+      color: #fff;
+      min-height: 55px;
       word-break: break-word;
     }
 
     /* 2-Way Choice Buttons */
-    .choices-row {
+    .choice-row {
       display: flex;
       gap: 8px;
       margin-top: 8px;
     }
-
-    .choice-btn {
+    .pixel-choice-btn {
       flex: 1;
-      background: #000000;
-      border: 2px solid var(--ut-border);
-      color: #ffffff;
-      font-family: var(--ut-font);
+      background: #000;
+      border: 2px solid #fff;
+      color: var(--yellow);
+      font-family: var(--font-pixel);
       font-size: 0.48rem;
       padding: 8px 4px;
       cursor: pointer;
       text-align: left;
       line-height: 1.3;
     }
-    .choice-btn:hover, .choice-btn:active {
-      color: var(--ut-yellow);
-      border-color: var(--ut-yellow);
-    }
-    .choice-btn::before {
-      content: "❤️ ";
-      color: var(--ut-red);
-    }
+    .pixel-choice-btn::before { content: "❤️ "; color: var(--red); }
+    .pixel-choice-btn:active { background: var(--green-main); color: #000; border-color: var(--green-glow); }
 
-    /* Undertale Action Buttons (TALK, DIAGRAM, SCAN, STATS) */
-    .ut-menu-row {
+    /* Action Buttons Menu */
+    .menu-grid {
       width: 100%;
       max-width: 420px;
       display: grid;
@@ -161,13 +151,12 @@
       gap: 8px;
       margin-top: 8px;
     }
-
-    .ut-btn {
-      background: #000000;
-      border: 3px solid var(--ut-orange);
-      color: var(--ut-orange);
-      font-family: var(--ut-font);
-      font-size: 0.62rem;
+    .pixel-action-btn {
+      background: #000;
+      border: 3px solid var(--yellow);
+      color: var(--yellow);
+      font-family: var(--font-pixel);
+      font-size: 0.58rem;
       padding: 12px 6px;
       cursor: pointer;
       display: flex;
@@ -175,72 +164,60 @@
       align-items: center;
       gap: 6px;
     }
-    .ut-btn:hover, .ut-btn:active {
-      background: var(--ut-orange);
-      color: #000000;
-    }
+    .pixel-action-btn:active { transform: translate(3px, 3px); background: var(--yellow); color: #000; }
 
-    /* Navigation & Curriculum Dashboard */
+    /* Dashboard & Progression */
     .dashboard {
       width: 100%;
       max-width: 420px;
       margin-top: 8px;
-      border: 4px solid var(--ut-border);
-      background: #000000;
       padding: 10px;
     }
-
-    .nav-bar {
+    .nav-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 8px;
     }
-
-    .nav-arrow {
-      background: #000000;
-      border: 2px solid var(--ut-border);
-      color: var(--ut-yellow);
-      font-family: var(--ut-font);
+    .nav-arrow-btn {
+      background: #000;
+      border: 2px solid #fff;
+      color: var(--yellow);
+      font-family: var(--font-pixel);
       font-size: 0.65rem;
-      padding: 6px 10px;
+      padding: 6px 12px;
       cursor: pointer;
     }
-    .nav-arrow:active {
-      background: var(--ut-yellow);
-      color: #000;
-    }
+    .nav-arrow-btn:disabled { color: #555; border-color: #555; cursor: not-allowed; }
+    .nav-arrow-btn:active:not(:disabled) { transform: translate(2px, 2px); }
 
     .dimension-title {
       font-size: 0.52rem;
-      color: var(--ut-yellow);
+      color: var(--yellow);
       text-align: center;
       line-height: 1.4;
       max-width: 270px;
     }
 
     /* Subcategories Checklist */
-    .checklist { margin: 8px 0; }
-    .check-item {
+    .checklist-container { margin: 8px 0; }
+    .subcat-row {
       display: flex;
       align-items: center;
       font-size: 0.5rem;
-      padding: 5px;
+      padding: 6px;
       margin-bottom: 4px;
-      background: #0d0d0d;
-      border: 1px solid #333333;
-      color: #888888;
+      background: #060910;
+      border: 1px solid #232c44;
+      color: #8b9bb4;
       line-height: 1.4;
     }
-    .check-item.done {
-      color: var(--ut-green);
-      border-color: var(--ut-green);
-    }
-    .check-item::before { content: "[ ] "; margin-right: 6px; }
-    .check-item.done::before { content: "[*] "; color: var(--ut-yellow); }
+    .subcat-row.done { color: var(--green-glow); border-color: var(--green-main); }
+    .subcat-row::before { content: "[ ] "; margin-right: 6px; }
+    .subcat-row.done::before { content: "[*] "; color: var(--yellow); }
 
     /* Modals */
-    .modal-overlay {
+    .modal-backdrop {
       display: none;
       position: fixed;
       inset: 0;
@@ -249,24 +226,24 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 14px;
+      padding: 12px;
     }
-    .modal-box {
+    .modal-window {
       width: 100%;
       max-width: 380px;
-      background: #000000;
-      border: 4px solid var(--ut-border);
-      padding: 14px;
+      background: #000;
+      border: 4px solid #fff;
+      padding: 12px;
       max-height: 85vh;
       overflow-y: auto;
     }
-    .ascii-tree {
-      background: #0d0d0d;
-      color: var(--ut-green);
-      font-family: var(--ut-font);
+    .ascii-tree-box {
+      background: #080c14;
+      color: var(--green-glow);
+      font-family: var(--font-pixel);
       font-size: 0.44rem;
       padding: 10px;
-      border: 2px solid #333;
+      border: 2px solid #232c44;
       white-space: pre;
       line-height: 1.5;
       margin: 10px 0;
@@ -276,37 +253,37 @@
 </head>
 <body>
 
-  <!-- 1. RETRO HUD CLOCKS & DEADLINE -->
+  <!-- 1. CLOCK & DEADLINE HUD -->
   <header>
-    <div class="ut-hud">
-      <div>LV 1 <span class="hud-gold">EXP <span id="exp-count">0</span>/5</span></div>
-      <div>TIME <span id="clock-display" class="hud-gold">00:00:00</span></div>
-      <div>DEADLINE <span id="deadline-display" class="hud-red">--d --h</span></div>
+    <div class="hud-bar">
+      <div>LV <span id="hud-level">1</span> <span class="hud-yellow">EXP <span id="hud-exp">0</span>/5</span></div>
+      <div>TIME <span id="hud-clock" class="hud-yellow">00:00:00</span></div>
+      <div>DEADLINE <span id="hud-deadline" class="hud-pink">--d --h</span></div>
     </div>
   </header>
 
-  <!-- 2. VISUAL STAGE & REACTIVE FROGGY PORTRAIT -->
+  <!-- 2. PIXEL STAGE & FROGGY SPRITE -->
   <div id="stage-container" onclick="pokeFrog()">
     <svg id="stage-svg" viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%;">
-      <!-- Retro Floor Line -->
+      <!-- Floor Line -->
       <line x1="0" y1="108" x2="200" y2="108" stroke="#ffffff" stroke-width="2" />
 
-      <!-- Bookshelf Stack (Books 1–400) -->
-      <rect x="8" y="60" width="26" height="47" fill="#000000" stroke="#ffffff" stroke-width="1.5" />
-      <line x1="10" y1="70" x2="32" y2="70" stroke="#ff0000" stroke-width="3" />
-      <line x1="10" y1="78" x2="32" y2="78" stroke="#00ff00" stroke-width="3" />
-      <line x1="10" y1="86" x2="32" y2="86" stroke="#ffff00" stroke-width="3" />
-      <line x1="10" y1="94" x2="32" y2="94" stroke="#00ffff" stroke-width="3" />
-      <line x1="10" y1="102" x2="32" y2="102" stroke="#ff00ff" stroke-width="3" />
+      <!-- Bookshelf Library (Books 1–400) -->
+      <rect x="8" y="58" width="28" height="50" fill="#000" stroke="#fff" stroke-width="2" />
+      <rect x="12" y="64" width="20" height="5" fill="#ff4757" />
+      <rect x="12" y="72" width="20" height="5" fill="#00b894" />
+      <rect x="12" y="80" width="20" height="5" fill="#feca57" />
+      <rect x="12" y="88" width="20" height="5" fill="#ff6b81" />
+      <rect x="12" y="96" width="20" height="5" fill="#55efc4" />
 
-      <!-- Quest Desk & Lamp -->
-      <g id="quest-desk" style="display: none;">
-        <rect x="140" y="86" width="50" height="21" fill="#000000" stroke="#ffffff" stroke-width="1.5" />
-        <rect x="148" y="78" width="8" height="8" fill="#ffffff" stroke="#000000" stroke-width="1" />
+      <!-- Sequentially Unlocked Room Decor -->
+      <g id="decor-desk" style="display: none;">
+        <rect x="140" y="86" width="50" height="22" fill="#000" stroke="#fff" stroke-width="2" />
+        <rect x="146" y="78" width="8" height="8" fill="#fff" stroke="#000" stroke-width="1" />
       </g>
-      <g id="quest-lamp" style="display: none;">
-        <line x1="175" y1="86" x2="175" y2="65" stroke="#ffffff" stroke-width="2" />
-        <polygon points="170,65 180,65 185,55 165,55" fill="#ffff00" stroke="#ffffff" stroke-width="1" />
+      <g id="decor-lamp" style="display: none;">
+        <line x1="175" y1="86" x2="175" y2="65" stroke="#fff" stroke-width="2" />
+        <polygon points="170,65 180,65 185,55 165,55" fill="#feca57" stroke="#fff" stroke-width="1" />
       </g>
 
       <!-- Autonomous Fly & Tongue -->
@@ -314,216 +291,198 @@
         <circle cx="45" cy="50" r="2.5" fill="#ffffff" />
         <line x1="42" y1="48" x2="48" y2="48" stroke="#aaaaaa" stroke-width="1" />
       </g>
-      <line id="frog-tongue" x1="100" y1="80" x2="45" y2="50" stroke="#ff5555" stroke-width="3" stroke-linecap="round" style="display: none;" />
+      <line id="frog-tongue" x1="100" y1="80" x2="45" y2="50" stroke="#ff4757" stroke-width="3" stroke-linecap="round" style="display: none;" />
 
-      <!-- THE FROG SPRITE -->
+      <!-- FROGGY SPRITE -->
       <g id="pet-character" transform="translate(85, 52)">
         <!-- Hood Eyes -->
-        <rect x="4" y="-8" width="8" height="8" fill="#ffffff" stroke="#000000" stroke-width="1" />
-        <rect x="18" y="-8" width="8" height="8" fill="#ffffff" stroke="#000000" stroke-width="1" />
-        <rect id="hood-eye-l" x="7" y="-5" width="3" height="3" fill="#000000" />
-        <rect id="hood-eye-r" x="21" y="-5" width="3" height="3" fill="#000000" />
+        <rect x="4" y="-8" width="8" height="8" fill="#fff" stroke="#000" stroke-width="1" />
+        <rect x="18" y="-8" width="8" height="8" fill="#fff" stroke="#000" stroke-width="1" />
+        <rect id="hood-eye-l" x="7" y="-5" width="3" height="3" fill="#000" />
+        <rect id="hood-eye-r" x="21" y="-5" width="3" height="3" fill="#000" />
 
         <!-- Green Hood Suit -->
-        <rect x="0" y="0" width="30" height="42" fill="#006241" stroke="#000000" stroke-width="1" rx="4" />
+        <rect x="0" y="0" width="30" height="42" fill="#006241" stroke="#000" stroke-width="1" rx="4" />
         <rect x="2" y="0" width="28" height="40" fill="#00b894" rx="4" />
         <rect x="10" y="0" width="18" height="40" fill="#00d2a0" rx="3" />
 
-        <!-- Pink Face Frame & Peach Skin -->
-        <rect x="5" y="7" width="20" height="18" fill="#ff7675" stroke="#000000" stroke-width="1" rx="2" />
+        <!-- Face Frame & Skin -->
+        <rect x="5" y="7" width="20" height="18" fill="#ff6b81" stroke="#000" stroke-width="1" rx="2" />
         <rect x="7" y="9" width="16" height="14" fill="#fed39f" />
 
-        <!-- Facial Expressions (Neutral, Wink, Shock, Analytical) -->
+        <!-- Reactive Facial States (Neutral, Sarcastic Smug, Shock, Eye-Roll) -->
         <g id="face-neutral">
-          <rect id="frog-eye-l" x="9" y="12" width="3" height="5" fill="#000000" />
-          <rect id="frog-eye-r" x="18" y="12" width="3" height="5" fill="#000000" />
-          <rect id="frog-mouth" x="13" y="18" width="4" height="2" fill="#000000" />
+          <rect id="frog-eye-l" x="9" y="12" width="3" height="5" fill="#000" />
+          <rect id="frog-eye-r" x="18" y="12" width="3" height="5" fill="#000" />
+          <rect id="frog-mouth" x="13" y="18" width="4" height="2" fill="#000" />
         </g>
-        <g id="face-wink" style="display: none;">
-          <rect x="9" y="14" width="4" height="2" fill="#000000" />
-          <rect x="18" y="12" width="3" height="5" fill="#000000" />
-          <polygon points="13,18 17,18 15,20" fill="#000000" />
+        <g id="face-smug" style="display: none;">
+          <rect x="9" y="14" width="4" height="2" fill="#000" />
+          <rect x="18" y="12" width="3" height="5" fill="#000" />
+          <polygon points="12,18 17,17 15,20" fill="#000" />
         </g>
         <g id="face-shock" style="display: none;">
-          <rect x="8" y="11" width="4" height="6" fill="#000000" />
-          <rect x="18" y="11" width="4" height="6" fill="#000000" />
-          <circle cx="15" cy="19" r="2.5" fill="#000000" />
+          <rect x="8" y="11" width="4" height="6" fill="#000" />
+          <rect x="18" y="11" width="4" height="6" fill="#000" />
+          <circle cx="15" cy="19" r="2.5" fill="#000" />
         </g>
-        <g id="face-think" style="display: none;">
-          <rect x="9" y="12" width="3" height="3" fill="#000000" />
-          <rect x="18" y="13" width="3" height="4" fill="#000000" />
-          <line x1="12" y1="19" x2="17" y2="17" stroke="#000000" stroke-width="1.5" />
+        <g id="face-eyeroll" style="display: none;">
+          <rect x="9" y="10" width="3" height="3" fill="#000" />
+          <rect x="18" y="10" width="3" height="3" fill="#000" />
+          <line x1="12" y1="19" x2="18" y2="19" stroke="#000" stroke-width="1.5" />
         </g>
 
         <!-- Tongue Blep -->
-        <rect id="frog-blep" x="14" y="20" width="3" height="3" fill="#ff7675" rx="1" style="display: none;" />
+        <rect id="frog-blep" x="14" y="20" width="3" height="3" fill="#ff4757" rx="1" style="display: none;" />
 
         <!-- Cheeks -->
-        <rect x="6" y="17" width="2" height="3" fill="#fd79a8" />
-        <rect x="22" y="17" width="2" height="3" fill="#fd79a8" />
+        <rect x="6" y="17" width="2" height="3" fill="#ff6b81" />
+        <rect x="22" y="17" width="2" height="3" fill="#ff6b81" />
 
-        <!-- Yellow Belly & Pink Heart (Interactive Undertale SOUL) -->
-        <rect x="6" y="25" width="18" height="14" fill="#fef08a" stroke="#000000" stroke-width="1" rx="2" />
+        <!-- Belly & SOUL Heart -->
+        <rect x="6" y="25" width="18" height="14" fill="#feca57" stroke="#000" stroke-width="1" rx="2" />
         <path id="belly-soul" d="M12,28 A2,2 0 0,1 15,30 A2,2 0 0,1 18,28 Q18,32 15,34 Q12,32 12,28 Z" fill="#e84393" />
 
         <!-- Feet & Hands -->
-        <rect x="-2" y="24" width="4" height="8" fill="#00b894" rx="2" />
-        <rect x="28" y="24" width="4" height="8" fill="#00d2a0" rx="2" />
+        <rect x="-2" y="24" width="4" height="8" fill="#00b894" stroke="#000" stroke-width="1" rx="2" />
+        <rect x="28" y="24" width="4" height="8" fill="#00d2a0" stroke="#000" stroke-width="1" rx="2" />
         <rect x="3" y="41" width="8" height="4" fill="#00b894" rx="2" />
         <rect x="19" y="41" width="8" height="4" fill="#00d2a0" rx="2" />
 
         <!-- Props -->
         <g id="prop-lens" style="display: none;">
-          <circle cx="28" cy="20" r="5" stroke="#ffff00" stroke-width="1.5" fill="none" />
-          <line x1="28" y1="25" x2="31" y2="30" stroke="#ffffff" stroke-width="1.5" />
-        </g>
-        <g id="prop-book" style="display: none;">
-          <rect x="18" y="19" width="12" height="10" fill="#f4b251" stroke="#000" stroke-width="1" />
-          <line x1="24" y1="19" x2="24" y2="29" stroke="#000" stroke-width="1" />
+          <circle cx="28" cy="20" r="5" stroke="#feca57" stroke-width="1.5" fill="none" />
+          <line x1="28" y1="25" x2="31" y2="30" stroke="#fff" stroke-width="1.5" />
         </g>
       </g>
 
-      <!-- Cozy Bed (Sleeping State) -->
+      <!-- Cozy Sleeping Bed State -->
       <g id="pet-bed" style="display: none;">
-        <rect x="75" y="82" width="55" height="24" fill="#000000" stroke="#ffffff" stroke-width="2" />
-        <rect x="78" y="79" width="14" height="9" fill="#ffffff" />
+        <rect x="75" y="82" width="55" height="24" fill="#000" stroke="#fff" stroke-width="2" />
+        <rect x="78" y="79" width="14" height="9" fill="#fff" />
         <rect x="88" y="80" width="16" height="12" fill="#00b894" />
         <line x1="90" y1="84" x2="94" y2="84" stroke="#000" stroke-width="1.5" />
         <line x1="96" y1="84" x2="100" y2="84" stroke="#000" stroke-width="1.5" />
-        <rect x="92" y="82" width="38" height="24" fill="#ff7675" stroke="#ffffff" stroke-width="1" />
-        <text x="122" y="70" fill="#ffff00" font-family="'Press Start 2P', monospace" font-size="8">Zzz</text>
+        <rect x="92" y="82" width="38" height="24" fill="#ff6b81" stroke="#fff" stroke-width="1" />
+        <text x="122" y="70" fill="#feca57" font-family="'Press Start 2P', monospace" font-size="8">Zzz</text>
       </g>
     </svg>
   </div>
 
-  <!-- 3. UNDERTALE 2-WAY BRANCHING DIALOGUE ENGINE -->
+  <!-- 3. UNDERTALE 2-WAY CASUAL/SARCASTIC DIALOGUE BOX -->
   <div id="dialogue-window">
-    <div class="speaker-tag">* FROGGY (VERITY CORE)</div>
-    <div id="dialogue-text-target" class="typewriter-content">* ...</div>
-    <div id="choices-box" class="choices-row" style="display: none;">
-      <button id="choice-1" class="choice-btn" onclick="chooseResponse(1)">Option A</button>
-      <button id="choice-2" class="choice-btn" onclick="chooseResponse(2)">Option B</button>
+    <div class="speaker-name">
+      <span>* FROGGY (RIDE-OR-DIE BUDDY)</span>
+      <span id="bond-status" style="color:var(--yellow);">BOND: LV 1</span>
+    </div>
+    <div id="typewriter-text" class="typewriter-body">* ...</div>
+    <div id="choices-container" class="choice-row" style="display: none;">
+      <button id="choice-btn-1" class="pixel-choice-btn" onclick="handleChoice(1)">Option A</button>
+      <button id="choice-btn-2" class="pixel-choice-btn" onclick="handleChoice(2)">Option B</button>
     </div>
   </div>
 
-  <!-- 4. UNDERTALE RETRO MENU BUTTONS -->
-  <div class="ut-menu-row">
-    <button class="ut-btn" onclick="playBeep(440); triggerRandomDialogue()">❤️ TALK</button>
-    <button class="ut-btn" onclick="playBeep(520); openDiagramFramework()">📐 DIAGRAM</button>
-    <label for="camera-input" class="ut-btn" style="cursor: pointer;">
-      📸 SCAN
+  <!-- 4. RETRO ACTION BUTTONS MENU -->
+  <div class="menu-grid">
+    <button class="pixel-action-btn" onclick="triggerTalkBanter()">❤️ TALK</button>
+    <button class="pixel-action-btn" onclick="openDiagramFrameworkModal()">📐 DIAGRAM</button>
+    <label for="camera-input" class="pixel-action-btn" style="cursor: pointer;">
+      📸 SCAN NOTE
     </label>
     <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;">
-    <button class="ut-btn" onclick="playBeep(600); openStatsModal()">🏆 STATS</button>
+    <button class="pixel-action-btn" onclick="openPowersModal()">🏆 POWERS</button>
   </div>
 
-  <!-- 5. 30-DIMENSION ACADEMIC DASHBOARD -->
-  <div class="dashboard">
-    <div class="nav-bar">
-      <button class="nav-arrow" onclick="navTopic(-1)">&lt;</button>
-      <div id="nav-topic-title" class="dimension-title">1. VALUES (BOOKS 1–13)</div>
-      <button class="nav-arrow" onclick="navTopic(1)">&gt;</button>
+  <!-- 5. PROGRESSION-LOCKED 30 TRACK DASHBOARD -->
+  <div class="pixel-frame dashboard">
+    <div class="nav-header">
+      <button id="btn-prev" class="nav-arrow-btn" onclick="navigateTrack(-1)">&lt;</button>
+      <div id="track-title-display" class="dimension-title">TRACK 1: VALUES (BOOKS 1–13)</div>
+      <button id="btn-next" class="nav-arrow-btn" onclick="navigateTrack(1)">&gt;</button>
     </div>
 
-    <div class="checklist" id="subcat-list"></div>
+    <div class="checklist-container" id="checklist-mount"></div>
   </div>
 
-  <!-- DIAGRAM FRAMEWORK MODAL -->
-  <div id="diagram-modal" class="modal-overlay">
-    <div class="modal-box">
-      <div style="font-size:0.55rem; color:var(--ut-yellow); margin-bottom:8px;">* FLOWCHART FRAMEWORK TREE</div>
+  <!-- MODAL: SUB-CATEGORY DIAGRAM FRAMEWORK EXAMPLE -->
+  <div id="diagram-modal" class="modal-backdrop">
+    <div class="modal-window">
+      <div style="font-size:0.55rem; color:var(--yellow); margin-bottom:8px;">* FLOWCHART BLUEPRINT TEMPLATE</div>
       <p style="font-size:0.46rem; color:#aaa; line-height:1.5;">
-        Draw this symbolic logic tree on real paper for camera scanning:
+        Draw this exact symbolic node tree on real paper for camera verification:
       </p>
-      <div id="diagram-tree-text" class="ascii-tree"></div>
-      <button class="ut-btn" style="width:100%; padding:8px; font-size:0.5rem;" onclick="closeModal('diagram-modal')">
-        [ * RESUME ]
+      <div id="ascii-diagram-mount" class="ascii-tree-box"></div>
+      <button class="pixel-action-btn" style="width:100%; padding:8px; font-size:0.5rem;" onclick="closeModal('diagram-modal')">
+        [ * GOT IT ]
       </button>
     </div>
   </div>
 
-  <!-- STATS & BADGES MODAL -->
-  <div id="stats-modal" class="modal-overlay">
-    <div class="modal-box">
-      <div style="font-size:0.55rem; color:var(--ut-yellow); margin-bottom:8px;">* PSYCHOLOGICAL PROFILE</div>
-      <div id="stats-content" style="font-size:0.48rem; color:#fff; line-height:1.8; margin:10px 0;"></div>
-      <button class="ut-btn" style="width:100%; padding:8px; font-size:0.5rem;" onclick="closeModal('stats-modal')">
-        [ * RETURN ]
+  <!-- MODAL: MASTERED SUPERPOWERS -->
+  <div id="powers-modal" class="modal-backdrop">
+    <div class="modal-window">
+      <div style="font-size:0.55rem; color:var(--yellow); margin-bottom:8px;">* UNLOCKED COMMUNICATION POWERS</div>
+      <p style="font-size:0.46rem; color:#888; margin-bottom:8px;">Only unlocked after clearing all 5 flowcharts:</p>
+      <div id="powers-list-mount" style="font-size:0.48rem; color:var(--green-glow); line-height:1.8;"></div>
+      <button class="pixel-action-btn" style="width:100%; padding:8px; font-size:0.5rem; margin-top:10px;" onclick="closeModal('powers-modal')">
+        [ * BACK ]
       </button>
     </div>
   </div>
 
   <script>
     /* =========================================================================
-       1. SYNTHESIZED UNDERTALE AUDIO ENGINE (Web Audio API)
+       1. WEB AUDIO 8-BIT UNDERTALE SOUND ENGINE
        ========================================================================= */
     let audioCtx = null;
-
-    function getAudioContext() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
+    function getAudio() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
       return audioCtx;
     }
 
-    // Iconic retro speech blip sound
-    function playSpeechBlip() {
+    function playBlip() {
       try {
-        const ctx = getAudioContext();
-        if (ctx.state === 'suspended') ctx.resume();
-
+        const ctx = getAudio();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
-
-        // 8-bit square wave with slight frequency modulation
         osc.type = 'square';
-        osc.frequency.setValueAtTime(140 + Math.random() * 20, ctx.currentTime);
-
+        osc.frequency.setValueAtTime(145 + Math.random() * 25, ctx.currentTime);
         gain.gain.setValueAtTime(0.04, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
-
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.035);
         osc.connect(gain);
         gain.connect(ctx.destination);
-
         osc.start();
-        osc.stop(ctx.currentTime + 0.04);
+        osc.stop(ctx.currentTime + 0.035);
       } catch (e) {}
     }
 
-    // Menu button beep
     function playBeep(freq = 440) {
       try {
-        const ctx = getAudioContext();
-        if (ctx.state === 'suspended') ctx.resume();
-
+        const ctx = getAudio();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
-
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(freq, ctx.currentTime);
-
         gain.gain.setValueAtTime(0.08, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-
         osc.connect(gain);
         gain.connect(ctx.destination);
-
         osc.start();
         osc.stop(ctx.currentTime + 0.08);
       } catch (e) {}
     }
 
     /* =========================================================================
-       2. REAL-TIME CLOCKS & SUNDAY DEADLINE SYNCHRONIZATION
+       2. REAL-TIME CLOCK & DEADLINE SYNC
        ========================================================================= */
     function syncClocks() {
       const now = new Date();
       const hh = String(now.getHours()).padStart(2, '0');
       const mm = String(now.getMinutes()).padStart(2, '0');
       const ss = String(now.getSeconds()).padStart(2, '0');
-      document.getElementById('clock-display').innerText = `${hh}:${mm}:${ss}`;
+      document.getElementById('hud-clock').innerText = `${hh}:${mm}:${ss}`;
 
-      // Calculate Sunday Midnight
       const day = now.getDay();
       const daysLeft = (7 - day) % 7;
       const sunday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysLeft, 23, 59, 59);
@@ -532,18 +491,18 @@
       if (diff > 0) {
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        document.getElementById('deadline-display').innerText = `${d}d ${h}h`;
+        document.getElementById('hud-deadline').innerText = `${d}d ${h}h`;
       } else {
-        document.getElementById('deadline-display').innerText = `EXPIRED!`;
+        document.getElementById('hud-deadline').innerText = `EXPIRED!`;
       }
     }
     setInterval(syncClocks, 1000);
     syncClocks();
 
     /* =========================================================================
-       3. 30 DIMENSIONS MASTER CORPUS WITH FLOWCHART TREES
+       3. 30 STRICT PROGRESSION-LOCKED DIMENSIONS & DIAGRAMS
        ========================================================================= */
-    const TOPIC_NAMES = [
+    const TRACK_NAMES = [
       "Values", "Roles", "Traits", "Framing", "States", "Conversation Loops",
       "Fear", "Anger", "Shame", "Pride", "Desire", "Active Listening",
       "Compliance", "Command", "Biases", "Habit Anchors", "Attention Traps", "Status Shields",
@@ -551,10 +510,10 @@
       "Accusation Cleansers", "Persuasion Primes", "Vulnerability Wedges", "Impression Facades", "Insulation Controls", "System Synthesis"
     ];
 
-    const CORPUS = TOPIC_NAMES.map((name, i) => ({
+    const TRACKS = TRACK_NAMES.map((name, i) => ({
       id: i + 1,
-      title: `${i + 1}. ${name.toUpperCase()} (BOOKS ${1 + i * 13}–${13 + i * 13})`,
-      skill: `${name} Mastery Matrix`,
+      title: `TRACK ${i + 1}: ${name.toUpperCase()} (BOOKS ${1 + i * 13}–${13 + i * 13})`,
+      powerBadge: `${name} Mastery Matrix`,
       parts: [
         { name: "Part 1: Core Diagnostic Probe", kw: ["non-negotiable", "metric", "element"] },
         { name: "Part 2: Decision Frame Check", kw: ["prioritize", "specific path", "choices"] },
@@ -562,76 +521,76 @@
         { name: "Part 4: Bottleneck Verifier", kw: ["resolve", "immediate problem", "triggers"] },
         { name: "Part 5: Combined Matrix Outcome", kw: ["catalyst", "circuit-breaker", "framework"] }
       ],
-      diagram:
-`[RAW CONVERSATION INPUT]
+      blueprint:
+`[RAW HUMAN CHATTER]
          │
          ▼
- ┌───────────────┐
- │ ISOLATE NOISE │
- └───────┬───────┘
+┌──────────────────┐
+│  FILTER SURFACE  │
+└────────┬─────────┘
          │
          ▼
-[PRIMARY STRUCTURAL METRIC?]
-    ├──► (MATCH) ──► EXECUTE CATALYST
+[NON-NEGOTIABLE CORE?]
+    ├──► (FOUND) ──► LOCK IN FRAMEWORK
     └──► (DRIFT) ──► ENGAGE CIRCUIT-BREAKER`
     }));
 
     /* =========================================================================
-       4. UNDERTALE BRANCHING TYPEWRITER DIALOGUE ENGINE
+       4. NEW CASUAL, SARCASTIC, RELATABLE DIALOGUE ENGINE
        ========================================================================= */
-    const CONVERSATIONS = [
+    const BANTER_BANK = [
       {
-        face: "neutral",
-        text: "* You're back. Did you know 93% of human conflict is people refusing to state their primary metric?",
-        c1: "Are you calling me predictable?",
-        r1: "* Not predictable. Statistically regular! That's why we get along so well.",
-        c2: "Teach me how to fix it.",
-        r2: "* Easy: Next time someone complains, ask for their exact data baseline. Watch the drama evaporate."
+        face: "smug",
+        text: "* Yo. You're actually back? I was about 30 seconds away from packing my tiny frog bags and becoming an accountant.",
+        c1: "I was busy, alright?",
+        r1: "* Busy doing what? Staring at the ceiling? Show me the flowcharts, human!",
+        c2: "You wouldn't survive as an accountant.",
+        r2: "* Ouch. Accurate, but hurtful. Now scan your paper so I don't detonate on Sunday."
       },
       {
-        face: "wink",
-        text: "* I processed books 1 through 400 while you were idle. My cellular cohesion is remarkably intact.",
-        c1: "Glad you haven't exploded.",
-        r1: "* Me too! Exploding into 100 pixels was really not on my Tuesday itinerary.",
-        c2: "What did you learn?",
-        r2: "* Rule #1: Humans fight harder to avoid losing 100 bucks than to earn 100 bucks. Loss aversion rules all."
-      },
-      {
-        face: "think",
-        text: "* Casual query: Why do humans say 'It's fine' when it is, mathematically speaking, completely NOT fine?",
-        c1: "Fear of confrontation.",
-        r1: "* Exactly! That's why we study Confrontation Defusals in dimension 24. No more fake 'fine'.",
-        c2: "Just being polite.",
-        r2: "* Polite ambiguity causes 40% memory lag and system chaos. Be clear, not polite."
+        face: "eyeroll",
+        text: "* Casual thought: Humans spend 3 hours arguing about whose turn it is to do dishes instead of just saying 'I'm tired'. You guys are hilarious.",
+        c1: "It's about the principle!",
+        r1: "* It's about Dimension 2: Roles! Stop playing the Martyr and use an Adult logic pivot, Einstein.",
+        c2: "Why do you care so much?",
+        r2: "* Because watching you make unforced social errors is literally shortening my lifespan."
       },
       {
         face: "shock",
-        text: "* Look at this room. You gave me a desk, a lamp, and an 8-bit SOUL. What is the catch here?",
-        c1: "No catch, you're my buddy.",
-        r1: "* Buddy? That's an interesting neurochemical bond. I suppose I accept this collaboration.",
-        c2: "You have to help me study.",
-        r2: "* A fair transaction! Let's examine this week's flowchart framework."
+        text: "* Hold up. Look at the clock. Sunday midnight is creeping up and you have UNFINISHED subcategories. Are you trying to turn me into pixel confetti?!",
+        c1: "Chill out, I got this.",
+        r1: "* 'I got this', they said, as the deadline timer ticked to zero. I am sweating pure pixels here!",
+        c2: "What happens if you explode?",
+        r2: "* I turn into dust and you have to explain to everyone why your frog companion vanished. Draw the diagram!"
+      },
+      {
+        face: "smug",
+        text: "* Rule from the 400 books: People would rather lose a limb than admit they're wrong. That's why you yield on tiny details to win the big game.",
+        c1: "Sounds manipulative.",
+        r1: "* It's not manipulation, it's behavioral physics. Stop wrestling pigs and start using frameworks.",
+        c2: "Teach me more.",
+        r2: "* That's the spirit! Unlock Track 2 and I'll teach you how to dodge guilt-trippers like a ninja."
       }
     ];
 
-    let currentConvoIdx = 0;
+    let currentBanterIdx = 0;
     let isTyping = false;
     let typeTimer = null;
 
-    function setFrogFace(faceType) {
+    function setFace(faceType) {
       document.getElementById('face-neutral').style.display = 'none';
-      document.getElementById('face-wink').style.display = 'none';
+      document.getElementById('face-smug').style.display = 'none';
       document.getElementById('face-shock').style.display = 'none';
-      document.getElementById('face-think').style.display = 'none';
+      document.getElementById('face-eyeroll').style.display = 'none';
 
-      if (faceType === 'wink') document.getElementById('face-wink').style.display = 'block';
+      if (faceType === 'smug') document.getElementById('face-smug').style.display = 'block';
       else if (faceType === 'shock') document.getElementById('face-shock').style.display = 'block';
-      else if (faceType === 'think') document.getElementById('face-think').style.display = 'block';
+      else if (faceType === 'eyeroll') document.getElementById('face-eyeroll').style.display = 'block';
       else document.getElementById('face-neutral').style.display = 'block';
     }
 
-    function typeWriterText(text, callback) {
-      const target = document.getElementById("dialogue-text-target");
+    function typeWriter(text, onDone) {
+      const target = document.getElementById("typewriter-text");
       target.innerHTML = "";
       clearTimeout(typeTimer);
       isTyping = true;
@@ -640,165 +599,114 @@
       function step() {
         if (i < text.length) {
           target.innerHTML += text.charAt(i);
-          // Play retro speech sound on alphanumeric characters
-          if (/[a-zA-Z0-9]/.test(text.charAt(i))) {
-            playSpeechBlip();
-          }
+          if (/[a-zA-Z0-9]/.test(text.charAt(i))) playBlip();
           i++;
-          typeTimer = setTimeout(step, 24);
+          typeTimer = setTimeout(step, 20);
         } else {
           isTyping = false;
-          if (callback) callback();
+          if (onDone) onDone();
         }
       }
       step();
     }
 
-    function triggerConvo(idx) {
-      currentConvoIdx = idx % CONVERSATIONS.length;
-      const convo = CONVERSATIONS[currentConvoIdx];
-      const choicesBox = document.getElementById("choices-box");
-      choicesBox.style.display = "none";
+    function triggerBanter(idx) {
+      currentBanterIdx = idx % BANTER_BANK.length;
+      const b = BANTER_BANK[currentBanterIdx];
+      const choices = document.getElementById("choices-container");
+      choices.style.display = "none";
+      setFace(b.face);
 
-      setFrogFace(convo.face);
-
-      typeWriterText(convo.text, () => {
-        document.getElementById("choice-1").innerText = convo.c1;
-        document.getElementById("choice-2").innerText = convo.c2;
-        choicesBox.style.display = "flex";
+      typeWriter(b.text, () => {
+        document.getElementById("choice-btn-1").innerText = b.c1;
+        document.getElementById("choice-btn-2").innerText = b.c2;
+        choices.style.display = "flex";
       });
     }
 
-    function chooseResponse(opt) {
-      playBeep(650);
-      const convo = CONVERSATIONS[currentConvoIdx];
-      const reply = (opt === 1) ? convo.r1 : convo.r2;
-      document.getElementById("choices-box").style.display = "none";
-      setFrogFace(opt === 1 ? 'wink' : 'think');
-      typeWriterText(reply);
+    function handleChoice(opt) {
+      playBeep(620);
+      const b = BANTER_BANK[currentBanterIdx];
+      const reply = (opt === 1) ? b.r1 : b.r2;
+      document.getElementById("choices-container").style.display = "none";
+      setFace(opt === 1 ? 'smug' : 'eyeroll');
+      typeWriter(reply);
     }
 
-    function triggerRandomDialogue() {
-      triggerConvo(Math.floor(Math.random() * CONVERSATIONS.length));
+    function triggerTalkBanter() {
+      playBeep(440);
+      triggerBanter(Math.floor(Math.random() * BANTER_BANK.length));
     }
 
-    // Autonomous conversation prompt every 60 seconds
+    // Auto banter every 60 seconds
     setInterval(() => {
-      if (!STATE.isSleeping) {
-        triggerRandomDialogue();
-      }
+      if (!STATE.isSleeping) triggerTalkBanter();
     }, 60000);
 
     /* =========================================================================
-       5. AUTONOMOUS ANIMATIONS & SPECIAL BEHAVIORS
-       ========================================================================= */
-    let animFrame = 0;
-    const petChar = document.getElementById("pet-character");
-    const soul = document.getElementById("belly-soul");
-
-    function mainAnimationLoop() {
-      animFrame++;
-      if (!STATE.isSleeping) {
-        const bounce = Math.sin(animFrame * 0.1) * 2;
-        petChar.setAttribute("transform", `translate(85, ${52 + bounce})`);
-
-        // Soul rhythmic pulse
-        const scale = 1 + Math.sin(animFrame * 0.16) * 0.08;
-        soul.setAttribute("transform", `scale(${scale}) translate(${15 - 15*scale}, ${30 - 30*scale})`);
-      }
-      requestAnimationFrame(mainAnimationLoop);
-    }
-    requestAnimationFrame(mainAnimationLoop);
-
-    // Special micro-behaviors triggering every 5 minutes (or on poke)
-    function runSpecialBehavior() {
-      const fly = document.getElementById("fly-target");
-      const tongue = document.getElementById("frog-tongue");
-      const blep = document.getElementById("frog-blep");
-      const lens = document.getElementById("prop-lens");
-
-      const rand = Math.random();
-      if (rand < 0.35) {
-        // Fly snatch
-        fly.style.display = "block";
-        setTimeout(() => {
-          tongue.style.display = "block";
-          playBeep(700);
-          setTimeout(() => {
-            fly.style.display = "none";
-            tongue.style.display = "none";
-            typeWriterText("* SLURP! Fast micro-reaction test passed. My reflexes are optimal.");
-          }, 240);
-        }, 700);
-      } else if (rand < 0.7) {
-        // Magnifier Inspect
-        lens.style.display = "block";
-        setFrogFace('think');
-        typeWriterText("* Running diagnostics on your study environment... Parameters acceptable.");
-        setTimeout(() => { lens.style.display = "none"; setFrogFace('neutral'); }, 3000);
-      } else {
-        // Blep
-        blep.style.display = "block";
-        playBeep(500);
-        setTimeout(() => { blep.style.display = "none"; }, 1600);
-      }
-    }
-    setInterval(runSpecialBehavior, 300000); // 5 minutes
-
-    function pokeFrog() {
-      playBeep(580);
-      runSpecialBehavior();
-    }
-
-    /* =========================================================================
-       6. STATE, NAVIGATION & UI REFRESH
+       5. PERSISTENT PROGRESSION & SEQUENTIAL UNLOCK ENGINE
        ========================================================================= */
     let STATE = {
-      dimIdx: 0,
-      checked: {},
-      skills: ["Foundational Empathy Anchor"],
-      questStage: 2,
+      activeTrackIdx: 0,
+      unlockedHighestTrack: 0, // Starts at Track 1, others LOCKED!
+      checks: {},              // Verified parts per track
+      unlockedPowers: [],      // Badges
       isSleeping: false
     };
 
-    function saveState() {
-      try { localStorage.setItem("frog_undertale_save", JSON.stringify(STATE)); } catch(e) {}
+    function save() {
+      try { localStorage.setItem("frog_v5_master_progression", JSON.stringify(STATE)); } catch (e) {}
     }
     try {
-      const s = localStorage.getItem("frog_undertale_save");
+      const s = localStorage.getItem("frog_v5_master_progression");
       if (s) STATE = JSON.parse(s);
-    } catch(e) {}
+    } catch (e) {}
 
-    function navTopic(delta) {
+    function navigateTrack(delta) {
+      const next = STATE.activeTrackIdx + delta;
+      if (next < 0) return;
+      if (next > STATE.unlockedHighestTrack) {
+        playBeep(220);
+        setFace('smug');
+        typeWriter("* Woah there, speed racer! That track is LOCKED 🔒. Finish all 5 flowcharts on this track first!");
+        return;
+      }
       playBeep(480);
-      STATE.dimIdx = Math.max(0, Math.min(CORPUS.length - 1, STATE.dimIdx + delta));
+      STATE.activeTrackIdx = next;
       STATE.isSleeping = false;
-      saveState();
+      save();
       refreshUI();
-      typeWriterText(`* Loaded Dimension ${STATE.dimIdx + 1}. Check the flowchart framework before drawing your note.`);
+      typeWriter(`* Switched to Track ${STATE.activeTrackIdx + 1}. Check the blueprint and let's get to work!`);
     }
 
     function refreshUI() {
-      const cur = CORPUS[STATE.dimIdx];
-      document.getElementById("nav-topic-title").innerText = cur.title;
+      const cur = TRACKS[STATE.activeTrackIdx];
+      const isLocked = STATE.activeTrackIdx > STATE.unlockedHighestTrack;
 
-      if (!STATE.checked[cur.id]) STATE.checked[cur.id] = [false, false, false, false, false];
-      const checks = STATE.checked[cur.id];
+      document.getElementById("track-title-display").innerText = isLocked ? `🔒 ${cur.title} [LOCKED]` : cur.title;
+      document.getElementById("btn-prev").disabled = (STATE.activeTrackIdx === 0);
+      document.getElementById("btn-next").disabled = (STATE.activeTrackIdx >= TRACKS.length - 1);
+
+      if (!STATE.checks[cur.id]) STATE.checks[cur.id] = [false, false, false, false, false];
+      const checks = STATE.checks[cur.id];
       const done = checks.filter(Boolean).length;
 
-      document.getElementById("exp-count").innerText = done;
+      document.getElementById("hud-level").innerText = STATE.activeTrackIdx + 1;
+      document.getElementById("hud-exp").innerText = done;
+      document.getElementById("bond-status").innerText = `LV ${STATE.unlockedHighestTrack + 1}`;
 
-      const list = document.getElementById("subcat-list");
-      list.innerHTML = "";
+      const mount = document.getElementById("checklist-mount");
+      mount.innerHTML = "";
       cur.parts.forEach((p, idx) => {
-        const item = document.createElement("div");
-        item.className = `check-item ${checks[idx] ? 'done' : ''}`;
-        item.innerText = p.name;
-        list.appendChild(item);
+        const row = document.createElement("div");
+        row.className = `subcat-row ${checks[idx] ? 'done' : ''}`;
+        row.innerText = p.name;
+        mount.appendChild(row);
       });
 
-      document.getElementById("quest-desk").style.display = STATE.questStage >= 1 ? "block" : "none";
-      document.getElementById("quest-lamp").style.display = STATE.questStage >= 2 ? "block" : "none";
+      // Sequentially unlock room decor as player progresses!
+      document.getElementById("decor-desk").style.display = STATE.unlockedHighestTrack >= 1 ? "block" : "none";
+      document.getElementById("decor-lamp").style.display = STATE.unlockedHighestTrack >= 2 ? "block" : "none";
 
       if (STATE.isSleeping) {
         petChar.style.display = "none";
@@ -810,33 +718,92 @@
     }
 
     /* =========================================================================
-       7. MODALS & FLOWCHART FRAMEWORK
+       6. AUTONOMOUS ANIMATIONS LOOP
        ========================================================================= */
-    function openDiagramFramework() {
-      const cur = CORPUS[STATE.dimIdx];
-      document.getElementById("diagram-tree-text").innerText = cur.diagram;
+    let animCount = 0;
+    const petChar = document.getElementById("pet-character");
+    const soul = document.getElementById("belly-soul");
+
+    function animationTick() {
+      animCount++;
+      if (!STATE.isSleeping) {
+        const bounce = Math.sin(animCount * 0.1) * 2;
+        petChar.setAttribute("transform", `translate(85, ${52 + bounce})`);
+
+        // Soul pulse
+        const s = 1 + Math.sin(animCount * 0.16) * 0.08;
+        soul.setAttribute("transform", `scale(${s}) translate(${15 - 15*s}, ${30 - 30*s})`);
+      }
+      requestAnimationFrame(animationTick);
+    }
+    requestAnimationFrame(animationTick);
+
+    // Micro behaviors every 5 minutes (or poke)
+    function runSpecialBehavior() {
+      const fly = document.getElementById("fly-target");
+      const tongue = document.getElementById("frog-tongue");
+      const blep = document.getElementById("frog-blep");
+      const lens = document.getElementById("prop-lens");
+
+      const rand = Math.random();
+      if (rand < 0.35) {
+        fly.style.display = "block";
+        setTimeout(() => {
+          tongue.style.display = "block";
+          playBeep(700);
+          setTimeout(() => {
+            fly.style.display = "none";
+            tongue.style.display = "none";
+            setFace('smug');
+            typeWriter("* SLURP! 🪰 Mmm, pure protein. Now back to the psychology books!");
+          }, 240);
+        }, 700);
+      } else if (rand < 0.7) {
+        lens.style.display = "block";
+        setFace('eyeroll');
+        typeWriter("* Investigating your notes... Hmm, handwriting readability: questionable.");
+        setTimeout(() => { lens.style.display = "none"; setFace('neutral'); }, 3000);
+      } else {
+        blep.style.display = "block";
+        playBeep(500);
+        setTimeout(() => { blep.style.display = "none"; }, 1600);
+      }
+    }
+    setInterval(runSpecialBehavior, 300000); // 5 min
+
+    function pokeFrog() {
+      playBeep(550);
+      runSpecialBehavior();
+    }
+
+    /* =========================================================================
+       7. MODALS (FLOWCHART BLUEPRINT & POWERS)
+       ========================================================================= */
+    function openDiagramFrameworkModal() {
+      playBeep(520);
+      const cur = TRACKS[STATE.activeTrackIdx];
+      document.getElementById("ascii-diagram-mount").innerText = cur.blueprint;
       document.getElementById("diagram-modal").style.display = "flex";
     }
 
-    function openStatsModal() {
-      const content = document.getElementById("stats-content");
-      content.innerHTML = `
-        <div>* LV 1 (Psychological Observer)</div>
-        <div>* AFFECTION: 100/100</div>
-        <div>* DIMENSION: ${STATE.dimIdx + 1} / 30</div>
-        <div style="margin-top:6px; color:var(--ut-yellow);">* UNLOCKED POWERS:</div>
-        ${STATE.skills.map(s => `<div>  - ${s}</div>`).join('')}
-      `;
-      document.getElementById("stats-modal").style.display = "flex";
+    function openPowersModal() {
+      playBeep(600);
+      const mount = document.getElementById("powers-list-mount");
+      if (STATE.unlockedPowers.length === 0) {
+        mount.innerHTML = "<div>* None yet! Complete a full track (5/5) to unlock your first communication superpower!</div>";
+      } else {
+        mount.innerHTML = STATE.unlockedPowers.map(p => `<div>⭐ ${p}</div>`).join('');
+      }
+      document.getElementById("powers-modal").style.display = "flex";
     }
 
     function closeModal(id) {
-      playBeep(350);
+      playBeep(320);
       document.getElementById(id).style.display = "none";
     }
 
     /* =========================================================================
-       8. PRECISION CAMERA SCANNER (OCR ENGINE)
+       8. CAMERA OCR SCANNER & PROGRESSION VALIDATOR
        ========================================================================= */
     const cameraInput = document.getElementById("camera-input");
     cameraInput.addEventListener("change", (e) => {
@@ -844,7 +811,8 @@
       if (!file) return;
 
       playBeep(520);
-      typeWriterText("* Processing paper image with neural OCR parser...");
+      setFace('neutral');
+      typeWriter("* Processing handwritten diagram with neural OCR vision...");
 
       if (!window.Tesseract) {
         const s = document.createElement("script");
@@ -863,9 +831,9 @@
         const text = res.data.text.toLowerCase();
         await worker.terminate();
 
-        const cur = CORPUS[STATE.dimIdx];
-        const checks = STATE.checked[cur.id];
-        let newlyFound = 0;
+        const cur = TRACKS[STATE.activeTrackIdx];
+        const checks = STATE.checks[cur.id];
+        let newlyVerified = 0;
 
         cur.parts.forEach((part, idx) => {
           if (!checks[idx]) {
@@ -874,7 +842,7 @@
 
             if (hasKeyword || hasSyntax) {
               checks[idx] = true;
-              newlyFound++;
+              newlyVerified++;
             }
           }
         });
@@ -882,27 +850,35 @@
         const total = checks.filter(Boolean).length;
         if (total === 5) {
           STATE.isSleeping = true;
-          if (!STATE.skills.includes(cur.skill)) STATE.skills.push(cur.skill);
-          setFrogFace('wink');
-          typeWriterText(`* VICTORY! All 5 flowchart nodes verified. Superpower unlocked: [${cur.skill}]. Going to bed! 🛌`);
-        } else if (newlyFound > 0) {
-          setFrogFace('think');
-          typeWriterText(`* Recognized ${newlyFound} valid flowchart nodes! Total: ${total}/5 verified.`);
+          if (!STATE.unlockedPowers.includes(cur.powerBadge)) {
+            STATE.unlockedPowers.push(cur.powerBadge);
+          }
+          // UNLOCK NEXT TRACK!
+          if (STATE.unlockedHighestTrack === STATE.activeTrackIdx) {
+            STATE.unlockedHighestTrack++;
+          }
+          setFace('smug');
+          playBeep(880);
+          typeWriter(`* BOOM! All 5 verified! Superpower unlocked: [${cur.powerBadge}]! Next track unlocked! I can finally sleep without detonating! 🛌`);
+        } else if (newlyVerified > 0) {
+          setFace('smug');
+          typeWriter(`* Nice! Verified ${newlyVerified} flowchart nodes! Total: ${total}/5 complete.`);
         } else {
-          setFrogFace('shock');
-          typeWriterText("* Scanned paper, but could not detect matching diagram nodes or keywords. Ensure clear handwriting!");
+          setFace('shock');
+          typeWriter("* I scanned the paper, but couldn't detect the flowchart arrows (->) or keywords. Draw cleaner nodes, human!");
         }
 
-        saveState();
+        save();
         refreshUI();
       } catch (err) {
-        typeWriterText("* Scan error: Please ensure good lighting and hold the camera steady.");
+        setFace('eyeroll');
+        typeWriter("* Scan error! Steady your hands and get better lighting!");
       }
     }
 
-    // Launch!
+    // BOOT
     refreshUI();
-    triggerConvo(0);
+    triggerBanter(0);
   </script>
 </body>
 </html>
