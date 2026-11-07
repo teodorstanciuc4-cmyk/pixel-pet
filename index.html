@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Behavioral Companion • 400-Book Mentor</title>
+  <title>Behavioral Companion • 400 Books</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PixelPet">
@@ -162,17 +162,11 @@
       color: var(--gold);
       z-index: 10;
     }
-    .pulse-scan {
-      font-size: 30px;
-      animation: spin 1.5s infinite linear;
-      margin-bottom: 8px;
-    }
-    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
 
-  <!-- 08.11.2026 DATE GATE -->
+  <!-- DATE GATE: Target 08.11.2026 -->
   <div id="gate-screen">
     <div style="font-size: 55px; margin-bottom: 16px;">⏳👾</div>
     <h2>STASIS LOCKOUT</h2>
@@ -189,13 +183,13 @@
   <div id="stage-wrap">
     <div id="pixel-display" style="width: 100%; height: 100%;"></div>
     <div id="scanner-modal">
-      <div class="pulse-scan">⚙️</div>
+      <div style="font-size: 30px; margin-bottom: 8px;">⚙️</div>
       <div style="margin-bottom: 6px;">📷 SCANNING HOMEWORK NOTE...</div>
       <div id="ocr-status" style="font-size: 0.65rem; color: #94a3b8;">Deciphering paper handwriting...</div>
     </div>
   </div>
 
-  <div id="dialogue-container">Initializing neural telemetry...</div>
+  <div id="dialogue-container">Connecting to behavioral neural matrix...</div>
 
   <div class="dashboard">
     <div class="metric-row">
@@ -219,205 +213,31 @@
   </div>
 
   <script>
-    /* =========================================================================
-       1. THE MASTER 30-DIMENSION CORPUS (Books 1–400)
-       ========================================================================= */
+    // SELF-HEALING: Clear corrupt localStorage from previous attempts
+    try {
+      localStorage.removeItem("pixel_master_app_state");
+      localStorage.removeItem("pet_mentor_state_v2");
+    } catch(e) {}
+
+    /* 1. MASTER 30 CATEGORIES */
     const TOPICS = [
       { id: 1, title: "Values (Books 1–13)", parts: [
-        { name: "Part 1: Core Diagnostic Probe", kw: ["non-negotiable", "metric", "specific element", "highest personal criteria"] },
-        { name: "Part 2: Decision Frame Check", kw: ["prioritize", "specific path", "choices", "underlying criteria"] },
-        { name: "Part 3: SCARF Control Assessment", kw: ["structural control", "timeline", "status", "certainty", "autonomy"] },
-        { name: "Part 4: Bottleneck Verifier", kw: ["resolve", "immediate problem", "triggers", "internal urgency"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["catalyst", "circuit-breaker", "framework", "execution speed"] }
+        { name: "Part 1: Core Diagnostic Probe", kw: ["non-negotiable", "metric", "specific element"] },
+        { name: "Part 2: Decision Frame Check", kw: ["prioritize", "specific path", "choices"] },
+        { name: "Part 3: SCARF Control Assessment", kw: ["structural control", "timeline", "status"] },
+        { name: "Part 4: Bottleneck Verifier", kw: ["resolve", "immediate problem", "triggers"] },
+        { name: "Part 5: Combined Matrix Outcome", kw: ["catalyst", "circuit-breaker", "framework"] }
       ]},
       { id: 2, title: "Roles (Books 14–26)", parts: [
-        { name: "Part 1: Parent-to-Adult Logic Pivot", kw: ["data logs", "specific metrics", "control", "objective"] },
-        { name: "Part 2: Drama Triangle Escape Hatch", kw: ["capacity", "handle this file", "options", "complainer"] },
-        { name: "Part 3: Insult Exhaustion Agreement", kw: ["entirely right", "improve", "speed", "passive-aggressive"] },
-        { name: "Part 4: Double-Bind Exposure", kw: ["choice a", "choice b", "timeline breaks", "trap", "no-win"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["rational peers", "emotional shifting", "milestone", "numbers"] }
+        { name: "Part 1: Parent-to-Adult Logic Pivot", kw: ["data logs", "specific metrics", "control"] },
+        { name: "Part 2: Drama Triangle Escape Hatch", kw: ["capacity", "handle this file", "options"] },
+        { name: "Part 3: Insult Exhaustion Agreement", kw: ["entirely right", "improve", "speed"] },
+        { name: "Part 4: Double-Bind Exposure", kw: ["choice a", "choice b", "timeline breaks"] },
+        { name: "Part 5: Combined Matrix Outcome", kw: ["rational peers", "emotional shifting", "milestone"] }
       ]},
       { id: 3, title: "Traits (Books 27–40)", parts: [
-        { name: "Part 1: Dominance Calibration Script", kw: ["parameter", "matching code", "boundaries", "authority"] },
-        { name: "Part 2: Introversion Processing Bridge", kw: ["time you need", "written log", "zero-pressure", "quiet"] },
-        { name: "Part 3: Skepticism Alignment Formula", kw: ["48-hour experiment", "data baseline", "test", "distrustful"] },
-        { name: "Part 4: Validation Reflex Hook", kw: ["precision", "system layout", "sign-off", "praise"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["structural focus", "micro-auditing", "workflow", "design loop"] }
-      ]},
-      { id: 4, title: "Framing (Books 41–53)", parts: [
-        { name: "Part 1: Space Anchor", kw: ["singular objective", "memory lag", "parameters", "conversational drift"] },
-        { name: "Part 2: Semantic Priming Loop", kw: ["structural reliability", "system upgrade", "words", "analytical"] },
-        { name: "Part 3: Default Option Optimization", kw: ["standard protocol", "exception form", "choices", "preferred"] },
-        { name: "Part 4: Contextual Shift Wedge", kw: ["step back", "error log history", "solution frame", "patch script"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["optimization", "budget log", "deviations", "vector layout"] }
-      ]},
-      { id: 5, title: "States (Books 54–66)", parts: [
-        { name: "Part 1: Anxiety De-escalation", kw: ["step-by-step", "verification plan", "stabilize", "certainties"] },
-        { name: "Part 2: Fatigue Mitigation Frame", kw: ["path a", "path b", "binary paths", "exhausted"] },
-        { name: "Part 3: Agitation Velocity Brake", kw: ["pause", "core line", "slow pacing", "hyper-aroused"] },
-        { name: "Part 4: Burnout Recovery Loop", kw: ["horizon", "two lines of code", "immediate win", "small"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["baseline calm", "patch loop", "resume tomorrow", "shut down"] }
-      ]},
-      { id: 6, title: "Conversation Loops (Books 67–79)", parts: [
-        { name: "Part 1: Entry Hook Launcher", kw: ["logic fracture", "retention", "cognitive focus", "anchor"] },
-        { name: "Part 2: Thread Branching Matrix", kw: ["hold that thought", "budget", "script discussion", "branching"] },
-        { name: "Part 3: Interruption Recovery Shield", kw: ["identical volume", "refusing to yield", "interrupter", "pace"] },
-        { name: "Part 4: Structural Exit Closure", kw: ["parameters locked", "focus window", "results tomorrow", "exit"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["communication loop", "deep processing", "looping", "metrics"] }
-      ]},
-      { id: 7, title: "Fear (Books 80–93)", parts: [
-        { name: "Part 1: Safety Guarantee Script", kw: ["regardless of outcome", "position on this team", "secure", "safety"] },
-        { name: "Part 2: Loss Isolation Anchor", kw: ["worst-case scenario", "realistic consequences", "dread", "fail"] },
-        { name: "Part 3: Blame Exemption Frame", kw: ["architecture flaw", "individual error", "compliance blocks"] },
-        { name: "Part 4: Step-by-Step Micro-Promise", kw: ["single paragraph", "stepping stones", "micro-promise"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["threat vector", "hide data", "breaking the system", "safe"] }
-      ]},
-      { id: 8, title: "Anger (Books 94–106)", parts: [
-        { name: "Part 1: Expectation Shock Buffer", kw: ["release timeline", "derailed", "planning", "aggressive"] },
-        { name: "Part 2: Vocal Octave Downshift", kw: ["pitch", "monotone", "quiet style", "refuse volume"] },
-        { name: "Part 3: Fact-Story Separation Split", kw: ["objective data", "story you are creating", "malicious", "factual"] },
-        { name: "Part 4: De-escalation Label Tool", kw: ["unappreciated", "ignored", "leadership group", "frustration"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["emotional fire", "re-write line metrics", "hostile tones", "paused"] }
-      ]},
-      { id: 9, title: "Shame (Books 107–119)", parts: [
-        { name: "Part 1: Face-Saving Escape Route", kw: ["chaotic lack of documentation", "anyone would have missed", "excuse"] },
-        { name: "Part 2: Universal Vulnerability Bridge", kw: ["broke the exact same database", "past error", "exposure"] },
-        { name: "Part 3: Group Re-alignment Frame", kw: ["error is noted", "long-term value", "unquestioned", "reassure"] },
-        { name: "Part 4: Objective Error Decoupler", kw: ["code syntax issue", "not reflection of intelligence", "separate"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["error cleared", "optimize repository", "defensiveness", "progress"] }
-      ]},
-      { id: 10, title: "Pride (Books 120–132)", parts: [
-        { name: "Part 1: Competence Validation Hook", kw: ["deep expertise", "need your advice", "ego", "compliance"] },
-        { name: "Part 2: Credit Redirection Move", kw: ["successful deployment", "foundational research", "praise ego"] },
-        { name: "Part 3: Asymmetric Concession Pivot", kw: ["specific word choices", "documentation header", "yield", "cooperation"] },
-        { name: "Part 4: High-Status Alignment Frame", kw: ["elite optimization", "bounded strictly to you", "exclusive"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["execution standard", "scale design layout", "need to be right", "bottleneck"] }
-      ]},
-      { id: 11, title: "Desire (Books 133–145)", parts: [
-        { name: "Part 1: Incentive Alignment Prompt", kw: ["automated routine", "5 hours of personal freedom", "desire", "benefit"] },
-        { name: "Part 2: Status Upgrade Frame", kw: ["lead architect role", "launch day", "social rank", "elevates"] },
-        { name: "Part 3: Legacy Trajectory Script", kw: ["architecture blueprint", "five years", "lasting monument"] },
-        { name: "Part 4: Validation Reward Drop", kw: ["memory fracture", "brilliant", "entire team is talking", "praise"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["personal trajectory", "take ownership", "craving for shortcuts", "drops out"] }
-      ]},
-      { id: 12, title: "Active Listening (Books 146–158)", parts: [
-        { name: "Part 1: Last-Three-Words Mirror", kw: ["mirror", "questioning tone", "last 3 words", "explain further"] },
-        { name: "Part 2: Tactical Empathy Label", kw: ["looks like you feel", "ignores your input", "name emotion"] },
-        { name: "Part 3: 3-Second Structural Pause", kw: ["silence", "3 full seconds", "uncomfortable silence", "unscripted truths"] },
-        { name: "Part 4: Perspective Summary Check", kw: ["primary concern", "data lag", "older models", "summarize"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["fully copy your position", "system patch", "misaligned", "reset baseline"] }
-      ]},
-      { id: 13, title: "Compliance (Books 159–171)", parts: [
-        { name: "Part 1: Autonomy Release Lock", kw: ["review this file", "entirely free to say no", "autonomy", "pushback"] },
-        { name: "Part 2: Identity Label Assignment", kw: ["values absolute precision", "catch the errors", "character label"] },
-        { name: "Part 3: Safe 'No' Request Trigger", kw: ["horrible idea", "change layout vector", "ease of saying no"] },
-        { name: "Part 4: Asymmetric Request Pivot", kw: ["massive change request", "compromise", "drop to real task"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["agreement locked", "structural modifications", "refuse to commit", "collaboration ends"] }
-      ]},
-      { id: 14, title: "Command (Books 172–184)", parts: [
-        { name: "Part 1: Schedule Constraint Boundary", kw: ["3:15 pm", "critical item first", "stop wasting time", "clarity"] },
-        { name: "Part 2: Core Stripping Simplifier", kw: ["core bottleneck", "script loop is broken", "clarity in group"] },
-        { name: "Part 3: Choice Matrix Parameter", kw: ["9:00 am on monday", "4:00 pm on tuesday", "control parameters"] },
-        { name: "Part 4: Clean Action Protocol", kw: ["who handles this task", "exact hour", "track it", "roadmap"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["directive parameters", "non-negotiable hard stop", "no variations"] }
-      ]},
-      { id: 15, title: "Biases (Books 185–197)", parts: [
-        { name: "Part 1: Contrast Valuation Anchor", kw: ["monthly cost", "fast-food meal", "tiny everyday expense"] },
-        { name: "Part 2: Halo Effect Builder", kw: ["server latency", "record 65%", "undeniable win", "halo"] },
-        { name: "Part 3: Loss-Aversion Inversion", kw: ["security patch", "50,000 ron", "loss aversion", "stand to lose"] },
-        { name: "Part 4: Endowment Handover Script", kw: ["new workspace layout", "speed jump", "ownership", "attachment"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["cognitive parameters", "anchoring trap", "outdated numbers", "purge baseline"] }
-      ]},
-      { id: 16, title: "Habit Anchors (Books 198–210)", parts: [
-        { name: "Part 1: Micro Anchor Link Strategy", kw: ["close this laptop", "open psychology text", "automatic habit"] },
-        { name: "Part 2: Two-Minute Rule Ignition", kw: ["120 seconds", "read code", "low-friction start", "bypass laziness"] },
-        { name: "Part 3: Public Commitment Trigger", kw: ["confirm out loud", "deliver by tuesday", "accountability statement"] },
-        { name: "Part 4: Identity Statement Shift", kw: ["not someone trying", "professional student of behavioral systems", "identity"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["habit loop", "daily schedule", "single gap breaks chain", "purge progress"] }
-      ]},
-      { id: 17, title: "Attention Traps (Books 211–223)", parts: [
-        { name: "Part 1: Curiosity Gap Opener", kw: ["cuts retention by 40%", "1970s manual", "mystery", "withhold"] },
-        { name: "Part 2: Zeigarnik Loop Retention", kw: ["pause discussion", "process baseline variables", "open loop"] },
-        { name: "Part 3: Sudden Cadence Shift", kw: ["speaking velocity", "clip word endings", "snap drifting minds"] },
-        { name: "Part 4: Vivid Metaphor Bridge", kw: ["rag database layer", "library assistant", "everyday images"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["cognitive focus", "download final system", "focus degraded", "terminate session"] }
-      ]},
-      { id: 18, title: "Status Shields (Books 224–236)", parts: [
-        { name: "Part 1: Status Leveler Dialogue", kw: ["layout parameters", "implement directly", "skip over-polite filler"] },
-        { name: "Part 2: Spotlight Shift Move", kw: ["optimized pipeline", "spent all night sorting", "redirect praise"] },
-        { name: "Part 3: Frame Hijack Intercept", kw: ["interesting point", "separate session", "lock focus back"] },
-        { name: "Part 4: Flaw Ownership Move", kw: ["missed script error", "line 42", "admit small mistake", "strip critics"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["professional boundary secure", "asymmetric status threat", "adjust tone"] }
-      ]},
-      { id: 19, title: "Certainty Anchors (Books 237–249)", parts: [
-        { name: "Part 1: Explicit Roadmap Formula", kw: ["first we review", "second we test", "third we lock", "roadmap"] },
-        { name: "Part 2: Verifiable Metric Swap", kw: ["inbox by exactly 4:00 pm", "thursday", "exact deadlines", "trust"] },
-        { name: "Part 3: System Reassurance Script", kw: ["server mirror ready", "catch traffic", "operational backups"] },
-        { name: "Part 4: Boundary Definition Code", kw: ["database loop only", "frontend ui elements completely separate"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["operational certainty", "launch pipeline", "fluid and unverified", "stop rollout"] }
-      ]},
-      { id: 20, title: "Autonomy Preserves (Books 250–262)", parts: [
-        { name: "Part 1: Open-Ended Delivery Drive", kw: ["what specific strategy", "layout bottleneck", "queries start with what"] },
-        { name: "Part 2: Reactance Bypass Script", kw: ["review when you can", "how you adjust is up to you", "freedom clauses"] },
-        { name: "Part 3: Branching Dialogue Invitation", kw: ["server memory or security matrix", "choose the path", "feeling in control"] },
-        { name: "Part 4: Solution Extraction Probe", kw: ["how am i supposed to meet that deadline", "calibrated question"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["operational execution path", "full autonomy", "absolute mandate", "collaboration breaks"] }
-      ]},
-      { id: 21, title: "Relatedness Ties (Books 263–275)", parts: [
-        { name: "Part 1: Common Enemy Matrix", kw: ["server platform lag", "engineering lives miserable", "shared annoyance"] },
-        { name: "Part 2: Vulnerability Wedge", kw: ["broke exact same database", "personal mistake", "feel safe"] },
-        { name: "Part 3: Mirroring Vocal Baseline", kw: ["volume level", "speaking speed", "subconscious connection"] },
-        { name: "Part 4: Deep Insight Query", kw: ["keeps you up at night", "project architecture", "cut past small talk"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["professional alliance", "lock down code", "treating as adversary", "data link severed"] }
-      ]},
-      { id: 22, title: "Fairness Audits (Books 276–288)", parts: [
-        { name: "Part 1: Shared Debt Framework", kw: ["committed to this milestone", "split code review cleanly", "fair mutual deals"] },
-        { name: "Part 2: Concession Rebalancing Anchor", kw: ["adjusted my timeline", "what parameters can you adjust", "balance of power"] },
-        { name: "Part 3: Value Exchange Audit", kw: ["data engine", "security layout", "benefits for both sides"] },
-        { name: "Part 4: Resentment Pre-emption", kw: ["feel completely balanced", "too heavy", "eliminate resentment"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["value exchange locked", "one-sided", "reject terms", "renegotiate"] }
-      ]},
-      { id: 23, title: "Deception Reads (Books 289–301)", parts: [
-        { name: "Part 1: Chronological Baseline Audit", kw: ["step-by-step sequence", "server crash yesterday", "holes in narrative"] },
-        { name: "Part 2: Asymmetrical Detail Probe", kw: ["exact error message string", "second it stopped", "story holds up"] },
-        { name: "Part 3: Logic Shift Interception", kw: ["change in voice speed", "unprompted over-explaining", "intercept"] },
-        { name: "Part 4: Direct Contrast Check", kw: ["at 9 am you stated", "now you state", "align that", "contrast"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["timeline metrics clean", "contradictory", "freezes until raw logs"] }
-      ]},
-      { id: 24, title: "Confrontation Defusals (Books 302–314)", parts: [
-        { name: "Part 1: Safety Restoration Pivot", kw: ["not to allocate blame", "goal is to fix script error", "separate problem"] },
-        { name: "Part 2: Identity Decoupling Shield", kw: ["code syntax on line 12", "not reflection of capability", "neutral phrases"] },
-        { name: "Part 3: Amygdala Hijack Brake", kw: ["flat monotone delivery", "wait 4 seconds", "cool down emotional loops"] },
-        { name: "Part 4: Common Ground Anchor", kw: ["step back", "mobile application run flawlessly", "shared group goals"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["confrontation defused", "resolve line script", "shutting down link", "shouting matches stop"] }
-      ]},
-      { id: 25, title: "Accusation Cleansers (Books 315–327)", parts: [
-        { name: "Part 1: Aggressive Pre-emption Script", kw: ["unreasonable", "micromanaging code logs", "worst things upfront"] },
-        { name: "Part 2: Misunderstanding Inversion", kw: ["100% personal responsibility", "did not provide clear written info", "drop defenses"] },
-        { name: "Part 3: Intent Clarification Shield", kw: ["absolute intent", "system does not crash under load", "positive intentions"] },
-        { name: "Part 4: Suspicion Neutralization Loop", kw: ["clear the air", "hidden reservations", "layout change", "friction"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["operational air clear", "execute engineering", "unstated suspicions", "freeze progress"] }
-      ]},
-      { id: 26, title: "Persuasion Primes (Books 328–340)", parts: [
-        { name: "Part 1: Pre-Framed Value Statement", kw: ["three hours mapping this out", "value efficiency", "work you did"] },
-        { name: "Part 2: Micro-Concession Swap", kw: ["adjust this single word", "documentation header", "habit of saying yes"] },
-        { name: "Part 3: Consistent History Anchor", kw: ["delivered clean code baselines", "keep that standard", "stay consistent"] },
-        { name: "Part 4: Social Proof Alignment", kw: ["three other teams shifted", "repository format", "zero issues"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["agreement primed", "master request", "arbitrary friction", "breaks consistency"] }
-      ]},
-      { id: 27, title: "Vulnerability Wedges (Books 341–353)", parts: [
-        { name: "Part 1: Flaw Ownership Move", kw: ["missed script error", "line 42", "harmless mistake", "safe to be honest"] },
-        { name: "Part 2: Shared Uncertainty Frame", kw: ["do not have final answer", "server lag", "isolate data together"] },
-        { name: "Part 3: Assistance Request Hook", kw: ["hitting a wall", "look at this script for five minutes", "ask for help"] },
-        { name: "Part 4: Lesson Learned Narrative", kw: ["crashed main database", "rushing a build", "how i learned to patch"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["authentic technical alignment", "execute rewrite", "weaponize vulnerability", "loop terminates"] }
-      ]},
-      { id: 28, title: "Impression Facades (Books 354–367)", parts: [
-        { name: "Part 1: High-Status Space Occupation", kw: ["exactly one sentence", "stop speaking entirely", "project authority"] },
-        { name: "Part 2: Executive Cadence Control", kw: ["speaking speed by 20%", "clip word endings", "total precision"] },
-        { name: "Part 3: Professional Frame Reset", kw: ["funny weekend story", "pivot and review database memory", "project targets"] },
-        { name: "Part 4: Authority Signature Drop", kw: ["vector layout matrix", "rag database extraction", "domain-specific terms"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["status baseline locked", "facade lacks factual backing", "rejects until metrics"] }
-      ]},
-      { id: 29, title: "Insulation Controls (Books 368–384)", parts: [
-        { name: "Part 1: Control Separation Filter", kw: ["zero control over server crash", "100% control over resp
+        { name: "Part 1: Dominance Calibration Script", kw: ["parameter", "matching code", "boundaries"] },
+        { name: "Part 2: Introversion Processing Bridge", kw: ["time you need", "written log", "zero-pressure"] },
+        { name: "Part 3: Skepticism Alignment Formula", kw: ["48-hour experiment", "data baseline", "test"] },
+        { name: "Part 4: Validation Reflex Hook", kw: ["precision", "system layout", "sign-off"] },
+        { name: "Part 5: Combined Matrix Outcome", kw: ["structural focus", "micro-aud
