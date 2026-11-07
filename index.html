@@ -2,33 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>FROGGY v5.0 • PIXEL RPG COMPANION</title>
+  <title>UNDERTALE • FROGGY BEHAVIORAL MATRIX</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PixelFrog">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <link rel="manifest" href='data:application/manifest+json,{"name":"PixelFrog","short_name":"PixelFrog","start_url":".","display":"standalone","background_color":"#000000","theme_color":"#000000"}'>
 
-  <!-- Retro Pixel Font -->
+  <!-- 8-Bit Pixel Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
   <style>
     /* =========================================================================
-       1. TRUE 8-BIT RETRO PIXEL UI & PALETTE
+       1. AUTHENTIC UNDERTALE RETRO ENGINE STYLES
        ========================================================================= */
     :root {
-      --bg: #05070a;
-      --panel: #0d121d;
-      --border-dark: #000000;
-      --border-light: #ffffff;
-      --border-gray: #4b587a;
-      --green-main: #00b894;
-      --green-glow: #55efc4;
-      --yellow: #feca57;
-      --pink: #ff6b81;
-      --red: #ff4757;
+      --ut-black: #000000;
+      --ut-white: #ffffff;
+      --ut-orange: #ff9900;
+      --ut-yellow: #ffff00;
+      --ut-red: #ff0000;
+      --ut-green-grid: #00aa44;
+      --ut-gray: #444444;
       --font-pixel: 'Press Start 2P', monospace;
     }
 
@@ -39,393 +36,361 @@
       user-select: none;
       -webkit-tap-highlight-color: transparent;
       image-rendering: pixelated;
-      shape-rendering: crispEdges;
     }
 
     body {
-      background-color: var(--bg);
-      color: #ffffff;
+      background-color: var(--ut-black);
+      color: var(--ut-white);
       font-family: var(--font-pixel);
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      padding: 10px 8px 60px 8px;
+      padding: 8px 6px 60px 6px;
       overflow-x: hidden;
     }
 
-    /* Chunky Pixel Box Border */
-    .pixel-frame {
-      background: var(--panel);
-      border: 4px solid var(--border-dark);
-      box-shadow:
-        inset -4px -4px 0px 0px var(--border-gray),
-        inset 4px 4px 0px 0px var(--border-light),
-        0 4px 0 0 #000;
-      position: relative;
+    /* Screen container wrapper */
+    .screen-wrapper {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    /* HUD Bar */
-    header { width: 100%; max-width: 420px; margin-bottom: 8px; }
-    .hud-bar {
+    /* Top Stasis Header */
+    .stasis-header {
+      width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 10px;
-      font-size: 0.52rem;
+      font-size: 0.46rem;
+      border: 3px solid var(--ut-white);
+      padding: 6px 8px;
+      margin-bottom: 6px;
       background: #000;
-      border: 3px solid #fff;
+      color: var(--ut-yellow);
     }
-    .hud-yellow { color: var(--yellow); }
-    .hud-pink { color: var(--pink); }
 
-    /* Visual Stage */
-    #stage-container {
+    /* Undertale Encounter Arena Canvas (Green Grid Box) */
+    #arena-container {
       width: 100%;
-      max-width: 420px;
-      height: 230px;
-      background: #090d16;
-      border: 4px solid #fff;
-      box-shadow: 0 6px 0 0 #000;
+      height: 210px;
+      background: #000;
+      border: 4px solid var(--ut-white);
       position: relative;
       overflow: hidden;
-      cursor: pointer;
     }
 
-    /* Undertale Dialogue Window */
-    #dialogue-window {
+    canvas#pixelCanvas {
       width: 100%;
-      max-width: 420px;
-      margin-top: 8px;
+      height: 100%;
+      image-rendering: pixelated;
+      display: block;
+    }
+
+    /* Dialogue & Encounter Text Box */
+    #dialogue-box {
+      width: 100%;
+      margin-top: 6px;
       background: #000;
-      border: 4px solid #fff;
-      padding: 12px;
-      min-height: 130px;
+      border: 4px solid var(--ut-white);
+      padding: 10px;
+      min-height: 110px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: 0 6px 0 0 #000;
+      position: relative;
     }
-    .speaker-name {
-      font-size: 0.52rem;
-      color: var(--green-glow);
-      margin-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
-    }
-    .typewriter-body {
-      font-size: 0.58rem;
+
+    .dialogue-text {
+      font-size: 0.55rem;
       line-height: 1.6;
-      color: #fff;
-      min-height: 55px;
+      color: var(--ut-white);
+      min-height: 48px;
       word-break: break-word;
     }
 
-    /* 2-Way Choice Buttons */
-    .choice-row {
+    /* 2-Way Branch Choices inside Box */
+    .dialogue-choices {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       margin-top: 8px;
     }
-    .pixel-choice-btn {
+
+    .choice-btn {
       flex: 1;
       background: #000;
-      border: 2px solid #fff;
-      color: var(--yellow);
+      border: 2px solid var(--ut-white);
+      color: var(--ut-yellow);
       font-family: var(--font-pixel);
-      font-size: 0.48rem;
-      padding: 8px 4px;
+      font-size: 0.44rem;
+      padding: 6px 4px;
       cursor: pointer;
       text-align: left;
       line-height: 1.3;
     }
-    .pixel-choice-btn::before { content: "❤️ "; color: var(--red); }
-    .pixel-choice-btn:active { background: var(--green-main); color: #000; border-color: var(--green-glow); }
-
-    /* Action Buttons Menu */
-    .menu-grid {
-      width: 100%;
-      max-width: 420px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 8px;
+    .choice-btn::before {
+      content: "❤️ ";
+      color: var(--ut-red);
     }
-    .pixel-action-btn {
-      background: #000;
-      border: 3px solid var(--yellow);
-      color: var(--yellow);
-      font-family: var(--font-pixel);
-      font-size: 0.58rem;
-      padding: 12px 6px;
-      cursor: pointer;
+    .choice-btn:active {
+      background: var(--ut-orange);
+      color: #000;
+    }
+
+    /* Bottom Undertale Status HUD */
+    .ut-status-bar {
+      width: 100%;
       display: flex;
-      justify-content: center;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 0.58rem;
+      padding: 0 4px;
+    }
+
+    .hp-container {
+      display: flex;
       align-items: center;
       gap: 6px;
     }
-    .pixel-action-btn:active { transform: translate(3px, 3px); background: var(--yellow); color: #000; }
 
-    /* Dashboard & Progression */
-    .dashboard {
-      width: 100%;
-      max-width: 420px;
-      margin-top: 8px;
-      padding: 10px;
+    .hp-bar-box {
+      width: 32px;
+      height: 14px;
+      background: var(--ut-red);
+      position: relative;
     }
-    .nav-header {
+
+    .hp-bar-fill {
+      width: 100%;
+      height: 100%;
+      background: var(--ut-yellow);
+    }
+
+    /* The 4 Iconic Undertale Action Buttons (FIGHT, ACT, ITEM, MERCY) */
+    .action-button-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .btn-undertale {
+      background: #000;
+      border: 3px solid var(--ut-orange);
+      color: var(--ut-orange);
+      font-family: var(--font-pixel);
+      font-size: 0.52rem;
+      padding: 10px 2px;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-undertale:active, .btn-undertale.selected {
+      background: var(--ut-orange);
+      color: #000;
+    }
+
+    /* Subcategory Track Dashboard */
+    .curriculum-tray {
+      width: 100%;
+      margin-top: 8px;
+      border: 3px solid var(--ut-white);
+      background: #000;
+      padding: 8px;
+    }
+
+    .nav-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
-    .nav-arrow-btn {
+
+    .nav-arrow {
       background: #000;
-      border: 2px solid #fff;
-      color: var(--yellow);
+      border: 2px solid var(--ut-white);
+      color: var(--ut-yellow);
       font-family: var(--font-pixel);
-      font-size: 0.65rem;
-      padding: 6px 12px;
+      font-size: 0.6rem;
+      padding: 4px 10px;
       cursor: pointer;
     }
-    .nav-arrow-btn:disabled { color: #555; border-color: #555; cursor: not-allowed; }
-    .nav-arrow-btn:active:not(:disabled) { transform: translate(2px, 2px); }
-
-    .dimension-title {
-      font-size: 0.52rem;
-      color: var(--yellow);
-      text-align: center;
-      line-height: 1.4;
-      max-width: 270px;
+    .nav-arrow:disabled {
+      color: var(--ut-gray);
+      border-color: var(--ut-gray);
     }
 
-    /* Subcategories Checklist */
-    .checklist-container { margin: 8px 0; }
-    .subcat-row {
+    .track-title {
+      font-size: 0.48rem;
+      color: var(--ut-yellow);
+      text-align: center;
+      max-width: 250px;
+      line-height: 1.4;
+    }
+
+    .subcat-list {
+      margin-top: 6px;
+    }
+
+    .subcat-item {
+      font-size: 0.44rem;
+      padding: 5px;
+      border: 1px solid #222;
+      background: #050505;
+      color: #888;
+      margin-bottom: 4px;
       display: flex;
       align-items: center;
-      font-size: 0.5rem;
-      padding: 6px;
-      margin-bottom: 4px;
-      background: #060910;
-      border: 1px solid #232c44;
-      color: #8b9bb4;
-      line-height: 1.4;
     }
-    .subcat-row.done { color: var(--green-glow); border-color: var(--green-main); }
-    .subcat-row::before { content: "[ ] "; margin-right: 6px; }
-    .subcat-row.done::before { content: "[*] "; color: var(--yellow); }
+    .subcat-item.done {
+      color: #00ff66;
+      border-color: #00aa44;
+    }
+    .subcat-item::before { content: "[ ] "; margin-right: 6px; }
+    .subcat-item.done::before { content: "[*] "; color: var(--ut-yellow); }
 
     /* Modals */
-    .modal-backdrop {
+    .ut-modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.95);
+      background: rgba(0, 0, 0, 0.96);
       z-index: 9999;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       padding: 12px;
     }
-    .modal-window {
+
+    .ut-modal-box {
       width: 100%;
       max-width: 380px;
       background: #000;
-      border: 4px solid #fff;
+      border: 4px solid var(--ut-white);
       padding: 12px;
       max-height: 85vh;
       overflow-y: auto;
     }
-    .ascii-tree-box {
-      background: #080c14;
-      color: var(--green-glow);
+
+    .ascii-blueprint {
+      background: #050505;
+      color: #00ff66;
       font-family: var(--font-pixel);
-      font-size: 0.44rem;
-      padding: 10px;
-      border: 2px solid #232c44;
+      font-size: 0.4rem;
+      padding: 8px;
+      border: 2px solid #333;
       white-space: pre;
       line-height: 1.5;
-      margin: 10px 0;
+      margin: 8px 0;
       overflow-x: auto;
     }
   </style>
 </head>
 <body>
 
-  <!-- 1. CLOCK & DEADLINE HUD -->
-  <header>
-    <div class="hud-bar">
-      <div>LV <span id="hud-level">1</span> <span class="hud-yellow">EXP <span id="hud-exp">0</span>/5</span></div>
-      <div>TIME <span id="hud-clock" class="hud-yellow">00:00:00</span></div>
-      <div>DEADLINE <span id="hud-deadline" class="hud-pink">--d --h</span></div>
+  <div class="screen-wrapper">
+    <!-- Top Countdown HUD -->
+    <div class="stasis-header">
+      <div>TARGET: 08.11.2026</div>
+      <div>COUNTDOWN: <span id="stasis-timer" style="color:var(--ut-white);">--:--:--</span></div>
     </div>
-  </header>
 
-  <!-- 2. PIXEL STAGE & FROGGY SPRITE -->
-  <div id="stage-container" onclick="pokeFrog()">
-    <svg id="stage-svg" viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%;">
-      <!-- Floor Line -->
-      <line x1="0" y1="108" x2="200" y2="108" stroke="#ffffff" stroke-width="2" />
-
-      <!-- Bookshelf Library (Books 1–400) -->
-      <rect x="8" y="58" width="28" height="50" fill="#000" stroke="#fff" stroke-width="2" />
-      <rect x="12" y="64" width="20" height="5" fill="#ff4757" />
-      <rect x="12" y="72" width="20" height="5" fill="#00b894" />
-      <rect x="12" y="80" width="20" height="5" fill="#feca57" />
-      <rect x="12" y="88" width="20" height="5" fill="#ff6b81" />
-      <rect x="12" y="96" width="20" height="5" fill="#55efc4" />
-
-      <!-- Sequentially Unlocked Room Decor -->
-      <g id="decor-desk" style="display: none;">
-        <rect x="140" y="86" width="50" height="22" fill="#000" stroke="#fff" stroke-width="2" />
-        <rect x="146" y="78" width="8" height="8" fill="#fff" stroke="#000" stroke-width="1" />
-      </g>
-      <g id="decor-lamp" style="display: none;">
-        <line x1="175" y1="86" x2="175" y2="65" stroke="#fff" stroke-width="2" />
-        <polygon points="170,65 180,65 185,55 165,55" fill="#feca57" stroke="#fff" stroke-width="1" />
-      </g>
-
-      <!-- Autonomous Fly & Tongue -->
-      <g id="fly-target" style="display: none;">
-        <circle cx="45" cy="50" r="2.5" fill="#ffffff" />
-        <line x1="42" y1="48" x2="48" y2="48" stroke="#aaaaaa" stroke-width="1" />
-      </g>
-      <line id="frog-tongue" x1="100" y1="80" x2="45" y2="50" stroke="#ff4757" stroke-width="3" stroke-linecap="round" style="display: none;" />
-
-      <!-- FROGGY SPRITE -->
-      <g id="pet-character" transform="translate(85, 52)">
-        <!-- Hood Eyes -->
-        <rect x="4" y="-8" width="8" height="8" fill="#fff" stroke="#000" stroke-width="1" />
-        <rect x="18" y="-8" width="8" height="8" fill="#fff" stroke="#000" stroke-width="1" />
-        <rect id="hood-eye-l" x="7" y="-5" width="3" height="3" fill="#000" />
-        <rect id="hood-eye-r" x="21" y="-5" width="3" height="3" fill="#000" />
-
-        <!-- Green Hood Suit -->
-        <rect x="0" y="0" width="30" height="42" fill="#006241" stroke="#000" stroke-width="1" rx="4" />
-        <rect x="2" y="0" width="28" height="40" fill="#00b894" rx="4" />
-        <rect x="10" y="0" width="18" height="40" fill="#00d2a0" rx="3" />
-
-        <!-- Face Frame & Skin -->
-        <rect x="5" y="7" width="20" height="18" fill="#ff6b81" stroke="#000" stroke-width="1" rx="2" />
-        <rect x="7" y="9" width="16" height="14" fill="#fed39f" />
-
-        <!-- Reactive Facial States (Neutral, Sarcastic Smug, Shock, Eye-Roll) -->
-        <g id="face-neutral">
-          <rect id="frog-eye-l" x="9" y="12" width="3" height="5" fill="#000" />
-          <rect id="frog-eye-r" x="18" y="12" width="3" height="5" fill="#000" />
-          <rect id="frog-mouth" x="13" y="18" width="4" height="2" fill="#000" />
-        </g>
-        <g id="face-smug" style="display: none;">
-          <rect x="9" y="14" width="4" height="2" fill="#000" />
-          <rect x="18" y="12" width="3" height="5" fill="#000" />
-          <polygon points="12,18 17,17 15,20" fill="#000" />
-        </g>
-        <g id="face-shock" style="display: none;">
-          <rect x="8" y="11" width="4" height="6" fill="#000" />
-          <rect x="18" y="11" width="4" height="6" fill="#000" />
-          <circle cx="15" cy="19" r="2.5" fill="#000" />
-        </g>
-        <g id="face-eyeroll" style="display: none;">
-          <rect x="9" y="10" width="3" height="3" fill="#000" />
-          <rect x="18" y="10" width="3" height="3" fill="#000" />
-          <line x1="12" y1="19" x2="18" y2="19" stroke="#000" stroke-width="1.5" />
-        </g>
-
-        <!-- Tongue Blep -->
-        <rect id="frog-blep" x="14" y="20" width="3" height="3" fill="#ff4757" rx="1" style="display: none;" />
-
-        <!-- Cheeks -->
-        <rect x="6" y="17" width="2" height="3" fill="#ff6b81" />
-        <rect x="22" y="17" width="2" height="3" fill="#ff6b81" />
-
-        <!-- Belly & SOUL Heart -->
-        <rect x="6" y="25" width="18" height="14" fill="#feca57" stroke="#000" stroke-width="1" rx="2" />
-        <path id="belly-soul" d="M12,28 A2,2 0 0,1 15,30 A2,2 0 0,1 18,28 Q18,32 15,34 Q12,32 12,28 Z" fill="#e84393" />
-
-        <!-- Feet & Hands -->
-        <rect x="-2" y="24" width="4" height="8" fill="#00b894" stroke="#000" stroke-width="1" rx="2" />
-        <rect x="28" y="24" width="4" height="8" fill="#00d2a0" stroke="#000" stroke-width="1" rx="2" />
-        <rect x="3" y="41" width="8" height="4" fill="#00b894" rx="2" />
-        <rect x="19" y="41" width="8" height="4" fill="#00d2a0" rx="2" />
-
-        <!-- Props -->
-        <g id="prop-lens" style="display: none;">
-          <circle cx="28" cy="20" r="5" stroke="#feca57" stroke-width="1.5" fill="none" />
-          <line x1="28" y1="25" x2="31" y2="30" stroke="#fff" stroke-width="1.5" />
-        </g>
-      </g>
-
-      <!-- Cozy Sleeping Bed State -->
-      <g id="pet-bed" style="display: none;">
-        <rect x="75" y="82" width="55" height="24" fill="#000" stroke="#fff" stroke-width="2" />
-        <rect x="78" y="79" width="14" height="9" fill="#fff" />
-        <rect x="88" y="80" width="16" height="12" fill="#00b894" />
-        <line x1="90" y1="84" x2="94" y2="84" stroke="#000" stroke-width="1.5" />
-        <line x1="96" y1="84" x2="100" y2="84" stroke="#000" stroke-width="1.5" />
-        <rect x="92" y="82" width="38" height="24" fill="#ff6b81" stroke="#fff" stroke-width="1" />
-        <text x="122" y="70" fill="#feca57" font-family="'Press Start 2P', monospace" font-size="8">Zzz</text>
-      </g>
-    </svg>
-  </div>
-
-  <!-- 3. UNDERTALE 2-WAY CASUAL/SARCASTIC DIALOGUE BOX -->
-  <div id="dialogue-window">
-    <div class="speaker-name">
-      <span>* FROGGY (RIDE-OR-DIE BUDDY)</span>
-      <span id="bond-status" style="color:var(--yellow);">BOND: LV 1</span>
+    <!-- Undertale Green Grid Arena Canvas -->
+    <div id="arena-container">
+      <canvas id="pixelCanvas" width="200" height="130"></canvas>
     </div>
-    <div id="typewriter-text" class="typewriter-body">* ...</div>
-    <div id="choices-container" class="choice-row" style="display: none;">
-      <button id="choice-btn-1" class="pixel-choice-btn" onclick="handleChoice(1)">Option A</button>
-      <button id="choice-btn-2" class="pixel-choice-btn" onclick="handleChoice(2)">Option B</button>
+
+    <!-- Undertale Typewriter Dialogue Window -->
+    <div id="dialogue-box">
+      <div id="dialogue-text" class="dialogue-text">* ...</div>
+      <div id="dialogue-choices" class="dialogue-choices" style="display: none;">
+        <button id="choice-1" class="choice-btn" onclick="makeChoice(1)">Option A</button>
+        <button id="choice-2" class="choice-btn" onclick="makeChoice(2)">Option B</button>
+      </div>
+    </div>
+
+    <!-- Undertale Bottom Stats Bar -->
+    <div class="ut-status-bar">
+      <div>HUMAN LV <span id="hud-level">1</span></div>
+      <div class="hp-container">
+        <span>HP</span>
+        <div class="hp-bar-box">
+          <div class="hp-bar-fill"></div>
+        </div>
+        <span>20/20</span>
+      </div>
+      <div>EXP <span id="hud-exp" style="color:var(--ut-yellow);">0</span>/5</div>
+    </div>
+
+    <!-- 4 Action Buttons -->
+    <div class="action-button-grid">
+      <!-- FIGHT = Open Camera Scanner -->
+      <label for="camera-input" class="btn-undertale" onclick="playAudioBlip(550)">
+        <span>⚔️</span>
+        <span>FIGHT</span>
+      </label>
+      <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;">
+
+      <!-- ACT = Talk / Check Rules -->
+      <button class="btn-undertale" onclick="handleActMenu()">
+        <span>🗣</span>
+        <span>ACT</span>
+      </button>
+
+      <!-- ITEM = Unlocked Room Decor -->
+      <button class="btn-undertale" onclick="handleItemMenu()">
+        <span>🎒</span>
+        <span>ITEM</span>
+      </button>
+
+      <!-- MERCY = Stasis Details / Surrender -->
+      <button class="btn-undertale" onclick="handleMercyMenu()">
+        <span>💔</span>
+        <span>MERCY</span>
+      </button>
+    </div>
+
+    <!-- 30 Progression-Locked Curriculum Tray -->
+    <div class="curriculum-tray">
+      <div class="nav-row">
+        <button id="nav-left" class="nav-arrow" onclick="stepTrack(-1)">&lt;</button>
+        <div id="track-name" class="track-title">TRACK 1: VALUES (BOOKS 1–13)</div>
+        <button id="nav-right" class="nav-arrow" onclick="stepTrack(1)">&gt;</button>
+      </div>
+
+      <div class="subcat-list" id="subcat-mount"></div>
     </div>
   </div>
 
-  <!-- 4. RETRO ACTION BUTTONS MENU -->
-  <div class="menu-grid">
-    <button class="pixel-action-btn" onclick="triggerTalkBanter()">❤️ TALK</button>
-    <button class="pixel-action-btn" onclick="openDiagramFrameworkModal()">📐 DIAGRAM</button>
-    <label for="camera-input" class="pixel-action-btn" style="cursor: pointer;">
-      📸 SCAN NOTE
-    </label>
-    <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;">
-    <button class="pixel-action-btn" onclick="openPowersModal()">🏆 POWERS</button>
-  </div>
-
-  <!-- 5. PROGRESSION-LOCKED 30 TRACK DASHBOARD -->
-  <div class="pixel-frame dashboard">
-    <div class="nav-header">
-      <button id="btn-prev" class="nav-arrow-btn" onclick="navigateTrack(-1)">&lt;</button>
-      <div id="track-title-display" class="dimension-title">TRACK 1: VALUES (BOOKS 1–13)</div>
-      <button id="btn-next" class="nav-arrow-btn" onclick="navigateTrack(1)">&gt;</button>
-    </div>
-
-    <div class="checklist-container" id="checklist-mount"></div>
-  </div>
-
-  <!-- MODAL: SUB-CATEGORY DIAGRAM FRAMEWORK EXAMPLE -->
-  <div id="diagram-modal" class="modal-backdrop">
-    <div class="modal-window">
-      <div style="font-size:0.55rem; color:var(--yellow); margin-bottom:8px;">* FLOWCHART BLUEPRINT TEMPLATE</div>
-      <p style="font-size:0.46rem; color:#aaa; line-height:1.5;">
-        Draw this exact symbolic node tree on real paper for camera verification:
+  <!-- MODAL: ACT / DIAGRAM BLUEPRINT -->
+  <div id="blueprint-modal" class="ut-modal">
+    <div class="ut-modal-box">
+      <div style="font-size:0.5rem; color:var(--ut-yellow); margin-bottom:6px;">* FLOWCHART LOGIC BLUEPRINT</div>
+      <p style="font-size:0.42rem; color:#aaa; line-height:1.4;">
+        Every pixel node must be drawn clearly on real paper for FIGHT (Scan) recognition:
       </p>
-      <div id="ascii-diagram-mount" class="ascii-tree-box"></div>
-      <button class="pixel-action-btn" style="width:100%; padding:8px; font-size:0.5rem;" onclick="closeModal('diagram-modal')">
-        [ * GOT IT ]
+      <div id="ascii-mount" class="ascii-blueprint"></div>
+      <button class="btn-undertale" style="width:100%; padding:8px;" onclick="closeModal('blueprint-modal')">
+        * [ RETURN ]
       </button>
     </div>
   </div>
 
-  <!-- MODAL: MASTERED SUPERPOWERS -->
-  <div id="powers-modal" class="modal-backdrop">
-    <div class="modal-window">
-      <div style="font-size:0.55rem; color:var(--yellow); margin-bottom:8px;">* UNLOCKED COMMUNICATION POWERS</div>
-      <p style="font-size:0.46rem; color:#888; margin-bottom:8px;">Only unlocked after clearing all 5 flowcharts:</p>
-      <div id="powers-list-mount" style="font-size:0.48rem; color:var(--green-glow); line-height:1.8;"></div>
-      <button class="pixel-action-btn" style="width:100%; padding:8px; font-size:0.5rem; margin-top:10px;" onclick="closeModal('powers-modal')">
-        [ * BACK ]
+  <!-- MODAL: STATS / POWERS -->
+  <div id="powers-modal" class="ut-modal">
+    <div class="ut-modal-box">
+      <div style="font-size:0.5rem; color:var(--ut-yellow); margin-bottom:6px;">* UNLOCKED COMMUNICATION POWERS</div>
+      <div id="powers-mount" style="font-size:0.42rem; color:#00ff66; line-height:1.8; margin:8px 0;"></div>
+      <button class="btn-undertale" style="width:100%; padding:8px;" onclick="closeModal('powers-modal')">
+        * [ BACK ]
       </button>
     </div>
   </div>
@@ -434,20 +399,20 @@
     /* =========================================================================
        1. WEB AUDIO 8-BIT UNDERTALE SOUND ENGINE
        ========================================================================= */
-    let audioCtx = null;
+    let audioContext = null;
     function getAudio() {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      return audioCtx;
+      if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioContext.state === 'suspended') audioContext.resume();
+      return audioContext;
     }
 
-    function playBlip() {
+    function playAudioBlip(freq = 150) {
       try {
         const ctx = getAudio();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'square';
-        osc.frequency.setValueAtTime(145 + Math.random() * 25, ctx.currentTime);
+        osc.frequency.setValueAtTime(freq + Math.random() * 20, ctx.currentTime);
         gain.gain.setValueAtTime(0.04, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.035);
         osc.connect(gain);
@@ -457,50 +422,29 @@
       } catch (e) {}
     }
 
-    function playBeep(freq = 440) {
-      try {
-        const ctx = getAudio();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(freq, ctx.currentTime);
-        gain.gain.setValueAtTime(0.08, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.08);
-      } catch (e) {}
-    }
-
     /* =========================================================================
-       2. REAL-TIME CLOCK & DEADLINE SYNC
+       2. REAL-TIME TARGET COUNTDOWN (08.11.2026)
        ========================================================================= */
-    function syncClocks() {
+    function updateStasisCountdown() {
       const now = new Date();
-      const hh = String(now.getHours()).padStart(2, '0');
-      const mm = String(now.getMinutes()).padStart(2, '0');
-      const ss = String(now.getSeconds()).padStart(2, '0');
-      document.getElementById('hud-clock').innerText = `${hh}:${mm}:${ss}`;
-
-      const day = now.getDay();
-      const daysLeft = (7 - day) % 7;
-      const sunday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysLeft, 23, 59, 59);
-      const diff = sunday - now;
+      const target = new Date("2026-11-08T00:00:00");
+      const diff = target - now;
 
       if (diff > 0) {
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        document.getElementById('hud-deadline').innerText = `${d}d ${h}h`;
+        const m = Math.floor((diff / (1000 * 60)) % 60);
+        const s = Math.floor((diff / 1000) % 60);
+        document.getElementById("stasis-timer").innerText = `${d}d ${h}h ${m}m ${s}s`;
       } else {
-        document.getElementById('hud-deadline').innerText = `EXPIRED!`;
+        document.getElementById("stasis-timer").innerText = `OFFICIALLY LAUNCHED!`;
       }
     }
-    setInterval(syncClocks, 1000);
-    syncClocks();
+    setInterval(updateStasisCountdown, 1000);
+    updateStasisCountdown();
 
     /* =========================================================================
-       3. 30 STRICT PROGRESSION-LOCKED DIMENSIONS & DIAGRAMS
+       3. STRICT PROGRESSION 30 TRACK CURRICULUM
        ========================================================================= */
     const TRACK_NAMES = [
       "Values", "Roles", "Traits", "Framing", "States", "Conversation Loops",
@@ -513,7 +457,7 @@
     const TRACKS = TRACK_NAMES.map((name, i) => ({
       id: i + 1,
       title: `TRACK ${i + 1}: ${name.toUpperCase()} (BOOKS ${1 + i * 13}–${13 + i * 13})`,
-      powerBadge: `${name} Mastery Matrix`,
+      powerBadge: `${name} Mastery Shield`,
       parts: [
         { name: "Part 1: Core Diagnostic Probe", kw: ["non-negotiable", "metric", "element"] },
         { name: "Part 2: Decision Frame Check", kw: ["prioritize", "specific path", "choices"] },
@@ -522,297 +466,364 @@
         { name: "Part 5: Combined Matrix Outcome", kw: ["catalyst", "circuit-breaker", "framework"] }
       ],
       blueprint:
-`[RAW HUMAN CHATTER]
-         │
-         ▼
-┌──────────────────┐
-│  FILTER SURFACE  │
-└────────┬─────────┘
-         │
-         ▼
-[NON-NEGOTIABLE CORE?]
-    ├──► (FOUND) ──► LOCK IN FRAMEWORK
-    └──► (DRIFT) ──► ENGAGE CIRCUIT-BREAKER`
+`+-----------------------------+
+|    RAW CONVERSATION INPUT   |
++--------------+--------------+
+               |
+               v
+     /-------------------\\
+    < ISOLATE NOISE WORD  >
+     \\-------------------/
+               |
+               v
++--------------+--------------+
+|   PRIMARY CRITERIA MATCH?   |
++--------------+--------------+
+       |               |
+     (YES)            (NO)
+       |               |
+       v               v
+ [LOCK FRAMEWORK] [CIRCUIT BREAKER]`
     }));
 
     /* =========================================================================
-       4. NEW CASUAL, SARCASTIC, RELATABLE DIALOGUE ENGINE
+       4. PURE PIXEL CANVAS RENDERING ENGINE & WANDERING AI
        ========================================================================= */
-    const BANTER_BANK = [
+    const canvas = document.getElementById("pixelCanvas");
+    const ctx = canvas.getContext("2d");
+    ctx.imageSmoothingEnabled = false;
+
+    // AI Walking State Machine
+    let frog = {
+      x: 90,
+      y: 72,
+      targetX: 90,
+      vx: 0,
+      facing: 1, // 1: right, -1: left
+      state: "IDLE", // IDLE, WALK, SIT, SLEEP
+      timer: 0,
+      animFrame: 0
+    };
+
+    // Low-res chunky pixel palettes
+    const P = {
+      black: "#000000",
+      outline: "#15181f",
+      greenDark: "#025433",
+      greenMain: "#00a86b",
+      greenBright: "#00e699",
+      pinkTrim: "#ff597b",
+      skin: "#fcd5a0",
+      bellyYellow: "#fce373",
+      bellyPink: "#e83a82",
+      white: "#ffffff",
+      gridGreen: "#006622"
+    };
+
+    function drawPixelRect(x, y, w, h, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(Math.floor(x), Math.floor(y), w, h);
+    }
+
+    function renderScene() {
+      // 1. Draw Undertale Green Grid Arena Background
+      ctx.fillStyle = "#000000";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Grid lines (pure pixel stepping)
+      ctx.strokeStyle = P.gridGreen;
+      ctx.lineWidth = 1;
+      for (let x = 0; x < canvas.width; x += 16) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += 16) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      // 2. Room Furniture (Bookshelf)
+      drawPixelRect(8, 60, 24, 48, P.black);
+      // Outer pixel outline
+      ctx.strokeStyle = P.white;
+      ctx.strokeRect(8, 60, 24, 48);
+      // Colored book spines
+      drawPixelRect(11, 65, 18, 5, "#ff4757");
+      drawPixelRect(11, 74, 18, 5, "#00a86b");
+      drawPixelRect(11, 83, 18, 5, "#fce373");
+      drawPixelRect(11, 92, 18, 5, "#ff597b");
+
+      // Desk & Lamp (if unlocked)
+      if (STATE.highestTrack >= 1) {
+        drawPixelRect(150, 84, 42, 24, P.black);
+        ctx.strokeRect(150, 84, 42, 24);
+        drawPixelRect(156, 76, 8, 8, P.white);
+      }
+      if (STATE.highestTrack >= 2) {
+        drawPixelRect(178, 60, 2, 24, P.white);
+        drawPixelRect(173, 54, 12, 6, "#ffff00");
+      }
+
+      // 3. Render Froggy Pixel Sprite
+      if (STATE.isSleeping) {
+        // Bed with sleeping frog
+        drawPixelRect(80, 80, 48, 26, P.black);
+        ctx.strokeRect(80, 80, 48, 26);
+        drawPixelRect(83, 76, 12, 8, P.white);
+        drawPixelRect(92, 78, 14, 12, P.greenMain);
+        drawPixelRect(94, 82, 3, 1, P.black);
+        drawPixelRect(100, 82, 3, 1, P.black);
+        drawPixelRect(96, 80, 30, 24, P.pinkTrim);
+      } else {
+        renderFrogSprite(frog.x, frog.y, frog.facing, frog.state, frog.animFrame);
+      }
+
+      requestAnimationFrame(renderScene);
+    }
+
+    function renderFrogSprite(fx, fy, facing, state, frame) {
+      const legOffset = (state === "WALK") ? (Math.floor(frame / 6) % 2 === 0 ? 2 : -2) : 0;
+
+      // Outer outline box
+      drawPixelRect(fx, fy, 26, 36, P.outline);
+
+      // Hood Base
+      drawPixelRect(fx + 2, fy + 2, 22, 32, P.greenMain);
+      drawPixelRect(fx + 2, fy + 2, 6, 32, P.greenDark);
+      drawPixelRect(fx + 10, fy + 2, 12, 32, P.greenBright);
+
+      // Hood Frog Eyes on top
+      drawPixelRect(fx + 3, fy - 6, 7, 7, P.white);
+      drawPixelRect(fx + 16, fy - 6, 7, 7, P.white);
+      drawPixelRect(fx + 5, fy - 4, 3, 3, P.black);
+      drawPixelRect(fx + 18, fy - 4, 3, 3, P.black);
+      // Outlines on hood eyes
+      drawPixelRect(fx + 3, fy - 6, 7, 1, P.outline);
+      drawPixelRect(fx + 16, fy - 6, 7, 1, P.outline);
+
+      // Peach Face Opening
+      drawPixelRect(fx + 4, fy + 6, 18, 15, P.pinkTrim);
+      drawPixelRect(fx + 6, fy + 8, 14, 11, P.skin);
+
+      // Eyes
+      drawPixelRect(fx + 8, fy + 10, 3, 4, P.black);
+      drawPixelRect(fx + 15, fy + 10, 3, 4, P.black);
+
+      // Cheeks
+      drawPixelRect(fx + 5, fy + 14, 2, 2, P.pinkTrim);
+      drawPixelRect(fx + 19, fy + 14, 2, 2, P.pinkTrim);
+
+      // Yellow Belly with Pink Heart
+      drawPixelRect(fx + 5, fy + 22, 16, 11, P.bellyYellow);
+      drawPixelRect(fx + 10, fy + 24, 6, 6, P.bellyPink);
+
+      // Stepping Feet (Animated Walk Cycle)
+      drawPixelRect(fx + 3, fy + 35 + legOffset, 7, 3, P.greenDark);
+      drawPixelRect(fx + 16, fy + 35 - legOffset, 7, 3, P.greenDark);
+    }
+
+    // Wandering AI Loop
+    function updateWanderingAI() {
+      if (STATE.isSleeping) return;
+
+      frog.timer++;
+      frog.animFrame++;
+
+      if (frog.state === "IDLE") {
+        if (frog.timer > 120) {
+          // Pick new spot to walk to
+          frog.targetX = 40 + Math.floor(Math.random() * 110);
+          frog.state = "WALK";
+          frog.facing = (frog.targetX > frog.x) ? 1 : -1;
+          frog.timer = 0;
+        }
+      } else if (frog.state === "WALK") {
+        const dx = frog.targetX - frog.x;
+        if (Math.abs(dx) <= 1) {
+          frog.x = frog.targetX;
+          frog.state = "IDLE";
+          frog.timer = 0;
+        } else {
+          frog.x += Math.sign(dx) * 0.8;
+        }
+      }
+    }
+    setInterval(updateWanderingAI, 30);
+    renderScene();
+
+    /* =========================================================================
+       5. RELATABLE CASUAL BANTER DIALOGUE MATRIX
+       ========================================================================= */
+    const BANTER_TREE = [
       {
-        face: "smug",
-        text: "* Yo. You're actually back? I was about 30 seconds away from packing my tiny frog bags and becoming an accountant.",
-        c1: "I was busy, alright?",
-        r1: "* Busy doing what? Staring at the ceiling? Show me the flowcharts, human!",
-        c2: "You wouldn't survive as an accountant.",
-        r2: "* Ouch. Accurate, but hurtful. Now scan your paper so I don't detonate on Sunday."
+        text: "* Yo. Look at this green grid. Remind you of anything? Draw your flowchart before my timer hits zero!",
+        c1: "I'm literally drawing it now.",
+        r1: "* Good! Because turning into 8-bit dust on Sunday was NOT on my schedule.",
+        c2: "Why are we in a battle grid?",
+        r2: "* Because human communication IS a battle! Now equip your pencil and scan the paper."
       },
       {
-        face: "eyeroll",
-        text: "* Casual thought: Humans spend 3 hours arguing about whose turn it is to do dishes instead of just saying 'I'm tired'. You guys are hilarious.",
-        c1: "It's about the principle!",
-        r1: "* It's about Dimension 2: Roles! Stop playing the Martyr and use an Adult logic pivot, Einstein.",
-        c2: "Why do you care so much?",
-        r2: "* Because watching you make unforced social errors is literally shortening my lifespan."
+        text: "* Pro-tip from Book 14: When someone tries to guilt-trip you, agree instantly. It breaks their combat rhythm.",
+        c1: "Sounds like cheating.",
+        r1: "* It's called psychological jujitsu. Stop taking damage from emotional vampires.",
+        c2: "Does that work on you?",
+        r2: "* Absolutely not. I'm a frog in a hoodie. I am completely immune to guilt."
       },
       {
-        face: "shock",
-        text: "* Hold up. Look at the clock. Sunday midnight is creeping up and you have UNFINISHED subcategories. Are you trying to turn me into pixel confetti?!",
-        c1: "Chill out, I got this.",
-        r1: "* 'I got this', they said, as the deadline timer ticked to zero. I am sweating pure pixels here!",
-        c2: "What happens if you explode?",
-        r2: "* I turn into dust and you have to explain to everyone why your frog companion vanished. Draw the diagram!"
-      },
-      {
-        face: "smug",
-        text: "* Rule from the 400 books: People would rather lose a limb than admit they're wrong. That's why you yield on tiny details to win the big game.",
-        c1: "Sounds manipulative.",
-        r1: "* It's not manipulation, it's behavioral physics. Stop wrestling pigs and start using frameworks.",
-        c2: "Teach me more.",
-        r2: "* That's the spirit! Unlock Track 2 and I'll teach you how to dodge guilt-trippers like a ninja."
+        text: "* I've been pacing back and forth across this screen for 2 hours. My tiny pixel legs demand progress!",
+        c1: "Take a break, buddy.",
+        r1: "* I can't take a break! The curriculum has 30 tracks and you're still on Track 1!",
+        c2: "I'll scan a note right now.",
+        r2: "* That's what I like to hear! Hit [ FIGHT ] and show the camera your node tree."
       }
     ];
 
     let currentBanterIdx = 0;
-    let isTyping = false;
     let typeTimer = null;
 
-    function setFace(faceType) {
-      document.getElementById('face-neutral').style.display = 'none';
-      document.getElementById('face-smug').style.display = 'none';
-      document.getElementById('face-shock').style.display = 'none';
-      document.getElementById('face-eyeroll').style.display = 'none';
-
-      if (faceType === 'smug') document.getElementById('face-smug').style.display = 'block';
-      else if (faceType === 'shock') document.getElementById('face-shock').style.display = 'block';
-      else if (faceType === 'eyeroll') document.getElementById('face-eyeroll').style.display = 'block';
-      else document.getElementById('face-neutral').style.display = 'block';
-    }
-
-    function typeWriter(text, onDone) {
-      const target = document.getElementById("typewriter-text");
-      target.innerHTML = "";
+    function runTypewriter(text, onDone) {
+      const box = document.getElementById("dialogue-text");
+      box.innerHTML = "";
       clearTimeout(typeTimer);
-      isTyping = true;
       let i = 0;
 
       function step() {
         if (i < text.length) {
-          target.innerHTML += text.charAt(i);
-          if (/[a-zA-Z0-9]/.test(text.charAt(i))) playBlip();
+          box.innerHTML += text.charAt(i);
+          if (/[a-zA-Z0-9]/.test(text.charAt(i))) playAudioBlip(160);
           i++;
           typeTimer = setTimeout(step, 20);
         } else {
-          isTyping = false;
           if (onDone) onDone();
         }
       }
       step();
     }
 
-    function triggerBanter(idx) {
-      currentBanterIdx = idx % BANTER_BANK.length;
-      const b = BANTER_BANK[currentBanterIdx];
-      const choices = document.getElementById("choices-container");
+    function triggerDialogue(idx) {
+      currentBanterIdx = idx % BANTER_TREE.length;
+      const b = BANTER_TREE[currentBanterIdx];
+      const choices = document.getElementById("dialogue-choices");
       choices.style.display = "none";
-      setFace(b.face);
 
-      typeWriter(b.text, () => {
-        document.getElementById("choice-btn-1").innerText = b.c1;
-        document.getElementById("choice-btn-2").innerText = b.c2;
+      runTypewriter(b.text, () => {
+        document.getElementById("choice-1").innerText = b.c1;
+        document.getElementById("choice-2").innerText = b.c2;
         choices.style.display = "flex";
       });
     }
 
-    function handleChoice(opt) {
-      playBeep(620);
-      const b = BANTER_BANK[currentBanterIdx];
+    function makeChoice(opt) {
+      playAudioBlip(420);
+      const b = BANTER_TREE[currentBanterIdx];
       const reply = (opt === 1) ? b.r1 : b.r2;
-      document.getElementById("choices-container").style.display = "none";
-      setFace(opt === 1 ? 'smug' : 'eyeroll');
-      typeWriter(reply);
-    }
-
-    function triggerTalkBanter() {
-      playBeep(440);
-      triggerBanter(Math.floor(Math.random() * BANTER_BANK.length));
-    }
-
-    // Auto banter every 60 seconds
-    setInterval(() => {
-      if (!STATE.isSleeping) triggerTalkBanter();
-    }, 60000);
-
-    /* =========================================================================
-       5. PERSISTENT PROGRESSION & SEQUENTIAL UNLOCK ENGINE
-       ========================================================================= */
-    let STATE = {
-      activeTrackIdx: 0,
-      unlockedHighestTrack: 0, // Starts at Track 1, others LOCKED!
-      checks: {},              // Verified parts per track
-      unlockedPowers: [],      // Badges
-      isSleeping: false
-    };
-
-    function save() {
-      try { localStorage.setItem("frog_v5_master_progression", JSON.stringify(STATE)); } catch (e) {}
-    }
-    try {
-      const s = localStorage.getItem("frog_v5_master_progression");
-      if (s) STATE = JSON.parse(s);
-    } catch (e) {}
-
-    function navigateTrack(delta) {
-      const next = STATE.activeTrackIdx + delta;
-      if (next < 0) return;
-      if (next > STATE.unlockedHighestTrack) {
-        playBeep(220);
-        setFace('smug');
-        typeWriter("* Woah there, speed racer! That track is LOCKED 🔒. Finish all 5 flowcharts on this track first!");
-        return;
-      }
-      playBeep(480);
-      STATE.activeTrackIdx = next;
-      STATE.isSleeping = false;
-      save();
-      refreshUI();
-      typeWriter(`* Switched to Track ${STATE.activeTrackIdx + 1}. Check the blueprint and let's get to work!`);
-    }
-
-    function refreshUI() {
-      const cur = TRACKS[STATE.activeTrackIdx];
-      const isLocked = STATE.activeTrackIdx > STATE.unlockedHighestTrack;
-
-      document.getElementById("track-title-display").innerText = isLocked ? `🔒 ${cur.title} [LOCKED]` : cur.title;
-      document.getElementById("btn-prev").disabled = (STATE.activeTrackIdx === 0);
-      document.getElementById("btn-next").disabled = (STATE.activeTrackIdx >= TRACKS.length - 1);
-
-      if (!STATE.checks[cur.id]) STATE.checks[cur.id] = [false, false, false, false, false];
-      const checks = STATE.checks[cur.id];
-      const done = checks.filter(Boolean).length;
-
-      document.getElementById("hud-level").innerText = STATE.activeTrackIdx + 1;
-      document.getElementById("hud-exp").innerText = done;
-      document.getElementById("bond-status").innerText = `LV ${STATE.unlockedHighestTrack + 1}`;
-
-      const mount = document.getElementById("checklist-mount");
-      mount.innerHTML = "";
-      cur.parts.forEach((p, idx) => {
-        const row = document.createElement("div");
-        row.className = `subcat-row ${checks[idx] ? 'done' : ''}`;
-        row.innerText = p.name;
-        mount.appendChild(row);
-      });
-
-      // Sequentially unlock room decor as player progresses!
-      document.getElementById("decor-desk").style.display = STATE.unlockedHighestTrack >= 1 ? "block" : "none";
-      document.getElementById("decor-lamp").style.display = STATE.unlockedHighestTrack >= 2 ? "block" : "none";
-
-      if (STATE.isSleeping) {
-        petChar.style.display = "none";
-        document.getElementById("pet-bed").style.display = "block";
-      } else {
-        petChar.style.display = "block";
-        document.getElementById("pet-bed").style.display = "none";
-      }
+      document.getElementById("dialogue-choices").style.display = "none";
+      runTypewriter(reply);
     }
 
     /* =========================================================================
-       6. AUTONOMOUS ANIMATIONS LOOP
+       6. UNDERTALE ACTION BUTTON HANDLERS
        ========================================================================= */
-    let animCount = 0;
-    const petChar = document.getElementById("pet-character");
-    const soul = document.getElementById("belly-soul");
-
-    function animationTick() {
-      animCount++;
-      if (!STATE.isSleeping) {
-        const bounce = Math.sin(animCount * 0.1) * 2;
-        petChar.setAttribute("transform", `translate(85, ${52 + bounce})`);
-
-        // Soul pulse
-        const s = 1 + Math.sin(animCount * 0.16) * 0.08;
-        soul.setAttribute("transform", `scale(${s}) translate(${15 - 15*s}, ${30 - 30*s})`);
-      }
-      requestAnimationFrame(animationTick);
-    }
-    requestAnimationFrame(animationTick);
-
-    // Micro behaviors every 5 minutes (or poke)
-    function runSpecialBehavior() {
-      const fly = document.getElementById("fly-target");
-      const tongue = document.getElementById("frog-tongue");
-      const blep = document.getElementById("frog-blep");
-      const lens = document.getElementById("prop-lens");
-
-      const rand = Math.random();
-      if (rand < 0.35) {
-        fly.style.display = "block";
-        setTimeout(() => {
-          tongue.style.display = "block";
-          playBeep(700);
-          setTimeout(() => {
-            fly.style.display = "none";
-            tongue.style.display = "none";
-            setFace('smug');
-            typeWriter("* SLURP! 🪰 Mmm, pure protein. Now back to the psychology books!");
-          }, 240);
-        }, 700);
-      } else if (rand < 0.7) {
-        lens.style.display = "block";
-        setFace('eyeroll');
-        typeWriter("* Investigating your notes... Hmm, handwriting readability: questionable.");
-        setTimeout(() => { lens.style.display = "none"; setFace('neutral'); }, 3000);
-      } else {
-        blep.style.display = "block";
-        playBeep(500);
-        setTimeout(() => { blep.style.display = "none"; }, 1600);
-      }
-    }
-    setInterval(runSpecialBehavior, 300000); // 5 min
-
-    function pokeFrog() {
-      playBeep(550);
-      runSpecialBehavior();
+    function handleActMenu() {
+      playAudioBlip(500);
+      const cur = TRACKS[STATE.activeTrack];
+      document.getElementById("ascii-mount").innerText = cur.blueprint;
+      document.getElementById("blueprint-modal").style.display = "flex";
     }
 
-    /* =========================================================================
-       7. MODALS (FLOWCHART BLUEPRINT & POWERS)
-       ========================================================================= */
-    function openDiagramFrameworkModal() {
-      playBeep(520);
-      const cur = TRACKS[STATE.activeTrackIdx];
-      document.getElementById("ascii-diagram-mount").innerText = cur.blueprint;
-      document.getElementById("diagram-modal").style.display = "flex";
+    function handleItemMenu() {
+      playAudioBlip(450);
+      runTypewriter(`* INVENTORY: [Desk: ${STATE.highestTrack >= 1 ? 'EQUIPPED' : 'LOCKED'}] [Lamp: ${STATE.highestTrack >= 2 ? 'EQUIPPED' : 'LOCKED'}] [Tea: READY]`);
     }
 
-    function openPowersModal() {
-      playBeep(600);
-      const mount = document.getElementById("powers-list-mount");
-      if (STATE.unlockedPowers.length === 0) {
-        mount.innerHTML = "<div>* None yet! Complete a full track (5/5) to unlock your first communication superpower!</div>";
-      } else {
-        mount.innerHTML = STATE.unlockedPowers.map(p => `<div>⭐ ${p}</div>`).join('');
-      }
+    function handleMercyMenu() {
+      playAudioBlip(300);
+      document.getElementById("powers-mount").innerHTML = STATE.powers.length ? STATE.powers.map(p => `<div>* ${p}</div>`).join('') : "<div>* No powers earned yet! Clear a track 5/5.</div>";
       document.getElementById("powers-modal").style.display = "flex";
     }
 
     function closeModal(id) {
-      playBeep(320);
+      playAudioBlip(250);
       document.getElementById(id).style.display = "none";
     }
 
+    function pokeFrog() {
+      playAudioBlip(600);
+      triggerDialogue(Math.floor(Math.random() * BANTER_TREE.length));
+    }
+
     /* =========================================================================
-       8. CAMERA OCR SCANNER & PROGRESSION VALIDATOR
+       7. PROGRESSION AND UI TRAY LOGIC
+       ========================================================================= */
+    let STATE = {
+      activeTrack: 0,
+      highestTrack: 0,
+      checks: {},
+      powers: [],
+      isSleeping: false
+    };
+
+    function save() {
+      try { localStorage.setItem("frog_undertale_battle_save", JSON.stringify(STATE)); } catch (e) {}
+    }
+    try {
+      const s = localStorage.getItem("frog_undertale_battle_save");
+      if (s) STATE = JSON.parse(s);
+    } catch (e) {}
+
+    function stepTrack(delta) {
+      const next = STATE.activeTrack + delta;
+      if (next < 0) return;
+      if (next > STATE.highestTrack) {
+        playAudioBlip(180);
+        runTypewriter("* That track is LOCKED 🔒! Finish this week's 5 flowchart nodes first!");
+        return;
+      }
+      playAudioBlip(400);
+      STATE.activeTrack = next;
+      STATE.isSleeping = false;
+      save();
+      refreshUI();
+      runTypewriter(`* Loaded ${TRACKS[STATE.activeTrack].title}. Draw the blueprint on real paper!`);
+    }
+
+    function refreshUI() {
+      const cur = TRACKS[STATE.activeTrack];
+      document.getElementById("track-name").innerText = (STATE.activeTrack > STATE.highestTrack) ? `🔒 ${cur.title}` : cur.title;
+      document.getElementById("nav-left").disabled = (STATE.activeTrack === 0);
+      document.getElementById("nav-right").disabled = (STATE.activeTrack >= TRACKS.length - 1);
+
+      if (!STATE.checks[cur.id]) STATE.checks[cur.id] = [false, false, false, false, false];
+      const c = STATE.checks[cur.id];
+      const done = c.filter(Boolean).length;
+
+      document.getElementById("hud-level").innerText = STATE.activeTrack + 1;
+      document.getElementById("hud-exp").innerText = done;
+
+      const mount = document.getElementById("subcat-mount");
+      mount.innerHTML = "";
+      cur.parts.forEach((p, idx) => {
+        const item = document.createElement("div");
+        item.className = `subcat-item ${c[idx] ? 'done' : ''}`;
+        item.innerText = p.name;
+        mount.appendChild(item);
+      });
+    }
+
+    /* =========================================================================
+       8. CAMERA OCR SCANNER & PROGRESSION VALIDATOR (FIGHT)
        ========================================================================= */
     const cameraInput = document.getElementById("camera-input");
     cameraInput.addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (!file) return;
 
-      playBeep(520);
-      setFace('neutral');
-      typeWriter("* Processing handwritten diagram with neural OCR vision...");
+      playAudioBlip(600);
+      runTypewriter("* FIGHT! Scanning paper notes with neural OCR vision...");
 
       if (!window.Tesseract) {
         const s = document.createElement("script");
@@ -831,18 +842,18 @@
         const text = res.data.text.toLowerCase();
         await worker.terminate();
 
-        const cur = TRACKS[STATE.activeTrackIdx];
+        const cur = TRACKS[STATE.activeTrack];
         const checks = STATE.checks[cur.id];
-        let newlyVerified = 0;
+        let found = 0;
 
         cur.parts.forEach((part, idx) => {
           if (!checks[idx]) {
             const hasKeyword = part.kw.some(k => text.includes(k.toLowerCase()));
-            const hasSyntax = text.includes("->") || text.includes("-->") || text.includes("—>") || text.includes("to");
+            const hasArrows = text.includes("->") || text.includes("-->") || text.includes("to");
 
-            if (hasKeyword || hasSyntax) {
+            if (hasKeyword || hasArrows) {
               checks[idx] = true;
-              newlyVerified++;
+              found++;
             }
           }
         });
@@ -850,35 +861,25 @@
         const total = checks.filter(Boolean).length;
         if (total === 5) {
           STATE.isSleeping = true;
-          if (!STATE.unlockedPowers.includes(cur.powerBadge)) {
-            STATE.unlockedPowers.push(cur.powerBadge);
-          }
-          // UNLOCK NEXT TRACK!
-          if (STATE.unlockedHighestTrack === STATE.activeTrackIdx) {
-            STATE.unlockedHighestTrack++;
-          }
-          setFace('smug');
-          playBeep(880);
-          typeWriter(`* BOOM! All 5 verified! Superpower unlocked: [${cur.powerBadge}]! Next track unlocked! I can finally sleep without detonating! 🛌`);
-        } else if (newlyVerified > 0) {
-          setFace('smug');
-          typeWriter(`* Nice! Verified ${newlyVerified} flowchart nodes! Total: ${total}/5 complete.`);
+          if (!STATE.powers.includes(cur.powerBadge)) STATE.powers.push(cur.powerBadge);
+          if (STATE.highestTrack === STATE.activeTrack) STATE.highestTrack++;
+          runTypewriter(`* VICTORY! 5/5 verified! Superpower unlocked: [${cur.powerBadge}]! Froggy goes to sleep! 🛌`);
+        } else if (found > 0) {
+          runTypewriter(`* Hit! Recognized ${found} valid flowchart nodes! Total: ${total}/5 complete.`);
         } else {
-          setFace('shock');
-          typeWriter("* I scanned the paper, but couldn't detect the flowchart arrows (->) or keywords. Draw cleaner nodes, human!");
+          runTypewriter("* Miss! Could not detect flowchart arrows (->) or keywords. Draw cleaner nodes!");
         }
 
         save();
         refreshUI();
       } catch (err) {
-        setFace('eyeroll');
-        typeWriter("* Scan error! Steady your hands and get better lighting!");
+        runTypewriter("* Error reading paper! Ensure bright lighting and hold camera steady.");
       }
     }
 
-    // BOOT
+    // Launch!
     refreshUI();
-    triggerBanter(0);
+    triggerDialogue(0);
   </script>
 </body>
 </html>
