@@ -7,21 +7,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PixelFrog">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <link rel="manifest" href='data:application/manifest+json,{"name":"PixelFrog","short_name":"PixelFrog","start_url":".","display":"standalone","background_color":"#000000","theme_color":"#000000"}'>
-
-  <!-- Retro Pixel Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>FROGGY • SANS PERSONALITY MATRIX</title>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="PixelFrog">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <link rel="manifest" href='data:application/manifest+json,{"name":"PixelFrog","short_name":"PixelFrog","start_url":".","display":"standalone","background_color":"#000000","theme_color":"#000000"}'>
 
   <!-- Retro Pixel Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,9 +14,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
   <style>
-    /* =========================================================================
-       1. AUTHENTIC UNDERTALE RETRO ENGINE STYLES
-       ========================================================================= */
     :root {
       --ut-black: #000000;
       --ut-white: #ffffff;
@@ -73,7 +55,6 @@
       align-items: center;
     }
 
-    /* Top HUD */
     .stasis-header {
       width: 100%;
       display: flex;
@@ -87,7 +68,6 @@
       color: var(--ut-yellow);
     }
 
-    /* Undertale Green Grid Arena Canvas */
     #arena-container {
       width: 100%;
       height: 215px;
@@ -105,7 +85,6 @@
       display: block;
     }
 
-    /* Dialogue & Encounter Text Box */
     #dialogue-box {
       width: 100%;
       margin-top: 6px;
@@ -125,10 +104,9 @@
       color: var(--ut-white);
       min-height: 50px;
       word-break: break-word;
-      text-transform: lowercase; /* Sans speaks in all-lowercase */
+      text-transform: lowercase;
     }
 
-    /* 2-Way Branch Choices inside Box */
     .dialogue-choices {
       display: flex;
       gap: 6px;
@@ -151,7 +129,6 @@
     .choice-btn::before { content: "❤️ "; color: var(--ut-red); }
     .choice-btn:active { background: var(--ut-orange); color: #000; }
 
-    /* Bottom Undertale Status HUD */
     .ut-status-bar {
       width: 100%;
       display: flex;
@@ -181,7 +158,6 @@
       background: var(--ut-yellow);
     }
 
-    /* 4 Action Buttons */
     .action-button-grid {
       width: 100%;
       display: grid;
@@ -206,7 +182,6 @@
     }
     .btn-undertale:active { background: var(--ut-orange); color: #000; }
 
-    /* Subcategory Track Dashboard */
     .curriculum-tray {
       width: 100%;
       margin-top: 8px;
@@ -244,21 +219,20 @@
     .subcat-list { margin-top: 6px; }
     .subcat-item {
       font-size: 0.44rem;
-      padding: 5px;
+      padding: 6px;
       border: 1px solid #222;
       background: #050505;
-      color: #888;
+      color: #aaa;
       margin-bottom: 4px;
       display: flex;
       align-items: center;
       cursor: pointer;
     }
-    .subcat-item:hover { border-color: var(--ut-orange); }
+    .subcat-item:hover { border-color: var(--ut-orange); color: var(--ut-white); }
     .subcat-item.done { color: #00ff66; border-color: #00aa44; }
-    .subcat-item::before { content: "[ ] "; margin-right: 6px; }
+    .subcat-item::before { content: "[ ] "; margin-right: 6px; color: var(--ut-gray); }
     .subcat-item.done::before { content: "[*] "; color: var(--ut-yellow); }
 
-    /* Modals */
     .ut-modal {
       display: none;
       position: fixed;
@@ -273,7 +247,7 @@
 
     .ut-modal-box {
       width: 100%;
-      max-width: 410px;
+      max-width: 420px;
       background: #000;
       border: 4px solid var(--ut-white);
       padding: 12px;
@@ -294,7 +268,7 @@
       color: #aaa;
       font-family: var(--font-pixel);
       font-size: 0.4rem;
-      padding: 5px 6px;
+      padding: 6px;
       cursor: pointer;
     }
     .subcat-pill-btn.active {
@@ -307,11 +281,11 @@
       background: #050505;
       color: #00ff66;
       font-family: var(--font-pixel);
-      font-size: 0.38rem;
+      font-size: 0.36rem;
       padding: 8px;
       border: 2px solid #333;
       white-space: pre;
-      line-height: 1.45;
+      line-height: 1.4;
       margin: 8px 0;
       overflow-x: auto;
     }
@@ -320,18 +294,15 @@
 <body>
 
   <div class="screen-wrapper">
-    <!-- Top Countdown HUD -->
     <div class="stasis-header">
-      <div id="countdown-label">LAUNCH: 08.11.2026</div>
+      <div id="countdown-label">START: 08.11.2026</div>
       <div>TIMER: <span id="stasis-timer" style="color:var(--ut-white);">--:--:--</span></div>
     </div>
 
-    <!-- Undertale Green Grid Arena Canvas -->
     <div id="arena-container" onclick="pokeFrog()">
       <canvas id="pixelCanvas" width="200" height="130"></canvas>
     </div>
 
-    <!-- Undertale Typewriter Dialogue Window -->
     <div id="dialogue-box">
       <div id="dialogue-text" class="dialogue-text">* ...</div>
       <div id="dialogue-choices" class="dialogue-choices" style="display: none;">
@@ -340,7 +311,6 @@
       </div>
     </div>
 
-    <!-- Undertale Bottom Stats Bar -->
     <div class="ut-status-bar">
       <div>HUMAN LV <span id="hud-level">1</span></div>
       <div class="hp-container">
@@ -353,35 +323,29 @@
       <div>EXP <span id="hud-exp" style="color:var(--ut-yellow);">0</span>/5</div>
     </div>
 
-    <!-- 4 Action Buttons -->
     <div class="action-button-grid">
-      <!-- FIGHT = Camera Scan -->
       <label for="camera-input" class="btn-undertale" onclick="playAudioBlip(120)">
         <span>⚔️</span>
         <span>FIGHT</span>
       </label>
       <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;">
 
-      <!-- ACT = Talk / Flowchart Blueprint Menu -->
       <button class="btn-undertale" onclick="handleActMenu()">
         <span>🗣</span>
         <span>ACT</span>
       </button>
 
-      <!-- ITEM = Room Gear -->
       <button class="btn-undertale" onclick="handleItemMenu()">
         <span>🎒</span>
         <span>ITEM</span>
       </button>
 
-      <!-- MERCY = Powers / Sleep -->
       <button class="btn-undertale" onclick="handleMercyMenu()">
         <span>💔</span>
         <span>MERCY</span>
       </button>
     </div>
 
-    <!-- 30 Progression-Locked Tracks Tray -->
     <div class="curriculum-tray">
       <div class="nav-row">
         <button id="nav-left" class="nav-arrow" onclick="stepTrack(-1)">&lt;</button>
@@ -393,18 +357,15 @@
     </div>
   </div>
 
-  <!-- MODAL: ACT / CUSTOM SUBCATEGORY FLOWCHART BLUEPRINT -->
+  <!-- MODAL: ACT / FLOWCHART BLUEPRINT -->
   <div id="blueprint-modal" class="ut-modal">
     <div class="ut-modal-box">
       <div style="font-size:0.5rem; color:var(--ut-yellow); margin-bottom:4px;">* SELECT SUBCATEGORY BLUEPRINT</div>
       <p style="font-size:0.41rem; color:#aaa; line-height:1.4;">
-        Exact flowchart shape for verification (Start -> Inputs -> Decision -> True/False -> Stop):
+        Flowchart structure: (Start) -> Inputs -> Decision -> True/False -> (Stop)
       </p>
 
-      <!-- 5 Subcategory Selector Buttons -->
       <div class="subcat-selector-bar" id="blueprint-tabs"></div>
-
-      <!-- Flowchart Canvas/ASCII Display -->
       <div id="ascii-mount" class="ascii-blueprint"></div>
 
       <button class="btn-undertale" style="width:100%; padding:8px;" onclick="closeModal('blueprint-modal')">
@@ -413,10 +374,10 @@
     </div>
   </div>
 
-  <!-- MODAL: STATS / POWERS -->
+  <!-- MODAL: MERCY / POWERS -->
   <div id="powers-modal" class="ut-modal">
     <div class="ut-modal-box">
-      <div style="font-size:0.5rem; color:var(--ut-yellow); margin-bottom:6px;">* UNLOCKED COMMUNICATION POWERS</div>
+      <div style="font-size:0.5rem; color:var(--ut-yellow); margin-bottom:6px;">* UNLOCKED POWERS</div>
       <div id="powers-mount" style="font-size:0.42rem; color:#00ff66; line-height:1.8; margin:8px 0;"></div>
       <button class="btn-undertale" style="width:100%; padding:8px;" onclick="closeModal('powers-modal')">
         * [ BACK ]
@@ -426,9 +387,9 @@
 
   <script>
     /* =========================================================================
-       1. CORE STATE INITIALIZATION (FIXED: Declared at the top so no TDZ crashes)
+       1. CORE ENGINE STATE INITIALIZATION (SAFE AT TOP)
        ========================================================================= */
-    let STATE = {
+    const STATE = {
       activeTrack: 0,
       highestTrack: 0,
       checks: {},
@@ -441,7 +402,9 @@
       const saved = localStorage.getItem("frog_sans_master_save");
       if (saved) {
         const parsed = JSON.parse(saved);
-        STATE = Object.assign(STATE, parsed);
+        if (typeof parsed === 'object' && parsed !== null) {
+          Object.assign(STATE, parsed);
+        }
       }
     } catch (e) {}
 
@@ -450,7 +413,7 @@
     }
 
     /* =========================================================================
-       2. SYNTHESIZED SANS VOICE & SOUND EFFECTS (Web Audio API)
+       2. WEBAUDIO SOUND SYSTEM
        ========================================================================= */
     let audioContext = null;
     function getAudio() {
@@ -549,7 +512,7 @@
     updateCalendarSchedule();
 
     /* =========================================================================
-       4. 30 STRICT PROGRESSION TRACKS & CUSTOM FLOWCHART GENERATOR
+       4. 30 STRICT PROGRESSION TRACKS & CUSTOM FLOWCHARTS
        ========================================================================= */
     const TRACK_NAMES = [
       "Values", "Roles", "Traits", "Framing", "States", "Conversation Loops",
@@ -559,7 +522,6 @@
       "Accusation Cleansers", "Persuasion Primes", "Vulnerability Wedges", "Impression Facades", "Insulation Controls", "System Synthesis"
     ];
 
-    // Subcategory definitions with custom inputs, decision condition, and branches
     const SUBCAT_TEMPLATES = [
       {
         part: "Part 1: Core Diagnostic Probe",
@@ -608,7 +570,6 @@
       }
     ];
 
-    // Builds the exact flowchart layout matching your image
     function buildCustomFlowchartASCII(trackName, sub) {
       return `   +------------------------------------+
    |              ( START )             |
@@ -649,8 +610,8 @@
    +-----------------------------+------+
    |               ( STOP )             |
    +------------------------------------+
-   * TRACK CONTEXT: ${trackName}
-   * TARGET NODES: DRAW ON PAPER & USE [ FIGHT ]`;
+   * TRACK: ${trackName}
+   * NODES: DRAW ON PAPER & USE [ FIGHT ]`;
     }
 
     const TRACKS = TRACK_NAMES.map((name, i) => ({
@@ -658,7 +619,7 @@
       name: name,
       title: `TRACK ${i + 1}: ${name.toUpperCase()} (BOOKS ${1 + i * 13}–${13 + i * 13})`,
       powerBadge: `${name} Mastery Matrix`,
-      parts: SUBCAT_TEMPLATES.map((tmpl, pIdx) => ({
+      parts: SUBCAT_TEMPLATES.map((tmpl) => ({
         name: tmpl.part,
         kw: tmpl.kw,
         input1: `${name} ${tmpl.input1}`,
@@ -670,19 +631,19 @@
     }));
 
     /* =========================================================================
-       5. PURE PIXEL CANVAS RENDERING ENGINE (ORIGINAL FROGGY RESTORED)
+       5. ORIGINAL FROGGY SPRITE & CANVAS ENGINE
        ========================================================================= */
     const canvas = document.getElementById("pixelCanvas");
     const ctx = canvas.getContext("2d");
     ctx.imageSmoothingEnabled = false;
 
-    let frog = {
+    const frog = {
       x: 88,
       y: 72,
       targetX: 88,
       facing: 1,
-      state: "IDLE", // IDLE, WALK
-      face: "GRIN",   // GRIN, WINK, EMPTY, DERP, SHRUG
+      state: "IDLE",
+      face: "GRIN",
       timer: 0,
       animFrame: 0,
       isMouthOpen: false
@@ -708,7 +669,7 @@
     }
 
     function renderScene() {
-      // 1. Clear & draw Green Grid Arena Background
+      // 1. Clear Arena & Draw Green Grid
       ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -736,7 +697,7 @@
       drawPixelRect(11, 83, 18, 5, "#fce373");
       drawPixelRect(11, 92, 18, 5, "#ff597b");
 
-      // Desk & Lamp items unlocked via progression
+      // Desk & Lamp (Progression Unlocks)
       if (STATE.highestTrack >= 1) {
         drawPixelRect(150, 84, 42, 24, P.black);
         ctx.strokeRect(150, 84, 42, 24);
@@ -750,6 +711,7 @@
       // 3. Render Froggy Sprite
       if (STATE.isSleeping) {
         drawPixelRect(80, 80, 48, 26, P.black);
+        ctx.strokeStyle = P.white;
         ctx.strokeRect(80, 80, 48, 26);
         drawPixelRect(83, 76, 12, 8, P.white);
         drawPixelRect(92, 78, 14, 12, P.greenMain);
@@ -770,16 +732,15 @@
       // Outer outline box
       drawPixelRect(fx, fy + shrugOffset, 26, 36, P.outline);
 
-      // Hood Base
+      // Green Hood Base
       drawPixelRect(fx + 2, fy + 2 + shrugOffset, 22, 32, P.greenMain);
       drawPixelRect(fx + 2, fy + 2 + shrugOffset, 6, 32, P.greenDark);
       drawPixelRect(fx + 10, fy + 2 + shrugOffset, 12, 32, P.greenBright);
 
-      // Hood Frog Eyes on top
+      // Hood Frog Eyes
       drawPixelRect(fx + 3, fy - 6 + shrugOffset, 7, 7, P.white);
       drawPixelRect(fx + 16, fy - 6 + shrugOffset, 7, 7, P.white);
 
-      // Hood Eye pupils
       if (face === "EMPTY") {
         drawPixelRect(fx + 3, fy - 6 + shrugOffset, 7, 7, P.black);
         drawPixelRect(fx + 16, fy - 6 + shrugOffset, 7, 7, P.black);
@@ -788,7 +749,7 @@
         drawPixelRect(fx + 18, fy - 4 + shrugOffset, 3, 3, P.black);
       }
 
-      // Peach Face Opening
+      // Peach Face
       drawPixelRect(fx + 4, fy + 6 + shrugOffset, 18, 15, P.pinkTrim);
       drawPixelRect(fx + 6, fy + 8 + shrugOffset, 14, 11, P.skin);
 
@@ -803,7 +764,6 @@
         drawPixelRect(fx + 6, fy + 10 + shrugOffset, 3, 4, P.black);
         drawPixelRect(fx + 13, fy + 10 + shrugOffset, 3, 4, P.black);
       } else {
-        // Normal Lazy Grin Eyes
         drawPixelRect(fx + 8, fy + 10 + shrugOffset, 3, 4, P.black);
         drawPixelRect(fx + 15, fy + 10 + shrugOffset, 3, 4, P.black);
       }
@@ -812,7 +772,7 @@
       drawPixelRect(fx + 5, fy + 14 + shrugOffset, 2, 2, P.pinkTrim);
       drawPixelRect(fx + 19, fy + 14 + shrugOffset, 2, 2, P.pinkTrim);
 
-      // Mouth: bobs when talking
+      // Talking Mouth
       if (mouthOpen) {
         drawPixelRect(fx + 11, fy + 16 + shrugOffset, 5, 3, P.black);
       } else {
@@ -823,25 +783,24 @@
       drawPixelRect(fx + 5, fy + 22 + shrugOffset, 16, 11, P.bellyYellow);
       drawPixelRect(fx + 10, fy + 24 + shrugOffset, 6, 6, P.bellyPink);
 
-      // Shrugging hands or regular hands
+      // Shrug Hands
       if (face === "SHRUG") {
         drawPixelRect(fx - 4, fy + 16, 5, 6, P.greenMain);
         drawPixelRect(fx + 25, fy + 16, 5, 6, P.greenMain);
       }
 
-      // Feet (Walk cycle)
+      // Animated Stepping Feet
       drawPixelRect(fx + 3, fy + 35 + legOffset, 7, 3, P.greenDark);
       drawPixelRect(fx + 16, fy + 35 - legOffset, 7, 3, P.greenDark);
     }
 
-    // Wandering AI Loop
     function updateWanderingAI() {
       if (STATE.isSleeping) return;
       frog.timer++;
       frog.animFrame++;
 
       if (frog.state === "IDLE") {
-        if (frog.timer > 140) {
+        if (frog.timer > 120) {
           frog.targetX = 35 + Math.floor(Math.random() * 115);
           frog.state = "WALK";
           frog.facing = (frog.targetX > frog.x) ? 1 : -1;
@@ -859,17 +818,17 @@
       }
     }
     setInterval(updateWanderingAI, 30);
-    renderScene(); // Character renders without errors!
+    renderScene();
 
     /* =========================================================================
-       6. SANS PERSONALITY BANTER MATRIX & LIVE FACE-MORPHING TYPEWRITER
+       6. DIALOGUE & TYPEWRITER ENGINE
        ========================================================================= */
     const SANS_BANTER = [
       {
-        text: "* heya. what're you sweating about? week 1 doesn't even launch until 08.11.2026. take a nap, kiddo.",
+        text: "* heya. what're you sweating about? week 1 doesn't launch until 08.11.2026. take a nap, kiddo.",
         facePlan: [ {at: 0, f: "GRIN"}, {at: 20, f: "WINK"}, {at: 55, f: "SHRUG"} ],
         c1: "aren't we supposed to prepare?",
-        r1: "* prepare? i'm already a professional at doing nothing. but hey, inspect the flowchart blueprints.",
+        r1: "* prepare? i'm already a professional at doing nothing. inspect the flowcharts below.",
         c2: "tell me a psychology pun.",
         r2: "* why did the skeleton fail his behavioral diagnostic? he didn't have the *guts* to state his non-negotiable."
       },
@@ -877,7 +836,7 @@
         text: "* you know, human communication is kinda funny. people would rather argue for 4 hours about the dishes than admit they're tired.",
         facePlan: [ {at: 0, f: "GRIN"}, {at: 30, f: "DERP"}, {at: 70, f: "EMPTY"} ],
         c1: "that's just human nature.",
-        r1: "* nah, pal. that's just avoiding the Adult logic pivot. Book 14 literally solves that in 5 minutes.",
+        r1: "* nah, pal. that's just avoiding the adult logic pivot. Book 14 literally solves that in 5 minutes.",
         c2: "you ever do the dishes?",
         r2: "* i'm a pixel frog wearing a green hoodie. dishes are physically outside my collision box."
       },
@@ -958,14 +917,13 @@
     }
 
     /* =========================================================================
-       7. SUBCATEGORY FLOWCHART BLUEPRINT ENGINE (REQUESTED FEATURE)
+       7. BUTTONS & SUBCATEGORY FLOWCHART MODAL
        ========================================================================= */
     function handleActMenu(subIndex = 0) {
       playAudioBlip(380);
       const curTrack = TRACKS[STATE.activeTrack];
       STATE.selectedSubcatIdx = subIndex;
 
-      // Render the 5 tabs
       const tabsMount = document.getElementById("blueprint-tabs");
       tabsMount.innerHTML = "";
 
@@ -980,7 +938,6 @@
         tabsMount.appendChild(btn);
       });
 
-      // Render the exact flowchart structure for the chosen subcategory
       const selectedPart = curTrack.parts[STATE.selectedSubcatIdx];
       const asciiDiagram = buildCustomFlowchartASCII(curTrack.name, selectedPart);
       document.getElementById("ascii-mount").innerText = asciiDiagram;
@@ -1010,7 +967,7 @@
     }
 
     /* =========================================================================
-       8. PROGRESSION TRACKS ENGINE
+       8. PROGRESSION UI ENGINE
        ========================================================================= */
     function stepTrack(delta) {
       const next = STATE.activeTrack + delta;
@@ -1053,7 +1010,6 @@
         const item = document.createElement("div");
         item.className = `subcat-item ${c[idx] ? 'done' : ''}`;
         item.innerText = p.name;
-        // Clicking a subcategory opens its flowchart directly!
         item.onclick = () => handleActMenu(idx);
         mount.appendChild(item);
       });
@@ -1137,998 +1093,7 @@
       }
     }
 
-    // Launch Everything!
-    refreshUI();
-    triggerDialogue(0);
-  </script>
-</body>
-</html>?family=Press+Start+2P&display=swap" rel="stylesheet">
-
-  <style>
-    /* =========================================================================
-       1. AUTHENTIC UNDERTALE RETRO ENGINE STYLES
-       ========================================================================= */
-    :root {
-      --ut-black: #000000;
-      --ut-white: #ffffff;
-      --ut-orange: #ff9900;
-      --ut-yellow: #ffff00;
-      --ut-red: #ff0000;
-      --ut-green-grid: #00aa44;
-      --ut-gray: #444444;
-      --font-pixel: 'Press Start 2P', monospace;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      image-rendering: pixelated;
-      shape-rendering: crispEdges;
-    }
-
-    body {
-      background-color: var(--ut-black);
-      color: var(--ut-white);
-      font-family: var(--font-pixel);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      padding: 8px 6px 60px 6px;
-      overflow-x: hidden;
-    }
-
-    .screen-wrapper {
-      width: 100%;
-      max-width: 440px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    /* Top HUD */
-    .stasis-header {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.44rem;
-      border: 3px solid var(--ut-white);
-      padding: 6px 8px;
-      margin-bottom: 6px;
-      background: #000;
-      color: var(--ut-yellow);
-    }
-
-    /* Undertale Green Grid Arena Canvas */
-    #arena-container {
-      width: 100%;
-      height: 215px;
-      background: #000;
-      border: 4px solid var(--ut-white);
-      position: relative;
-      overflow: hidden;
-    }
-
-    canvas#pixelCanvas {
-      width: 100%;
-      height: 100%;
-      image-rendering: pixelated;
-      display: block;
-    }
-
-    /* Dialogue & Encounter Text Box */
-    #dialogue-box {
-      width: 100%;
-      margin-top: 6px;
-      background: #000;
-      border: 4px solid var(--ut-white);
-      padding: 10px;
-      min-height: 115px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: relative;
-    }
-
-    .dialogue-text {
-      font-size: 0.53rem;
-      line-height: 1.6;
-      color: var(--ut-white);
-      min-height: 50px;
-      word-break: break-word;
-      text-transform: lowercase; /* Sans speaks in all-lowercase */
-    }
-
-    /* 2-Way Branch Choices inside Box */
-    .dialogue-choices {
-      display: flex;
-      gap: 6px;
-      margin-top: 8px;
-    }
-
-    .choice-btn {
-      flex: 1;
-      background: #000;
-      border: 2px solid var(--ut-white);
-      color: var(--ut-yellow);
-      font-family: var(--font-pixel);
-      font-size: 0.44rem;
-      padding: 6px 4px;
-      cursor: pointer;
-      text-align: left;
-      line-height: 1.3;
-      text-transform: lowercase;
-    }
-    .choice-btn::before { content: "❤️ "; color: var(--ut-red); }
-    .choice-btn:active { background: var(--ut-orange); color: #000; }
-
-    /* Bottom Undertale Status HUD */
-    .ut-status-bar {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 8px;
-      font-size: 0.56rem;
-      padding: 0 4px;
-    }
-
-    .hp-container {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .hp-bar-box {
-      width: 32px;
-      height: 14px;
-      background: var(--ut-red);
-      position: relative;
-    }
-
-    .hp-bar-fill {
-      width: 100%;
-      height: 100%;
-      background: var(--ut-yellow);
-    }
-
-    /* 4 Action Buttons */
-    .action-button-grid {
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-      margin-top: 8px;
-    }
-
-    .btn-undertale {
-      background: #000;
-      border: 3px solid var(--ut-orange);
-      color: var(--ut-orange);
-      font-family: var(--font-pixel);
-      font-size: 0.52rem;
-      padding: 10px 2px;
-      cursor: pointer;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-    .btn-undertale:active { background: var(--ut-orange); color: #000; }
-
-    /* Subcategory Track Dashboard */
-    .curriculum-tray {
-      width: 100%;
-      margin-top: 8px;
-      border: 3px solid var(--ut-white);
-      background: #000;
-      padding: 8px;
-    }
-
-    .nav-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-
-    .nav-arrow {
-      background: #000;
-      border: 2px solid var(--ut-white);
-      color: var(--ut-yellow);
-      font-family: var(--font-pixel);
-      font-size: 0.6rem;
-      padding: 4px 10px;
-      cursor: pointer;
-    }
-    .nav-arrow:disabled { color: var(--ut-gray); border-color: var(--ut-gray); }
-
-    .track-title {
-      font-size: 0.46rem;
-      color: var(--ut-yellow);
-      text-align: center;
-      max-width: 250px;
-      line-height: 1.4;
-    }
-
-    .subcat-list { margin-top: 6px; }
-    .subcat-item {
-      font-size: 0.44rem;
-      padding: 5px;
-      border: 1px solid #222;
-      background: #050505;
-      color: #888;
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-    }
-    .subcat-item.done { color: #00ff66; border-color: #00aa44; }
-    .subcat-item::before { content: "[ ] "; margin-right: 6px; }
-    .subcat-item.done::before { content: "[*] "; color: var(--ut-yellow); }
-
-    /* Modals */
-    .ut-modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.96);
-      z-index: 9999;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 12px;
-    }
-
-    .ut-modal-box {
-      width: 100%;
-      max-width: 380px;
-      background: #000;
-      border: 4px solid var(--ut-white);
-      padding: 12px;
-      max-height: 85vh;
-      overflow-y: auto;
-    }
-
-    .ascii-blueprint {
-      background: #050505;
-      color: #00ff66;
-      font-family: var(--font-pixel);
-      font-size: 0.4rem;
-      padding: 8px;
-      border: 2px solid #333;
-      white-space: pre;
-      line-height: 1.5;
-      margin: 8px 0;
-      overflow-x: auto;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="screen-wrapper">
-    <!-- Top Countdown HUD -->
-    <div class="stasis-header">
-      <div id="countdown-label">LAUNCH: 08.11.2026</div>
-      <div>TIMER: <span id="stasis-timer" style="color:var(--ut-white);">--:--:--</span></div>
-    </div>
-
-    <!-- Undertale Green Grid Arena Canvas -->
-    <div id="arena-container">
-      <canvas id="pixelCanvas" width="200" height="130"></canvas>
-    </div>
-
-    <!-- Undertale Typewriter Dialogue Window -->
-    <div id="dialogue-box">
-      <div id="dialogue-text" class="dialogue-text">* ...</div>
-      <div id="dialogue-choices" class="dialogue-choices" style="display: none;">
-        <button id="choice-1" class="choice-btn" onclick="makeChoice(1)">Option A</button>
-        <button id="choice-2" class="choice-btn" onclick="makeChoice(2)">Option B</button>
-      </div>
-    </div>
-
-    <!-- Undertale Bottom Stats Bar -->
-    <div class="ut-status-bar">
-      <div>HUMAN LV <span id="hud-level">1</span></div>
-      <div class="hp-container">
-        <span>HP</span>
-        <div class="hp-bar-box">
-          <div class="hp-bar-fill"></div>
-        </div>
-        <span>20/20</span>
-      </div>
-      <div>EXP <span id="hud-exp" style="color:var(--ut-yellow);">0</span>/5</div>
-    </div>
-
-    <!-- 4 Action Buttons -->
-    <div class="action-button-grid">
-      <!-- FIGHT = Camera Scan -->
-      <label for="camera-input" class="btn-undertale" onclick="playAudioBlip(120)">
-        <span>⚔️</span>
-        <span>FIGHT</span>
-      </label>
-      <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;">
-
-      <!-- ACT = Talk / Puns / Flowchart Blueprint -->
-      <button class="btn-undertale" onclick="handleActMenu()">
-        <span>🗣</span>
-        <span>ACT</span>
-      </button>
-
-      <!-- ITEM = Room Gear -->
-      <button class="btn-undertale" onclick="handleItemMenu()">
-        <span>🎒</span>
-        <span>ITEM</span>
-      </button>
-
-      <!-- MERCY = Powers / Sleep -->
-      <button class="btn-undertale" onclick="handleMercyMenu()">
-        <span>💔</span>
-        <span>MERCY</span>
-      </button>
-    </div>
-
-    <!-- 30 Progression-Locked Tracks Tray -->
-    <div class="curriculum-tray">
-      <div class="nav-row">
-        <button id="nav-left" class="nav-arrow" onclick="stepTrack(-1)">&lt;</button>
-        <div id="track-name" class="track-title">TRACK 1: VALUES (BOOKS 1–13)</div>
-        <button id="nav-right" class="nav-arrow" onclick="stepTrack(1)">&gt;</button>
-      </div>
-
-      <div class="subcat-list" id="subcat-mount"></div>
-    </div>
-  </div>
-
-  <!-- MODAL: ACT / DIAGRAM BLUEPRINT -->
-  <div id="blueprint-modal" class="ut-modal">
-    <div class="ut-modal-box">
-      <div style="font-size:0.5rem; color:var(--ut-yellow); margin-bottom:6px;">* FLOWCHART LOGIC BLUEPRINT</div>
-      <p style="font-size:0.42rem; color:#aaa; line-height:1.4;">
-        Draw these exact symbolic branches onto paper for FIGHT (Scan) verification:
-      </p>
-      <div id="ascii-mount" class="ascii-blueprint"></div>
-      <button class="btn-undertale" style="width:100%; padding:8px;" onclick="closeModal('blueprint-modal')">
-        * [ RETURN ]
-      </button>
-    </div>
-  </div>
-
-  <!-- MODAL: STATS / POWERS -->
-  <div id="powers-modal" class="ut-modal">
-    <div class="ut-modal-box">
-      <div style="font-size:0.5rem; color:var(--ut-yellow); margin-bottom:6px;">* UNLOCKED COMMUNICATION POWERS</div>
-      <div id="powers-mount" style="font-size:0.42rem; color:#00ff66; line-height:1.8; margin:8px 0;"></div>
-      <button class="btn-undertale" style="width:100%; padding:8px;" onclick="closeModal('powers-modal')">
-        * [ BACK ]
-      </button>
-    </div>
-  </div>
-
-  <script>
-    /* =========================================================================
-       1. SYNTHESIZED SANS VOICE & SOUND EFFECTS (Web Audio API)
-       ========================================================================= */
-    let audioContext = null;
-    function getAudio() {
-      if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioContext.state === 'suspended') audioContext.resume();
-      return audioContext;
-    }
-
-    // Authentic Sans low square-wave voice blip
-    function playSansVoiceBlip() {
-      try {
-        const ctx = getAudio();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'square';
-        // Sans has a very low fundamental tone (~75-90 Hz)
-        osc.frequency.setValueAtTime(82 + (Math.random() * 8), ctx.currentTime);
-        gain.gain.setValueAtTime(0.06, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.04);
-      } catch (e) {}
-    }
-
-    function playAudioBlip(freq = 120) {
-      try {
-        const ctx = getAudio();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(freq, ctx.currentTime);
-        gain.gain.setValueAtTime(0.08, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.08);
-      } catch (e) {}
-    }
-
-    // Exaggerated Undertale Trombone Pun Fanfare: "wah-wah-waaah"
-    function playTrombonePun() {
-      const notes = [311.13, 293.66, 277.18, 261.63]; // Eb, D, Db, C
-      notes.forEach((freq, i) => {
-        setTimeout(() => {
-          try {
-            const ctx = getAudio();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(freq, ctx.currentTime);
-            gain.gain.setValueAtTime(0.07, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.start();
-            osc.stop(ctx.currentTime + 0.22);
-          } catch(e) {}
-        }, i * 220);
-      });
-    }
-
-    /* =========================================================================
-       2. REVISED CALENDAR & DEADLINE ENGINE (Starts 08.11.2026, Sunday-to-Sunday)
-       ========================================================================= */
-    const LAUNCH_DATE = new Date("2026-11-08T00:00:00"); // 8 Nov 2026 is a Sunday!
-
-    function updateCalendarSchedule() {
-      const now = new Date();
-      const diffToLaunch = LAUNCH_DATE - now;
-
-      // BEFORE 08.11.2026: NO weekly deadline panic! Only count down to the grand start.
-      if (diffToLaunch > 0 && !sessionStorage.getItem("frog_bypass_active")) {
-        document.getElementById("countdown-label").innerText = "START: 08.11.2026";
-        const d = Math.floor(diffToLaunch / (1000 * 60 * 60 * 24));
-        const h = Math.floor((diffToLaunch / (1000 * 60 * 60)) % 24);
-        const m = Math.floor((diffToLaunch / (1000 * 60)) % 60);
-        const s = Math.floor((diffToLaunch / 1000) % 60);
-        document.getElementById("stasis-timer").innerText = `${d}d ${h}h ${m}m ${s}s`;
-      } else {
-        // AFTER 08.11.2026 (or bypass test mode): Week starts Sunday 00:00 and finishes next Sunday 23:59
-        document.getElementById("countdown-label").innerText = "WEEK DEADLINE (SUN)";
-        const dayOfWeek = now.getDay(); // 0 is Sunday
-        const daysUntilNextSunday = (7 - dayOfWeek) % 7;
-        const nextSundayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilNextSunday, 23, 59, 59);
-        const diffMs = nextSundayEnd - now;
-
-        if (diffMs > 0) {
-          const d = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-          const h = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
-          const m = Math.floor((diffMs / (1000 * 60)) % 60);
-          document.getElementById("stasis-timer").innerText = `${d}d ${h}h ${m}m`;
-        } else {
-          document.getElementById("stasis-timer").innerText = `WEEK RESET`;
-        }
-      }
-    }
-    setInterval(updateCalendarSchedule, 1000);
-    updateCalendarSchedule();
-
-    /* =========================================================================
-       3. 30 STRICT PROGRESSION TRACKS (Curriculum 1 to 30)
-       ========================================================================= */
-    const TRACK_NAMES = [
-      "Values", "Roles", "Traits", "Framing", "States", "Conversation Loops",
-      "Fear", "Anger", "Shame", "Pride", "Desire", "Active Listening",
-      "Compliance", "Command", "Biases", "Habit Anchors", "Attention Traps", "Status Shields",
-      "Certainty Anchors", "Autonomy Preserves", "Relatedness Ties", "Fairness Audits", "Deception Reads", "Confrontation Defusals",
-      "Accusation Cleansers", "Persuasion Primes", "Vulnerability Wedges", "Impression Facades", "Insulation Controls", "System Synthesis"
-    ];
-
-    const TRACKS = TRACK_NAMES.map((name, i) => ({
-      id: i + 1,
-      title: `TRACK ${i + 1}: ${name.toUpperCase()} (BOOKS ${1 + i * 13}–${13 + i * 13})`,
-      powerBadge: `${name} Mastery Matrix`,
-      parts: [
-        { name: "Part 1: Core Diagnostic Probe", kw: ["non-negotiable", "metric", "element"] },
-        { name: "Part 2: Decision Frame Check", kw: ["prioritize", "specific path", "choices"] },
-        { name: "Part 3: SCARF Control Assessment", kw: ["structural control", "timeline", "status"] },
-        { name: "Part 4: Bottleneck Verifier", kw: ["resolve", "immediate problem", "triggers"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["catalyst", "circuit-breaker", "framework"] }
-      ],
-      blueprint:
-`+-----------------------------+
-|    RAW CONVERSATION INPUT   |
-+--------------+--------------+
-               |
-               v
-     /-------------------\\
-    < ISOLATE NOISE WORD  >
-     \\-------------------/
-               |
-               v
-+--------------+--------------+
-|   PRIMARY CRITERIA MATCH?   |
-+--------------+--------------+
-       |               |
-     (YES)            (NO)
-       |               |
-       v               v
- [LOCK FRAMEWORK] [CIRCUIT BREAKER]`
-    }));
-
-    /* =========================================================================
-       4. PURE PIXEL CANVAS RENDERING ENGINE & FACIAL STATES
-       ========================================================================= */
-    const canvas = document.getElementById("pixelCanvas");
-    const ctx = canvas.getContext("2d");
-    ctx.imageSmoothingEnabled = false;
-
-    // Froggy state & dynamic facial expressions while talking
-    let frog = {
-      x: 90,
-      y: 72,
-      targetX: 90,
-      facing: 1,
-      state: "IDLE", // IDLE, WALK, SHOT
-      face: "GRIN",   // GRIN, WINK, EMPTY, DERP, SHRUG
-      timer: 0,
-      animFrame: 0,
-      isMouthOpen: false
-    };
-
-    const P = {
-      black: "#000000",
-      outline: "#15181f",
-      greenDark: "#025433",
-      greenMain: "#00a86b",
-      greenBright: "#00e699",
-      pinkTrim: "#ff597b",
-      skin: "#fcd5a0",
-      bellyYellow: "#fce373",
-      bellyPink: "#e83a82",
-      white: "#ffffff",
-      gridGreen: "#005522"
-    };
-
-    function drawPixelRect(x, y, w, h, color) {
-      ctx.fillStyle = color;
-      ctx.fillRect(Math.floor(x), Math.floor(y), w, h);
-    }
-
-    function renderScene() {
-      // 1. Clear & draw Green Grid Arena Background
-      ctx.fillStyle = "#000000";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.strokeStyle = P.gridGreen;
-      ctx.lineWidth = 1;
-      for (let x = 0; x < canvas.width; x += 16) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-      }
-      for (let y = 0; y < canvas.height; y += 16) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-      }
-
-      // 2. Bookshelf
-      drawPixelRect(8, 60, 24, 48, P.black);
-      ctx.strokeStyle = P.white;
-      ctx.strokeRect(8, 60, 24, 48);
-      drawPixelRect(11, 65, 18, 5, "#ff4757");
-      drawPixelRect(11, 74, 18, 5, "#00a86b");
-      drawPixelRect(11, 83, 18, 5, "#fce373");
-      drawPixelRect(11, 92, 18, 5, "#ff597b");
-
-      // Desk & Lamp
-      if (STATE.highestTrack >= 1) {
-        drawPixelRect(150, 84, 42, 24, P.black);
-        ctx.strokeRect(150, 84, 42, 24);
-        drawPixelRect(156, 76, 8, 8, P.white);
-      }
-      if (STATE.highestTrack >= 2) {
-        drawPixelRect(178, 60, 2, 24, P.white);
-        drawPixelRect(173, 54, 12, 6, "#ffff00");
-      }
-
-      // 3. Render Froggy Sprite with Dynamic Sans Faces
-      if (STATE.isSleeping) {
-        drawPixelRect(80, 80, 48, 26, P.black);
-        ctx.strokeRect(80, 80, 48, 26);
-        drawPixelRect(83, 76, 12, 8, P.white);
-        drawPixelRect(92, 78, 14, 12, P.greenMain);
-        drawPixelRect(94, 82, 3, 1, P.black);
-        drawPixelRect(100, 82, 3, 1, P.black);
-        drawPixelRect(96, 80, 30, 24, P.pinkTrim);
-      } else {
-        renderFrogSprite(frog.x, frog.y, frog.face, frog.animFrame, frog.isMouthOpen);
-      }
-
-      requestAnimationFrame(renderScene);
-    }
-
-    function renderFrogSprite(fx, fy, face, frame, mouthOpen) {
-      const legOffset = (frog.state === "WALK") ? (Math.floor(frame / 6) % 2 === 0 ? 2 : -2) : 0;
-      const shrugOffset = (face === "SHRUG") ? -3 : 0;
-
-      // Outer outline box
-      drawPixelRect(fx, fy + shrugOffset, 26, 36, P.outline);
-
-      // Hood Base
-      drawPixelRect(fx + 2, fy + 2 + shrugOffset, 22, 32, P.greenMain);
-      drawPixelRect(fx + 2, fy + 2 + shrugOffset, 6, 32, P.greenDark);
-      drawPixelRect(fx + 10, fy + 2 + shrugOffset, 12, 32, P.greenBright);
-
-      // Hood Frog Eyes on top
-      drawPixelRect(fx + 3, fy - 6 + shrugOffset, 7, 7, P.white);
-      drawPixelRect(fx + 16, fy - 6 + shrugOffset, 7, 7, P.white);
-
-      // Hood Eye pupils react to Empty Socket face!
-      if (face === "EMPTY") {
-        drawPixelRect(fx + 3, fy - 6 + shrugOffset, 7, 7, P.black);
-        drawPixelRect(fx + 16, fy - 6 + shrugOffset, 7, 7, P.black);
-      } else {
-        drawPixelRect(fx + 5, fy - 4 + shrugOffset, 3, 3, P.black);
-        drawPixelRect(fx + 18, fy - 4 + shrugOffset, 3, 3, P.black);
-      }
-
-      // Peach Face Opening
-      drawPixelRect(fx + 4, fy + 6 + shrugOffset, 18, 15, P.pinkTrim);
-      drawPixelRect(fx + 6, fy + 8 + shrugOffset, 14, 11, P.skin);
-
-      // ==========================================
-      // DYNAMIC FACIAL EXPRESSIONS WHILE TALKING:
-      // ==========================================
-      if (face === "EMPTY") {
-        // Complete empty black eye sockets (classic Sans pause)
-        drawPixelRect(fx + 8, fy + 10 + shrugOffset, 3, 4, P.black);
-        drawPixelRect(fx + 15, fy + 10 + shrugOffset, 3, 4, P.black);
-      } else if (face === "WINK") {
-        // Right eye winking shut
-        drawPixelRect(fx + 8, fy + 11 + shrugOffset, 4, 2, P.black);
-        drawPixelRect(fx + 15, fy + 10 + shrugOffset, 3, 4, P.black);
-      } else if (face === "DERP") {
-        // Pupils looking all the way sideways
-        drawPixelRect(fx + 6, fy + 10 + shrugOffset, 3, 4, P.black);
-        drawPixelRect(fx + 13, fy + 10 + shrugOffset, 3, 4, P.black);
-      } else {
-        // Normal lazy grin eyes
-        drawPixelRect(fx + 8, fy + 10 + shrugOffset, 3, 4, P.black);
-        drawPixelRect(fx + 15, fy + 10 + shrugOffset, 3, 4, P.black);
-      }
-
-      // Cheeks
-      drawPixelRect(fx + 5, fy + 14 + shrugOffset, 2, 2, P.pinkTrim);
-      drawPixelRect(fx + 19, fy + 14 + shrugOffset, 2, 2, P.pinkTrim);
-
-      // Mouth: talks/bobs when talking!
-      if (mouthOpen) {
-        drawPixelRect(fx + 11, fy + 16 + shrugOffset, 5, 3, P.black);
-      } else {
-        drawPixelRect(fx + 10, fy + 17 + shrugOffset, 7, 1, P.black);
-      }
-
-      // Yellow Belly with Pink Heart
-      drawPixelRect(fx + 5, fy + 22 + shrugOffset, 16, 11, P.bellyYellow);
-      drawPixelRect(fx + 10, fy + 24 + shrugOffset, 6, 6, P.bellyPink);
-
-      // Shrugging hands or regular hands
-      if (face === "SHRUG") {
-        drawPixelRect(fx - 4, fy + 16, 5, 6, P.greenMain);
-        drawPixelRect(fx + 25, fy + 16, 5, 6, P.greenMain);
-      }
-
-      // Stepping Feet (Animated Walk Cycle)
-      drawPixelRect(fx + 3, fy + 35 + legOffset, 7, 3, P.greenDark);
-      drawPixelRect(fx + 16, fy + 35 - legOffset, 7, 3, P.greenDark);
-    }
-
-    // Wandering AI Loop
-    function updateWanderingAI() {
-      if (STATE.isSleeping) return;
-      frog.timer++;
-      frog.animFrame++;
-
-      if (frog.state === "IDLE") {
-        if (frog.timer > 140) {
-          frog.targetX = 35 + Math.floor(Math.random() * 120);
-          frog.state = "WALK";
-          frog.facing = (frog.targetX > frog.x) ? 1 : -1;
-          frog.timer = 0;
-        }
-      } else if (frog.state === "WALK") {
-        const dx = frog.targetX - frog.x;
-        if (Math.abs(dx) <= 1) {
-          frog.x = frog.targetX;
-          frog.state = "IDLE";
-          frog.timer = 0;
-        } else {
-          frog.x += Math.sign(dx) * 0.75;
-        }
-      }
-    }
-    setInterval(updateWanderingAI, 30);
-    renderScene();
-
-    /* =========================================================================
-       5. SANS PERSONALITY BANTER MATRIX & LIVE FACE-MORPHING TYPEWRITER
-       ========================================================================= */
-    const SANS_BANTER = [
-      {
-        text: "* heya. what're you sweating about? week 1 doesn't even launch until 08.11.2026. take a nap, kiddo.",
-        facePlan: [ {at: 0, f: "GRIN"}, {at: 20, f: "WINK"}, {at: 55, f: "SHRUG"} ],
-        c1: "aren't we supposed to prepare?",
-        r1: "* prepare? i'm already a professional at doing nothing. but hey, feel free to inspect the tracks.",
-        c2: "tell me a psychology pun.",
-        r2: "* why did the skeleton fail his behavioral diagnostic? he didn't have the *guts* to state his non-negotiable."
-      },
-      {
-        text: "* you know, human communication is kinda funny. people would rather argue for 4 hours about the dishes than admit they're tired.",
-        facePlan: [ {at: 0, f: "GRIN"}, {at: 30, f: "DERP"}, {at: 70, f: "EMPTY"} ],
-        c1: "that's just human nature.",
-        r1: "* nah, pal. that's just avoiding the Adult logic pivot. Book 14 literally solves that in 5 minutes.",
-        c2: "you ever do the dishes?",
-        r2: "* i'm a pixel frog wearing a green hoodie. dishes are physically outside my collision box."
-      },
-      {
-        text: "* a week starts on sunday and finishes on sunday. until 08.11.2026 hits, consider yourself on paid vacation.",
-        facePlan: [ {at: 0, f: "GRIN"}, {at: 35, f: "WINK"}, {at: 65, f: "SHRUG"} ],
-        c1: "can i test the scanner anyway?",
-        r1: "* go right ahead, kiddo. hit [ FIGHT ] and show me your paper flowchart.",
-        c2: "what's with the green grid?",
-        r2: "* cozy, right? makes me feel like dodging attacks from a sentient flower."
-      }
-    ];
-
-    let currentBanterIdx = 0;
-    let typeTimer = null;
-
-    // Typewriter engine that morphs facial expressions and talks with Sans' voice!
-    function runTypewriterWithFaces(item, onDone) {
-      const box = document.getElementById("dialogue-text");
-      box.innerHTML = "";
-      clearTimeout(typeTimer);
-      let i = 0;
-      const fullText = item.text;
-      const plan = item.facePlan || [{at: 0, f: "GRIN"}];
-
-      function step() {
-        if (i < fullText.length) {
-          // Check if face should morph at this letter index!
-          plan.forEach(p => {
-            if (i === p.at) frog.face = p.f;
-          });
-
-          box.innerHTML += fullText.charAt(i);
-
-          // Voice blip on letters + mouth toggle
-          if (/[a-zA-Z0-9]/.test(fullText.charAt(i))) {
-            playSansVoiceBlip();
-            frog.isMouthOpen = !frog.isMouthOpen;
-          }
-
-          i++;
-          typeTimer = setTimeout(step, 24);
-        } else {
-          frog.isMouthOpen = false;
-          frog.face = "GRIN";
-          if (onDone) onDone();
-        }
-      }
-      step();
-    }
-
-    function triggerDialogue(idx) {
-      currentBanterIdx = idx % SANS_BANTER.length;
-      const b = SANS_BANTER[currentBanterIdx];
-      const choices = document.getElementById("dialogue-choices");
-      choices.style.display = "none";
-
-      runTypewriterWithFaces(b, () => {
-        document.getElementById("choice-1").innerText = b.c1;
-        document.getElementById("choice-2").innerText = b.c2;
-        choices.style.display = "flex";
-      });
-    }
-
-    function makeChoice(opt) {
-      playAudioBlip(320);
-      const b = SANS_BANTER[currentBanterIdx];
-      const reply = (opt === 1) ? b.r1 : b.r2;
-      document.getElementById("dialogue-choices").style.display = "none";
-
-      // If pun triggered, play trombone!
-      if (reply.includes("guts") || reply.includes("dishes")) {
-        setTimeout(playTrombonePun, 600);
-      }
-
-      runTypewriterWithFaces({ text: reply, facePlan: [{at: 0, f: "WINK"}, {at: 30, f: "EMPTY"}, {at: 60, f: "GRIN"}] });
-    }
-
-    /* =========================================================================
-       6. UNDERTALE ACTION BUTTON HANDLERS
-       ========================================================================= */
-    function handleActMenu() {
-      playAudioBlip(380);
-      const cur = TRACKS[STATE.activeTrack];
-      document.getElementById("ascii-mount").innerText = cur.blueprint;
-      document.getElementById("blueprint-modal").style.display = "flex";
-    }
-
-    function handleItemMenu() {
-      playAudioBlip(350);
-      runTypewriterWithFaces({
-        text: `* items: [desk: ${STATE.highestTrack >= 1 ? 'equipped' : 'locked'}] [lamp: ${STATE.highestTrack >= 2 ? 'equipped' : 'locked'}] [bottle of ketchup: empty]`,
-        facePlan: [{at: 0, f: "WINK"}, {at: 50, f: "SHRUG"}]
-      });
-    }
-
-    function handleMercyMenu() {
-      playAudioBlip(280);
-      document.getElementById("powers-mount").innerHTML = STATE.powers.length
-        ? STATE.powers.map(p => `<div>* ${p}</div>`).join('')
-        : "<div>* no powers yet, kiddo. finish a track 5/5 first.</div>";
-      document.getElementById("powers-modal").style.display = "flex";
-    }
-
-    function closeModal(id) {
-      playAudioBlip(220);
-      document.getElementById(id).style.display = "none";
-    }
-
-    function pokeFrog() {
-      playAudioBlip(440);
-      triggerDialogue(Math.floor(Math.random() * SANS_BANTER.length));
-    }
-
-    /* =========================================================================
-       7. PROGRESSION TRACKS ENGINE
-       ========================================================================= */
-    let STATE = {
-      activeTrack: 0,
-      highestTrack: 0,
-      checks: {},
-      powers: [],
-      isSleeping: false
-    };
-
-    function save() {
-      try { localStorage.setItem("frog_sans_master_save", JSON.stringify(STATE)); } catch (e) {}
-    }
-    try {
-      const s = localStorage.getItem("frog_sans_master_save");
-      if (s) STATE = JSON.parse(s);
-    } catch (e) {}
-
-    function stepTrack(delta) {
-      const next = STATE.activeTrack + delta;
-      if (next < 0) return;
-      if (next > STATE.highestTrack) {
-        playAudioBlip(140);
-        runTypewriterWithFaces({
-          text: "* hold on, kiddo. that track is locked 🔒. no skipping steps on my watch.",
-          facePlan: [{at: 0, f: "EMPTY"}, {at: 30, f: "WINK"}]
-        });
-        return;
-      }
-      playAudioBlip(320);
-      STATE.activeTrack = next;
-      STATE.isSleeping = false;
-      save();
-      refreshUI();
-      runTypewriterWithFaces({
-        text: `* loaded ${TRACKS[STATE.activeTrack].title}. check the blueprint and get your notes ready.`,
-        facePlan: [{at: 0, f: "GRIN"}]
-      });
-    }
-
-    function refreshUI() {
-      const cur = TRACKS[STATE.activeTrack];
-      document.getElementById("track-name").innerText = (STATE.activeTrack > STATE.highestTrack) ? `🔒 ${cur.title}` : cur.title;
-      document.getElementById("nav-left").disabled = (STATE.activeTrack === 0);
-      document.getElementById("nav-right").disabled = (STATE.activeTrack >= TRACKS.length - 1);
-
-      if (!STATE.checks[cur.id]) STATE.checks[cur.id] = [false, false, false, false, false];
-      const c = STATE.checks[cur.id];
-      const done = c.filter(Boolean).length;
-
-      document.getElementById("hud-level").innerText = STATE.activeTrack + 1;
-      document.getElementById("hud-exp").innerText = done;
-
-      const mount = document.getElementById("subcat-mount");
-      mount.innerHTML = "";
-      cur.parts.forEach((p, idx) => {
-        const item = document.createElement("div");
-        item.className = `subcat-item ${c[idx] ? 'done' : ''}`;
-        item.innerText = p.name;
-        mount.appendChild(item);
-      });
-    }
-
-    /* =========================================================================
-       8. CAMERA OCR SCANNER & PROGRESSION VALIDATOR (FIGHT)
-       ========================================================================= */
-    const cameraInput = document.getElementById("camera-input");
-    cameraInput.addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      playAudioBlip(440);
-      runTypewriterWithFaces({
-        text: "* fight! scanning paper notes with neural ocr vision...",
-        facePlan: [{at: 0, f: "DERP"}]
-      });
-
-      if (!window.Tesseract) {
-        const s = document.createElement("script");
-        s.src = "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
-        s.onload = () => runOCR(file);
-        document.body.appendChild(s);
-      } else {
-        runOCR(file);
-      }
-    });
-
-    async function runOCR(file) {
-      try {
-        const worker = await Tesseract.createWorker('eng');
-        const res = await worker.recognize(file);
-        const text = res.data.text.toLowerCase();
-        await worker.terminate();
-
-        const cur = TRACKS[STATE.activeTrack];
-        const checks = STATE.checks[cur.id];
-        let found = 0;
-
-        cur.parts.forEach((part, idx) => {
-          if (!checks[idx]) {
-            const hasKeyword = part.kw.some(k => text.includes(k.toLowerCase()));
-            const hasArrows = text.includes("->") || text.includes("-->") || text.includes("to");
-
-            if (hasKeyword || hasArrows) {
-              checks[idx] = true;
-              found++;
-            }
-          }
-        });
-
-        const total = checks.filter(Boolean).length;
-        if (total === 5) {
-          STATE.isSleeping = true;
-          if (!STATE.powers.includes(cur.powerBadge)) STATE.powers.push(cur.powerBadge);
-          if (STATE.highestTrack === STATE.activeTrack) STATE.highestTrack++;
-          runTypewriterWithFaces({
-            text: `* nice work, kiddo. 5/5 verified. unlocked [${cur.powerBadge}]. time for a well-deserved nap. 🛌`,
-            facePlan: [{at: 0, f: "WINK"}, {at: 40, f: "GRIN"}]
-          });
-        } else if (found > 0) {
-          runTypewriterWithFaces({
-            text: `* hit! recognized ${found} valid flowchart nodes. total: ${total}/5 complete.`,
-            facePlan: [{at: 0, f: "GRIN"}]
-          });
-        } else {
-          runTypewriterWithFaces({
-            text: "* miss! couldn't detect flowchart arrows (->) or keywords. draw cleaner nodes, kiddo.",
-            facePlan: [{at: 0, f: "EMPTY"}]
-          });
-        }
-
-        save();
-        refreshUI();
-      } catch (err) {
-        runTypewriterWithFaces({
-          text: "* error reading paper! hold camera steady with good lighting.",
-          facePlan: [{at: 0, f: "SHRUG"}]
-        });
-      }
-    }
-
-    // Launch!
+    // Initialize!
     refreshUI();
     triggerDialogue(0);
   </script>
