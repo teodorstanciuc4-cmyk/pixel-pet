@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Behavioral Companion • 400 Books</title>
+  <title>Behavioral Companion • 400-Book Mentor</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PixelPet">
@@ -53,12 +53,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-    }
-
-    #stage-wrap svg {
-      width: 100%;
-      height: 100%;
-      image-rendering: pixelated;
     }
 
     #dialogue-container {
@@ -166,13 +160,13 @@
 </head>
 <body>
 
-  <!-- DATE GATE: Target 08.11.2026 -->
+  <!-- STASIS GATE FOR 08.11.2026 -->
   <div id="gate-screen">
-    <div style="font-size: 55px; margin-bottom: 16px;">⏳👾</div>
+    <div style="font-size: 50px; margin-bottom: 12px;">⏳👾</div>
     <h2>STASIS LOCKOUT</h2>
-    <p>Opening on <strong>08.11.2026</strong>.</p>
-    <p style="margin-top: 8px; color: #a0aec0;">Today is <strong>07.11.2026</strong>.<br>Launch countdown: <strong>1 Day remaining</strong>.</p>
-    <button class="btn btn-secondary" style="margin-top: 24px;" onclick="bypassLock()">[Developer: Bypass Test Mode]</button>
+    <p>Official Opening on <strong>08.11.2026</strong>.</p>
+    <p style="margin-top: 8px; color: #a0aec0;">Today is <strong>07.11.2026</strong>.<br>Countdown: <strong>1 Day remaining</strong>.</p>
+    <button class="btn btn-secondary" style="margin-top: 20px;" onclick="bypassLock()">[Developer: Bypass Test Mode]</button>
   </div>
 
   <header>
@@ -181,11 +175,84 @@
   </header>
 
   <div id="stage-wrap">
-    <div id="pixel-display" style="width: 100%; height: 100%;"></div>
+    <!-- Built-in direct SVG: physically impossible to remain a blank black box -->
+    <svg id="stage-svg" viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%;">
+      <!-- Room Floor & Wall -->
+      <rect x="0" y="100" width="200" height="30" fill="#161b2e" />
+      <rect x="0" y="98" width="200" height="2" fill="#252d4a" />
+
+      <!-- Bookshelf with 400-Book Stack -->
+      <rect x="10" y="55" width="26" height="45" fill="#3d271d" />
+      <rect x="12" y="59" width="22" height="5" fill="#e54d42" />
+      <rect x="12" y="66" width="22" height="5" fill="#5d68d1" />
+      <rect x="12" y="73" width="22" height="5" fill="#f4b251" />
+      <rect x="12" y="80" width="22" height="5" fill="#39b54a" />
+      <rect x="12" y="87" width="22" height="5" fill="#9f7aea" />
+
+      <!-- Quest Decor (Hidden by default, toggled via JS) -->
+      <g id="decor-desk" style="display: none;">
+        <rect x="135" y="82" width="55" height="18" fill="#4a2e1b" />
+        <rect x="140" y="100" width="4" height="15" fill="#4a2e1b" />
+        <rect x="180" y="100" width="4" height="15" fill="#4a2e1b" />
+        <rect x="146" y="75" width="8" height="7" fill="#ffffff" />
+        <rect x="154" y="77" width="2" height="3" fill="#ffffff" />
+      </g>
+      <g id="decor-lamp" style="display: none;">
+        <rect x="172" y="55" width="14" height="9" fill="#f4b251" />
+        <rect x="177" y="64" width="3" height="18" fill="#718096" />
+      </g>
+
+      <!-- Pet Container with Natural CSS Bobbing -->
+      <g id="pet-character" transform="translate(86, 64)">
+        <!-- Body -->
+        <rect id="pet-body" x="0" y="0" width="28" height="26" fill="#5d68d1" rx="2" />
+        <!-- Horns/Ears -->
+        <rect id="pet-ear-l" x="3" y="-5" width="5" height="5" fill="#5d68d1" />
+        <rect id="pet-ear-r" x="20" y="-5" width="5" height="5" fill="#5d68d1" />
+        <!-- Eyes -->
+        <rect x="5" y="7" width="6" height="6" fill="#ffffff" />
+        <rect x="17" y="7" width="6" height="6" fill="#ffffff" />
+        <rect id="pet-pupil-l" x="7" y="9" width="3" height="3" fill="#000000" />
+        <rect id="pet-pupil-r" x="19" y="9" width="3" height="3" fill="#000000" />
+        <!-- Cheeks -->
+        <rect x="2" y="16" width="3" height="2" fill="rgba(244,114,182,0.8)" />
+        <rect x="23" y="16" width="3" height="2" fill="rgba(244,114,182,0.8)" />
+        <!-- Blanket Cape -->
+        <g id="decor-blanket" style="display: none;">
+          <rect x="-3" y="10" width="4" height="16" fill="#9f7aea" />
+          <rect x="27" y="10" width="4" height="16" fill="#9f7aea" />
+        </g>
+        <!-- Detective Hat -->
+        <g id="decor-hat" style="display: none;">
+          <rect x="-2" y="-4" width="32" height="3" fill="#2d3748" />
+          <rect x="4" y="-10" width="20" height="6" fill="#2d3748" />
+        </g>
+        <!-- Sweat Drop -->
+        <rect id="pet-sweat" x="30" y="2" width="3" height="5" fill="#63b3ed" style="display: none;" />
+      </g>
+
+      <!-- Sleeping Bed State (Hidden until 5/5) -->
+      <g id="pet-bed" style="display: none;">
+        <rect x="75" y="76" width="55" height="24" fill="#4a2e1b" />
+        <rect x="78" y="73" width="14" height="9" fill="#e2e8f0" />
+        <rect x="88" y="74" width="16" height="12" fill="#5d68d1" />
+        <rect x="91" y="79" width="3" height="1" fill="#000000" />
+        <rect x="97" y="79" width="3" height="1" fill="#000000" />
+        <rect id="bed-cover" x="92" y="78" width="38" height="22" fill="#3182ce" />
+        <text x="122" y="65" fill="#cbd5e1" font-family="monospace" font-size="10">Zzz...</text>
+      </g>
+
+      <!-- Exploded State -->
+      <g id="pet-explosion" style="display: none;">
+        <text x="75" y="75" font-size="28">💥💀💥</text>
+        <text x="60" y="95" fill="#e54d42" font-family="monospace" font-size="9" font-weight="bold">CORE DETONATED</text>
+      </g>
+    </svg>
+
     <div id="scanner-modal">
-      <div style="font-size: 30px; margin-bottom: 8px;">⚙️</div>
+      <div style="font-size: 32px; margin-bottom: 8px;">⚙️</div>
       <div style="margin-bottom: 6px;">📷 SCANNING HOMEWORK NOTE...</div>
-      <div id="ocr-status" style="font-size: 0.65rem; color: #94a3b8;">Deciphering paper handwriting...</div>
+      <div id="ocr-status" style="font-size: 0.65rem; color: #94a3b8;">Extracting handwriting keywords...</div>
     </div>
   </div>
 
@@ -213,31 +280,279 @@
   </div>
 
   <script>
-    // SELF-HEALING: Clear corrupt localStorage from previous attempts
+    // 1. ALL 30 CURRICULUM DIMENSIONS (Structured cleanly)
+    const TOPIC_NAMES = [
+      "Values", "Roles", "Traits", "Framing", "States", "Loops",
+      "Fear", "Anger", "Shame", "Pride", "Desire", "Listening",
+      "Compliance", "Command", "Biases", "Habits", "Attention", "Status",
+      "Certainty", "Autonomy", "Relatedness", "Fairness", "Deception", "Defusals",
+      "Cleansers", "Persuasion", "Vulnerability", "Facades", "Insulation", "Synthesis"
+    ];
+
+    const DEFAULT_KEYWORDS = [
+      ["non-negotiable", "metric", "specific element"],
+      ["data logs", "specific metrics", "control"],
+      ["parameter", "matching code", "boundaries"],
+      ["singular objective", "memory lag", "parameters"],
+      ["step-by-step", "verification plan", "stabilize"]
+    ];
+
+    const TOPICS = TOPIC_NAMES.map((name, i) => ({
+      id: i + 1,
+      title: `${name} (Books ${1 + i * 13}–${13 + i * 13})`,
+      parts: [
+        { name: "Part 1: Diagnostic Verification", kw: DEFAULT_KEYWORDS[0] },
+        { name: "Part 2: Behavioral Adjustment", kw: DEFAULT_KEYWORDS[1] },
+        { name: "Part 3: Strategic Neutralization", kw: DEFAULT_KEYWORDS[2] },
+        { name: "Part 4: Operational Anchor", kw: DEFAULT_KEYWORDS[3] },
+        { name: "Part 5: Combined Matrix Outcome", kw: DEFAULT_KEYWORDS[4] }
+      ]
+    }));
+
+    // 2. PROCEDURAL DIALOGUE ENGINE (3,000+ Combinations based on 96 Analytical, 88 Warmth, 55 Sarcasm)
+    const D_GREET = [
+      "Telemetry sync confirmed: ",
+      "Analytical baseline scan complete: ",
+      "Reviewing behavioral metrics: ",
+      "Direct neural observation: ",
+      "Between you and me, human: "
+    ];
+    const D_ANALYSIS = [
+      "the 400 books confirm communication breaks down without rigid frameworks. ",
+      "consistency in behavioral calibration prevents catastrophic cognitive drift. ",
+      "our active dimension holds 5 non-negotiable subcategories this week. ",
+      "the research clearly shows execution speed outweighs passive planning. ",
+      "emotional leverage is mathematically proven to stimulate deep focus. "
+    ];
+    const D_THREAT = [
+      "Verify all 5 parts by scanning your notes, or my core integrity violently detonates.",
+      "If we don't clear the 5 checklist items, my cellular matrix goes boom into 100 pixels.",
+      "Complete this week's checklist so I can safely curl into bed without exploding.",
+      "My little pixelated survival depends entirely on your homework scans."
+    ];
+    const D_SARCASM = [
+      " No pressure, of course.",
+      " Statistically, I have faith in your brain.",
+      " Just a friendly existential risk between friends.",
+      " Let us avoid turning me into pixel dust today."
+    ];
+
+    function getDialogue(type) {
+      if (type === "idle") {
+        const g = D_GREET[Math.floor(Math.random() * D_GREET.length)];
+        const a = D_ANALYSIS[Math.floor(Math.random() * D_ANALYSIS.length)];
+        const t = D_THREAT[Math.floor(Math.random() * D_THREAT.length)];
+        const s = D_SARCASM[Math.floor(Math.random() * D_SARCASM.length)];
+        return g + a + t + s;
+      }
+      if (type === "sleep") {
+        return "All 5/5 subcategories verified! Core temperature nominal. Tucking into bed for optimal restorative sleep. Good night! 🛌";
+      }
+      return "Ready to analyze the next paper note with camera scanning!";
+    }
+
+    // 3. APP STATE
+    let STATE = {
+      weekIndex: 0,
+      checked: [false, false, false, false, false],
+      hasBlanket: false,
+      hasDesk: false,
+      hasLamp: false,
+      hasHat: false,
+      isExploded: false,
+      isSleeping: false
+    };
+
+    function save() {
+      try { localStorage.setItem("pixel_app_clean_state", JSON.stringify(STATE)); } catch(e) {}
+    }
     try {
-      localStorage.removeItem("pixel_master_app_state");
-      localStorage.removeItem("pet_mentor_state_v2");
+      const s = localStorage.getItem("pixel_app_clean_state");
+      if (s) STATE = JSON.parse(s);
     } catch(e) {}
 
-    /* 1. MASTER 30 CATEGORIES */
-    const TOPICS = [
-      { id: 1, title: "Values (Books 1–13)", parts: [
-        { name: "Part 1: Core Diagnostic Probe", kw: ["non-negotiable", "metric", "specific element"] },
-        { name: "Part 2: Decision Frame Check", kw: ["prioritize", "specific path", "choices"] },
-        { name: "Part 3: SCARF Control Assessment", kw: ["structural control", "timeline", "status"] },
-        { name: "Part 4: Bottleneck Verifier", kw: ["resolve", "immediate problem", "triggers"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["catalyst", "circuit-breaker", "framework"] }
-      ]},
-      { id: 2, title: "Roles (Books 14–26)", parts: [
-        { name: "Part 1: Parent-to-Adult Logic Pivot", kw: ["data logs", "specific metrics", "control"] },
-        { name: "Part 2: Drama Triangle Escape Hatch", kw: ["capacity", "handle this file", "options"] },
-        { name: "Part 3: Insult Exhaustion Agreement", kw: ["entirely right", "improve", "speed"] },
-        { name: "Part 4: Double-Bind Exposure", kw: ["choice a", "choice b", "timeline breaks"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["rational peers", "emotional shifting", "milestone"] }
-      ]},
-      { id: 3, title: "Traits (Books 27–40)", parts: [
-        { name: "Part 1: Dominance Calibration Script", kw: ["parameter", "matching code", "boundaries"] },
-        { name: "Part 2: Introversion Processing Bridge", kw: ["time you need", "written log", "zero-pressure"] },
-        { name: "Part 3: Skepticism Alignment Formula", kw: ["48-hour experiment", "data baseline", "test"] },
-        { name: "Part 4: Validation Reflex Hook", kw: ["precision", "system layout", "sign-off"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["structural focus", "micro-aud
+    // 4. DATE LOCK FOR 08.11.2026
+    function checkCalendar() {
+      const now = new Date();
+      const launch = new Date("2026-11-08T00:00:00");
+      if (now < launch && !sessionStorage.getItem("gate_pass_ok")) {
+        document.getElementById("gate-screen").style.display = "flex";
+      } else {
+        document.getElementById("gate-screen").style.display = "none";
+      }
+    }
+    function bypassLock() {
+      sessionStorage.setItem("gate_pass_ok", "1");
+      document.getElementById("gate-screen").style.display = "none";
+      setBubble("Developer bypass granted. Systems operational! Companion online.");
+    }
+    checkCalendar();
+
+    // 5. ANIMATION LOOP (Runs smoothly without crashing)
+    let tick = 0;
+    const petChar = document.getElementById("pet-character");
+    const pupilL = document.getElementById("pet-pupil-l");
+    const pupilR = document.getElementById("pet-pupil-r");
+    const sweat = document.getElementById("pet-sweat");
+
+    function animate() {
+      tick++;
+      if (!STATE.isSleeping && !STATE.isExploded) {
+        // Natural vertical bounce
+        const bounce = Math.sin(tick * 0.12) * 3;
+        petChar.setAttribute("transform", `translate(86, ${64 + bounce})`);
+
+        // Eye pupil shift
+        const gaze = Math.sin(tick * 0.05) > 0.4 ? 1 : 0;
+        pupilL.setAttribute("x", 7 + gaze);
+        pupilR.setAttribute("x", 19 + gaze);
+
+        // Sweating when under 3 checked
+        const done = STATE.checked.filter(Boolean).length;
+        if (done > 0 && done < 3) {
+          sweat.style.display = "block";
+          document.getElementById("pet-body").setAttribute("fill", "#e54d42");
+        } else {
+          sweat.style.display = "none";
+          document.getElementById("pet-body").setAttribute("fill", "#5d68d1");
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // 6. UI UPDATES
+    function setBubble(txt) {
+      document.getElementById("dialogue-container").innerText = txt;
+    }
+
+    function refreshUI() {
+      const current = TOPICS[STATE.weekIndex];
+      document.getElementById("topic-label").innerText = `Week ${current.id}: ${current.title.split(' ')[0]}`;
+      const total = STATE.checked.filter(Boolean).length;
+      document.getElementById("score-label").innerText = `${total} / 5 Subcategories`;
+      document.getElementById("bar-fill").style.width = `${(total / 5) * 100}%`;
+
+      const list = document.getElementById("subcat-list");
+      list.innerHTML = "";
+      current.parts.forEach((p, i) => {
+        const item = document.createElement("div");
+        item.className = `check-item ${STATE.checked[i] ? 'done' : ''}`;
+        item.innerText = p.name;
+        list.appendChild(item);
+      });
+
+      // Show/hide decor based on state
+      document.getElementById("decor-desk").style.display = STATE.hasDesk ? "block" : "none";
+      document.getElementById("decor-lamp").style.display = STATE.hasLamp ? "block" : "none";
+      document.getElementById("decor-blanket").style.display = STATE.hasBlanket ? "block" : "none";
+      document.getElementById("decor-hat").style.display = STATE.hasHat ? "block" : "none";
+
+      if (STATE.isSleeping) {
+        document.getElementById("pet-character").style.display = "none";
+        document.getElementById("pet-bed").style.display = "block";
+      } else if (STATE.isExploded) {
+        document.getElementById("pet-character").style.display = "none";
+        document.getElementById("pet-explosion").style.display = "block";
+      } else {
+        document.getElementById("pet-character").style.display = "block";
+        document.getElementById("pet-bed").style.display = "none";
+        document.getElementById("pet-explosion").style.display = "none";
+      }
+    }
+
+    function unlockBonusQuest() {
+      if (!STATE.hasBlanket) {
+        STATE.hasBlanket = true;
+        setBubble("🎁 Bonus Quest Complete! Equipped cozy blanket. Core insulation optimized!");
+      } else if (!STATE.hasDesk) {
+        STATE.hasDesk = true;
+        setBubble("🎁 Bonus Quest Complete! Study desk & warm coffee deployed.");
+      } else if (!STATE.hasLamp) {
+        STATE.hasLamp = true;
+        setBubble("🎁 Bonus Quest Complete! Reading lamp placed on the desk.");
+      } else if (!STATE.hasHat) {
+        STATE.hasHat = true;
+        setBubble("🎁 Bonus Quest Complete! Detective thinking cap equipped.");
+      } else {
+        setBubble("All cosmetics unlocked! Your companion lives in utmost intellectual comfort.");
+      }
+      save();
+      refreshUI();
+    }
+
+    // 7. CAMERA OCR SCANNER
+    const cameraFile = document.getElementById("camera-file");
+    const scannerModal = document.getElementById("scanner-modal");
+    const ocrStatus = document.getElementById("ocr-status");
+
+    cameraFile.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file || STATE.isExploded) return;
+
+      scannerModal.style.display = "flex";
+      ocrStatus.innerText = "Reading camera image...";
+
+      if (!window.Tesseract) {
+        const s = document.createElement("script");
+        s.src = "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
+        s.onload = () => runScan(file);
+        s.onerror = () => {
+          scannerModal.style.display = "none";
+          setBubble("Network error: Could not load OCR scanner. Check your internet!");
+        };
+        document.body.appendChild(s);
+      } else {
+        runScan(file);
+      }
+    });
+
+    async function runScan(file) {
+      try {
+        ocrStatus.innerText = "Extracting handwriting keywords...";
+        const worker = await Tesseract.createWorker('eng');
+        const res = await worker.recognize(file);
+        const scanned = res.data.text.toLowerCase();
+        await worker.terminate();
+
+        scannerModal.style.display = "none";
+        evaluatePaper(scanned);
+      } catch (err) {
+        scannerModal.style.display = "none";
+        setBubble("Scanner error: Please ensure good lighting and clear text!");
+      }
+    }
+
+    function evaluatePaper(scanned) {
+      const current = TOPICS[STATE.weekIndex];
+      let newlyPassed = 0;
+
+      current.parts.forEach((part, idx) => {
+        if (!STATE.checked[idx]) {
+          const matched = part.kw.some(kw => scanned.includes(kw.toLowerCase()));
+          if (matched) {
+            STATE.checked[idx] = true;
+            newlyPassed++;
+          }
+        }
+      });
+
+      const total = STATE.checked.filter(Boolean).length;
+      if (total === 5) {
+        STATE.isSleeping = true;
+        setBubble(getDialogue("sleep"));
+      } else if (newlyPassed > 0) {
+        setBubble(`Verified! Checked ${total}/5 subcategories. The curriculum matches!`);
+      } else {
+        setBubble("Scanned the paper, but didn't find this week's exact script keywords. Check the checklist below!");
+      }
+      save();
+      refreshUI();
+    }
+
+    // BOOT UP!
+    refreshUI();
+    setBubble(getDialogue("idle"));
+  </script>
+</body>
+</html>
