@@ -2,19 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Behavioral Companion • 400-Book Mentor</title>
+  <title>Behavioral Companion • 400 Books</title>
   
-  <!-- Apple iOS Mobile App Tags -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PixelPet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   
-  <!-- PWA Manifest & App Icon -->
-  <link rel="manifest" href='data:application/manifest+json,{"name":"Pixel Companion","short_name":"PixelPet","start_url":".","display":"standalone","background_color":"#0c0e17","theme_color":"#0c0e17"}'>
+  <link rel="manifest" href='data:application/manifest+json,{"name":"Pixel Companion","short_name":"PixelPet","start_url":".","display":"standalone","background_color":"#090b13","theme_color":"#090b13"}'>
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23131728'/><text y='70' font-size='65' x='17'>👾</text></svg>">
 
-  <!-- OCR Scanner Engine (Tesseract) -->
+  <!-- OCR Scanner Engine -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
   <style>
@@ -26,7 +24,6 @@
       --danger: #e54d42;
       --success: #39b54a;
       --text: #e2e8f0;
-      --text-dim: #718096;
       --font-code: 'Courier New', Courier, monospace;
     }
 
@@ -40,19 +37,18 @@
       align-items: center;
       min-height: 100vh;
       padding: 16px 12px 60px 12px;
-      overflow-x: hidden;
     }
 
-    header { text-align: center; margin-bottom: 12px; width: 100%; max-width: 420px; }
+    header { text-align: center; margin-bottom: 12px; width: 100%; max-width: 400px; }
     h1 { font-size: 1.05rem; color: var(--gold); letter-spacing: 1px; }
-    .meta-tag { font-size: 0.68rem; color: var(--text-dim); margin-top: 2px; }
+    .meta-tag { font-size: 0.68rem; color: #718096; margin-top: 2px; }
 
     /* Canvas Stage */
     #stage-wrap {
       position: relative;
       width: 100%;
       max-width: 380px;
-      height: 250px;
+      height: 240px;
       background: #101322;
       border: 3px solid #232a45;
       border-radius: 14px;
@@ -74,10 +70,10 @@
       font-weight: bold;
       line-height: 1.4;
       position: relative;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
-      min-height: 62px;
+      min-height: 60px;
       display: flex;
       align-items: center;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
     }
     #dialogue-container::before {
       content: '';
@@ -90,7 +86,7 @@
       border-color: transparent transparent #ffffff transparent;
     }
 
-    /* Dashboard & Subcategories */
+    /* Dashboard */
     .dashboard {
       width: 100%;
       max-width: 380px;
@@ -152,10 +148,9 @@
       text-align: center;
       padding: 24px;
     }
-    #gate-screen h2 { color: var(--gold); margin-bottom: 8px; font-size: 1.2rem; }
-    #gate-screen p { color: var(--text-dim); font-size: 0.82rem; max-width: 310px; line-height: 1.5; }
+    #gate-screen h2 { color: var(--gold); margin-bottom: 8px; }
+    #gate-screen p { color: #718096; font-size: 0.82rem; max-width: 310px; line-height: 1.5; }
 
-    /* Scanning Overlay */
     #scanner-modal {
       display: none;
       position: absolute;
@@ -177,7 +172,7 @@
     <div style="font-size: 55px; margin-bottom: 16px;">🔒👾</div>
     <h2>STASIS LOCKOUT</h2>
     <p>Opening on <strong>08.11.2026</strong>.</p>
-    <p style="margin-top: 8px;">Master Corpus locked until the official launch timeline begins.</p>
+    <p style="margin-top: 8px;">Master Corpus locked until official launch timeline.</p>
     <button class="btn btn-secondary" style="margin-top: 24px;" onclick="bypassLock()">[Developer: Bypass Test Mode]</button>
   </div>
 
@@ -188,474 +183,7 @@
 
   <!-- Canvas Stage -->
   <div id="stage-wrap">
-    <canvas id="petCanvas" width="190" height="125"></canvas>
+    <canvas id="petCanvas" width="190" height="120"></canvas>
     <div id="scanner-modal">
       <div style="margin-bottom: 6px;">📷 SCANNING HOMEWORK NOTE...</div>
-      <div id="ocr-status" style="font-size: 0.65rem; color: #94a3b8;">Loading OCR parser...</div>
-    </div>
-  </div>
-
-  <!-- Pet Personality Dialogue -->
-  <div id="dialogue-container">Initializing neural bond...</div>
-
-  <!-- Dashboard -->
-  <div class="dashboard">
-    <div class="metric-row">
-      <span id="topic-label">Week 1: Values</span>
-      <span id="score-label">0 / 5 Subcategories</span>
-    </div>
-    <div class="bar-bg">
-      <div id="bar-fill" class="bar-fill"></div>
-    </div>
-
-    <div class="checklist" id="subcat-list"></div>
-
-    <label for="camera-file" class="btn">
-      📸 Scan Paper Homework
-    </label>
-    <input type="file" id="camera-file" accept="image/*" capture="environment" style="display: none;">
-
-    <button class="btn btn-secondary" onclick="unlockBonusQuest()">
-      🎁 Bonus Quest: Equip Blanket, Desk, or Hat
-    </button>
-  </div>
-
-  <script>
-    /* =========================================================================
-       1. 30 CATEGORY CURRICULUM (400 Books Synthetic Index)
-       ========================================================================= */
-    const TOPICS = [
-      { id: 1, title: "Values (Books 1–13)", parts: [
-        { name: "Part 1: Core Diagnostic Probe", kw: ["non-negotiable", "metric", "specific element"] },
-        { name: "Part 2: Decision Frame Check", kw: ["prioritize", "specific path", "choices"] },
-        { name: "Part 3: SCARF Control Assessment", kw: ["structural control", "timeline", "status"] },
-        { name: "Part 4: Bottleneck Verifier", kw: ["resolve", "immediate problem", "triggers"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["catalyst", "circuit-breaker", "framework"] }
-      ]},
-      { id: 2, title: "Roles (Books 14–26)", parts: [
-        { name: "Part 1: Parent-to-Adult Logic Pivot", kw: ["data logs", "specific metrics", "control"] },
-        { name: "Part 2: Drama Triangle Escape Hatch", kw: ["capacity", "handle this file", "options"] },
-        { name: "Part 3: Insult Exhaustion Agreement", kw: ["entirely right", "improve", "speed"] },
-        { name: "Part 4: Double-Bind Exposure", kw: ["choice a", "choice b", "timeline breaks"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["rational peers", "emotional shifting", "milestone"] }
-      ]},
-      { id: 3, title: "Traits (Books 27–40)", parts: [
-        { name: "Part 1: Dominance Calibration Script", kw: ["parameter", "matching code", "boundaries"] },
-        { name: "Part 2: Introversion Processing Bridge", kw: ["time you need", "written log", "zero-pressure"] },
-        { name: "Part 3: Skepticism Alignment Formula", kw: ["48-hour experiment", "data baseline", "test"] },
-        { name: "Part 4: Validation Reflex Hook", kw: ["precision", "system layout", "sign-off"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["structural focus", "micro-auditing", "workflow"] }
-      ]},
-      { id: 4, title: "Framing (Books 41–53)", parts: [
-        { name: "Part 1: Space Anchor", kw: ["singular objective", "memory lag", "parameters"] },
-        { name: "Part 2: Semantic Priming", kw: ["structural reliability", "system upgrade", "words"] },
-        { name: "Part 3: Default Optimization", kw: ["standard protocol", "exception form", "choices"] },
-        { name: "Part 4: Frame Shift Wedge", kw: ["step back", "error log history", "solution frame"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["optimization", "budget log", "deviations"] }
-      ]},
-      { id: 5, title: "States (Books 54–66)", parts: [
-        { name: "Part 1: Anxiety De-escalation", kw: ["step-by-step", "verification plan", "stabilize"] },
-        { name: "Part 2: Fatigue Mitigation", kw: ["path a", "path b", "binary paths"] },
-        { name: "Part 3: Velocity Brake", kw: ["pause", "core line", "slow pacing"] },
-        { name: "Part 4: Burnout Recovery", kw: ["horizon", "two lines of code", "immediate win"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["baseline calm", "patch loop", "resume tomorrow"] }
-      ]},
-      ...createTopicsRemainder()
-    ];
-
-    function createTopicsRemainder() {
-      const names = [
-        "Conversation Loops", "Fear", "Anger", "Shame", "Pride", "Desire",
-        "Active Listening", "Compliance", "Command", "Biases", "Habit Anchors",
-        "Attention Traps", "Status Shields", "Certainty Anchors", "Autonomy Preserves",
-        "Relatedness Ties", "Fairness Audits", "Deception Reads", "Confrontation Defusals",
-        "Accusation Cleansers", "Persuasion Primes", "Vulnerability Wedges",
-        "Impression Facades", "Insulation Controls", "System Synthesis"
-      ];
-      return names.map((name, i) => ({
-        id: i + 6,
-        title: `${name} (Books ${67 + i * 13}–${79 + i * 13})`,
-        parts: [
-          { name: "Part 1: Diagnostic Verification", kw: ["protocol", "system", "script"] },
-          { name: "Part 2: Behavioral Adjustment", kw: ["metric", "framework", "calibration"] },
-          { name: "Part 3: Strategic Neutralization", kw: ["timing", "balance", "leverage"] },
-          { name: "Part 4: Operational Anchor", kw: ["parameter", "verify", "action"] },
-          { name: "Part 5: Synthesis Closure", kw: ["catalyst", "circuit-breaker", "milestone"] }
-        ]
-      }));
-    }
-
-    /* =========================================================================
-       2. PROCEDURAL 2,500+ DIALOGUE MATRIX (Personality: 96 Analytical, 88 Warm, 55 Sarcastic)
-       ========================================================================= */
-    const D_OPENERS = [
-      "Running telemetry on your progress: ",
-      "Fascinating behavioral variable observed: ",
-      "Checking our weekly vital stats: ",
-      "Between you and me, ",
-      "From an objective analytical baseline: ",
-      "Look, my little pixelated life is in your hands: ",
-      "Scanning your study commitment: "
-    ];
-    const D_ANALYTICAL = [
-      "human communication follows rigid psychological scripts. ",
-      "the 400 books confirm that consistency prevents cognitive entropy. ",
-      "our weekly goal has 5 subcategories that must not be compromised. ",
-      "the books in this block emphasize execution over passive reflection. ",
-      "emotional leverage is mathematically proven to improve discipline. "
-    ];
-    const D_LEVERAGE = [
-      "Complete this week's 5 parts, or my core engine violently disassembles.",
-      "If you leave me at 0/5, my structural integrity drops to zero. Boom.",
-      "Scan the homework notes so I can safely curl into bed without exploding.",
-      "I believe in your brain—mostly because my survival depends on it."
-    ];
-    const D_SARCASM = [
-      " No pressure, of course.",
-      " Just a friendly existential threat.",
-      " Let's not make the dustpan my next home.",
-      " Statistically, you've got this."
-    ];
-
-    function getRandomDialogue(type) {
-      if (type === "idle") {
-        const o = D_OPENERS[Math.floor(Math.random() * D_OPENERS.length)];
-        const a = D_ANALYTICAL[Math.floor(Math.random() * D_ANALYTICAL.length)];
-        const l = D_LEVERAGE[Math.floor(Math.random() * D_LEVERAGE.length)];
-        const s = D_SARCASM[Math.floor(Math.random() * D_SARCASM.length)];
-        return o + a + l + s;
-      }
-      if (type === "sleep") {
-        return "All 5 subcategories verified! My core temperature is nominal. Tucking into bed for optimal synaptic restoration. Good night! 🛌";
-      }
-      if (type === "sweat") {
-        return "Warning: Only a few subcategories checked. My pressure gauges are spiking! Please scan the remaining notes!";
-      }
-      if (type === "boom") {
-        return "💥 CRITICAL DETONATION! You didn't finish the 5 subcategories. I have exploded into pixel shrapnel!";
-      }
-      return "Ready to analyze your next paper note!";
-    }
-
-    /* =========================================================================
-       3. APP STATE & PERSISTENCE
-       ========================================================================= */
-    const STATE = {
-      weekIndex: 0,
-      checked: [false, false, false, false, false],
-      hasBlanket: false,
-      hasDesk: false,
-      hasLamp: false,
-      hasHat: false,
-      isExploded: false,
-      isSleeping: false
-    };
-
-    const saved = localStorage.getItem("pet_mentor_state");
-    if (saved) Object.assign(STATE, JSON.parse(saved));
-    function save() { localStorage.setItem("pet_mentor_state", JSON.stringify(STATE)); }
-
-    /* =========================================================================
-       4. DATE GATE & SEASONAL HOLIDAYS
-       ========================================================================= */
-    function checkCalendar() {
-      const now = new Date();
-      // Date Gate: 08.11.2026
-      const launch = new Date("2026-11-08T00:00:00");
-      if (now < launch && !sessionStorage.getItem("gate_pass")) {
-        document.getElementById("gate-screen").style.display = "flex";
-      } else {
-        document.getElementById("gate-screen").style.display = "none";
-      }
-    }
-    function bypassLock() {
-      sessionStorage.setItem("gate_pass", "1");
-      document.getElementById("gate-screen").style.display = "none";
-      setBubble("Developer bypass granted. Systems operational!");
-    }
-    checkCalendar();
-
-    function getSeason() {
-      const d = new Date();
-      const m = d.getMonth() + 1; // 1-12
-      const day = d.getDate();
-      if (m === 12 && day >= 24 && day <= 26) return "christmas";
-      if (m === 10 && day === 31) return "halloween";
-      if ((m === 12 && day === 31) || (m === 1 && day === 1)) return "newyear";
-      return "regular";
-    }
-
-    /* =========================================================================
-       5. PROCEDURAL SPRITE & ANIMATION CANVAS
-       ========================================================================= */
-    const canvas = document.getElementById("petCanvas");
-    const ctx = canvas.getContext("2d");
-    let t = 0;
-    let particles = [];
-
-    function renderLoop() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      t++;
-
-      // Room Wall & Floor
-      ctx.fillStyle = "#161b2e";
-      ctx.fillRect(0, 95, canvas.width, 30);
-      ctx.fillStyle = "#252d4a";
-      ctx.fillRect(0, 93, canvas.width, 2);
-
-      // Bookshelf (Books 1–400 stack)
-      ctx.fillStyle = "#3d271d";
-      ctx.fillRect(10, 50, 26, 45);
-      ctx.fillStyle = "#e54d42"; ctx.fillRect(12, 54, 22, 5);
-      ctx.fillStyle = "#5d68d1"; ctx.fillRect(12, 61, 22, 5);
-      ctx.fillStyle = "#f4b251"; ctx.fillRect(12, 68, 22, 5);
-      ctx.fillStyle = "#39b54a"; ctx.fillRect(12, 75, 22, 5);
-
-      // Quest Unlock: Desk & Coffee
-      if (STATE.hasDesk) {
-        ctx.fillStyle = "#4a2e1b";
-        ctx.fillRect(130, 80, 45, 15);
-        ctx.fillRect(134, 95, 4, 18);
-        ctx.fillRect(167, 95, 4, 18);
-        // Coffee Cup
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(140, 74, 6, 6);
-      }
-
-      // Quest Unlock: Reading Lamp
-      if (STATE.hasLamp) {
-        ctx.fillStyle = "#f4b251";
-        ctx.fillRect(160, 55, 12, 8);
-        ctx.fillStyle = "#718096";
-        ctx.fillRect(165, 63, 2, 17);
-      }
-
-      // SEASONAL EVENT: Christmas Tree & Santa Hat
-      const season = getSeason();
-      if (season === "christmas") {
-        // Small Christmas Tree
-        ctx.fillStyle = "#22543d";
-        ctx.fillRect(45, 70, 16, 25);
-        ctx.fillStyle = "#f4b251";
-        ctx.fillRect(51, 66, 4, 4); // Star
-      }
-
-      // STATE: EXPLODED
-      if (STATE.isExploded) {
-        particles.forEach(p => {
-          ctx.fillStyle = p.c;
-          ctx.fillRect(p.x, p.y, p.s, p.s);
-          p.x += p.vx; p.y += p.vy; p.vy += 0.08;
-        });
-        requestAnimationFrame(renderLoop);
-        return;
-      }
-
-      // STATE: SLEEPING IN BED
-      if (STATE.isSleeping) {
-        // Bed base
-        ctx.fillStyle = "#4a2e1b";
-        ctx.fillRect(75, 75, 48, 20);
-        ctx.fillStyle = "#e2e8f0";
-        ctx.fillRect(77, 72, 12, 8); // Pillow
-        // Pet Head resting
-        ctx.fillStyle = "#5d68d1";
-        ctx.fillRect(85, 73, 14, 10);
-        // Closed Eyes (- -)
-        ctx.fillStyle = "#000";
-        ctx.fillRect(87, 77, 3, 1);
-        ctx.fillRect(92, 77, 3, 1);
-        // Blanket
-        ctx.fillStyle = STATE.hasBlanket ? "#9f7aea" : "#3182ce";
-        ctx.fillRect(90, 76, 33, 19);
-
-        // Zzz Floating text
-        if (t % 50 < 25) {
-          ctx.fillStyle = "#cbd5e1";
-          ctx.font = "10px monospace";
-          ctx.fillText("Zzz...", 115, 65 - (t % 25) / 2);
-        }
-        requestAnimationFrame(renderLoop);
-        return;
-      }
-
-      // STATE: ACTIVE PET
-      const bounce = Math.sin(t * 0.1) * 2;
-      const px = 82;
-      const py = 65 + bounce;
-
-      // Pet Body
-      const count = STATE.checked.filter(Boolean).length;
-      const isSweating = count < 3 && count > 0;
-      ctx.fillStyle = isSweating ? "#e54d42" : "#5d68d1";
-      ctx.fillRect(px, py, 26, 24);
-
-      // Ears / Horns
-      ctx.fillRect(px + 3, py - 4, 4, 4);
-      ctx.fillRect(px + 19, py - 4, 4, 4);
-
-      // Eyes
-      ctx.fillStyle = "#fff";
-      ctx.fillRect(px + 4, py + 6, 6, 6);
-      ctx.fillRect(px + 16, py + 6, 6, 6);
-      // Pupils
-      ctx.fillStyle = "#000";
-      const gaze = Math.sin(t * 0.04) > 0.4 ? 1 : 0;
-      ctx.fillRect(px + 6 + gaze, py + 8, 3, 3);
-      ctx.fillRect(px + 18 + gaze, py + 8, 3, 3);
-
-      // Cheeks (Warmth)
-      ctx.fillStyle = "rgba(244, 114, 182, 0.7)";
-      ctx.fillRect(px + 2, py + 14, 3, 2);
-      ctx.fillRect(px + 21, py + 14, 3, 2);
-
-      // Seasonal Santa Hat or Detective Hat
-      if (season === "christmas") {
-        ctx.fillStyle = "#e54d42";
-        ctx.fillRect(px + 3, py - 9, 20, 6);
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(px + 1, py - 3, 24, 3);
-        ctx.fillRect(px + 21, py - 11, 4, 4);
-      } else if (STATE.hasHat) {
-        ctx.fillStyle = "#2d3748";
-        ctx.fillRect(px - 1, py - 4, 28, 3);
-        ctx.fillRect(px + 4, py - 9, 18, 5);
-      }
-
-      // Blanket Cape if equipped
-      if (STATE.hasBlanket) {
-        ctx.fillStyle = "#9f7aea";
-        ctx.fillRect(px - 3, py + 10, 3, 14);
-        ctx.fillRect(px + 26, py + 10, 3, 14);
-      }
-
-      // Sweating drops if anxious
-      if (isSweating) {
-        ctx.fillStyle = "#63b3ed";
-        ctx.fillRect(px + 28, py + 2 + (t % 14), 2, 4);
-      }
-
-      requestAnimationFrame(renderLoop);
-    }
-    requestAnimationFrame(renderLoop);
-
-    function triggerBoom() {
-      STATE.isExploded = true;
-      particles = [];
-      for (let i = 0; i < 110; i++) {
-        particles.push({
-          x: 95, y: 77,
-          vx: (Math.random() - 0.5) * 8,
-          vy: (Math.random() - 0.5) * 8,
-          s: Math.random() * 3 + 1,
-          c: ['#e54d42', '#f4b251', '#5d68d1', '#fff'][Math.floor(Math.random() * 4)]
-        });
-      }
-      setBubble(getRandomDialogue("boom"));
-      save();
-    }
-
-    /* =========================================================================
-       6. CAMERA SCANNER & OCR VALIDATOR
-       ========================================================================= */
-    const cameraFile = document.getElementById("camera-file");
-    const scannerModal = document.getElementById("scanner-modal");
-    const ocrStatus = document.getElementById("ocr-status");
-
-    cameraFile.addEventListener("change", async (e) => {
-      const file = e.target.files[0];
-      if (!file || STATE.isExploded) return;
-
-      scannerModal.style.display = "flex";
-      ocrStatus.innerText = "Extracting paper handwriting & text...";
-
-      try {
-        const worker = await Tesseract.createWorker('eng');
-        const res = await worker.recognize(file);
-        const scanned = res.data.text.toLowerCase();
-        await worker.terminate();
-
-        scannerModal.style.display = "none";
-        evaluateScan(scanned);
-      } catch (err) {
-        scannerModal.style.display = "none";
-        setBubble("Camera resolution error. Ensure good lighting and steady focus!");
-      }
-    });
-
-    function evaluateScan(scanned) {
-      const current = TOPICS[STATE.weekIndex];
-      let newlyPassed = 0;
-
-      current.parts.forEach((part, idx) => {
-        if (!STATE.checked[idx]) {
-          const matched = part.kw.some(w => scanned.includes(w.toLowerCase()));
-          if (matched) {
-            STATE.checked[idx] = true;
-            newlyPassed++;
-          }
-        }
-      });
-
-      const total = STATE.checked.filter(Boolean).length;
-      refreshUI();
-
-      if (total === 5) {
-        STATE.isSleeping = true;
-        setBubble(getRandomDialogue("sleep"));
-      } else if (newlyPassed > 0) {
-        setBubble(`Verified! Checked ${total}/5 subcategories. Keep feeding my survival!`);
-      } else {
-        setBubble("Scanned the paper, but didn't detect this week's exact script keywords. Check the checklist below!");
-      }
-      save();
-    }
-
-    /* =========================================================================
-       7. UI INTERACTION & QUESTS
-       ========================================================================= */
-    function setBubble(txt) {
-      document.getElementById("dialogue-container").innerText = txt;
-    }
-
-    function refreshUI() {
-      const current = TOPICS[STATE.weekIndex];
-      document.getElementById("topic-label").innerText = `Week ${current.id}: ${current.title.split(' ')[0]}`;
-      const total = STATE.checked.filter(Boolean).length;
-      document.getElementById("score-label").innerText = `${total} / 5 Subcategories`;
-      document.getElementById("bar-fill").style.width = `${(total / 5) * 100}%`;
-
-      const list = document.getElementById("subcat-list");
-      list.innerHTML = "";
-      current.parts.forEach((p, i) => {
-        const item = document.createElement("div");
-        item.className = `check-item ${STATE.checked[i] ? 'done' : ''}`;
-        item.innerText = p.name;
-        list.appendChild(item);
-      });
-    }
-
-    function unlockBonusQuest() {
-      if (!STATE.hasBlanket) {
-        STATE.hasBlanket = true;
-        setBubble("🎁 Bonus Quest Unlocked! Equipped cozy blanket. Core insulation optimized!");
-      } else if (!STATE.hasDesk) {
-        STATE.hasDesk = true;
-        setBubble("🎁 Bonus Quest Unlocked! Study desk & warm coffee deployed.");
-      } else if (!STATE.hasLamp) {
-        STATE.hasLamp = true;
-        setBubble("🎁 Bonus Quest Unlocked! Reading lamp added to room.");
-      } else if (!STATE.hasHat) {
-        STATE.hasHat = true;
-        setBubble("🎁 Bonus Quest Unlocked! Detective thinking cap equipped.");
-      } else {
-        setBubble("All bonus cosmetics already unlocked! Your companion lives in utmost comfort.");
-      }
-      save();
-    }
-
-    refreshUI();
-    setBubble(getRandomDialogue("idle"));
-  </script>
-</body>
-</html>
+      <
