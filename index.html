@@ -2,32 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Behavioral Companion • 400-Book Mentor</title>
+  <title>Froggy • Behavioral Companion</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="PixelPet">
+  <meta name="apple-mobile-web-app-title" content="PixelFrog">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <link rel="manifest" href='data:application/manifest+json,{"name":"Pixel Companion","short_name":"PixelPet","start_url":".","display":"standalone","background_color":"#090b13","theme_color":"#090b13"}'>
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23131728'/><text y='70' font-size='65' x='17'>👾</text></svg>">
+  <link rel="manifest" href='data:application/manifest+json,{"name":"Frog Companion","short_name":"PixelFrog","start_url":".","display":"standalone","background_color":"#090b13","theme_color":"#090b13"}'>
 
   <style>
     :root {
-      --bg: #090b13;
-      --panel: #131728;
-      --accent: #5d68d1;
+      --bg: #0b0e17;
+      --card: #141928;
+      --accent: #00b894;
+      --accent-glow: #55efc4;
       --gold: #f4b251;
+      --pink: #fd79a8;
       --danger: #e54d42;
-      --success: #39b54a;
       --text: #e2e8f0;
-      --text-dim: #718096;
-      --font-code: 'Courier New', Courier, monospace;
+      --font: 'Courier New', Courier, monospace;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
     body {
       background-color: var(--bg);
       color: var(--text);
-      font-family: var(--font-code);
+      font-family: var(--font);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -37,16 +36,17 @@
     }
 
     header { text-align: center; margin-bottom: 12px; width: 100%; max-width: 420px; }
-    h1 { font-size: 1.05rem; color: var(--gold); letter-spacing: 1px; }
-    .meta-tag { font-size: 0.68rem; color: var(--text-dim); margin-top: 2px; }
+    h1 { font-size: 1.1rem; color: var(--accent-glow); letter-spacing: 1px; }
+    .meta-tag { font-size: 0.68rem; color: #718096; margin-top: 2px; }
 
+    /* Visual Stage */
     #stage-wrap {
       position: relative;
       width: 100%;
       max-width: 380px;
-      height: 240px;
-      background: #101322;
-      border: 3px solid #232a45;
+      height: 250px;
+      background: #111526;
+      border: 3px solid #232b45;
       border-radius: 14px;
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(0,0,0,0.7);
@@ -55,6 +55,7 @@
       align-items: center;
     }
 
+    /* Dialogue Bubble */
     #dialogue-container {
       margin-top: 10px;
       width: 100%;
@@ -67,7 +68,7 @@
       font-weight: bold;
       line-height: 1.4;
       position: relative;
-      min-height: 64px;
+      min-height: 65px;
       display: flex;
       align-items: center;
       box-shadow: 0 4px 14px rgba(0,0,0,0.3);
@@ -83,14 +84,15 @@
       border-color: transparent transparent #ffffff transparent;
     }
 
+    /* Controls Grid */
     .dashboard {
       width: 100%;
       max-width: 380px;
       margin-top: 14px;
-      background: var(--panel);
+      background: var(--card);
       border-radius: 12px;
       padding: 14px;
-      border: 1px solid #232a45;
+      border: 1px solid #232b45;
     }
     .metric-row { display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 6px; }
     .bar-bg { width: 100%; height: 8px; background: #202740; border-radius: 4px; overflow: hidden; margin-bottom: 12px; }
@@ -98,42 +100,44 @@
 
     .checklist { margin: 8px 0 12px 0; font-size: 0.72rem; }
     .check-item { display: flex; align-items: center; margin: 4px 0; color: #a0aec0; }
-    .check-item.done { color: var(--success); font-weight: bold; }
+    .check-item.done { color: var(--accent-glow); font-weight: bold; }
     .check-item::before { content: '□ '; margin-right: 6px; }
     .check-item.done::before { content: '■ '; }
 
+    /* Action Buttons */
+    .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
     .btn {
       width: 100%;
       background: var(--accent);
-      color: white;
+      color: #090b13;
       border: none;
-      padding: 13px;
+      padding: 12px 8px;
       border-radius: 8px;
-      font-family: var(--font-code);
+      font-family: var(--font);
       font-weight: bold;
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       cursor: pointer;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 12px rgba(93, 104, 209, 0.35);
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(0, 184, 148, 0.3);
     }
     .btn:active { transform: scale(0.98); }
+    .btn-full { grid-column: span 2; padding: 14px; font-size: 0.88rem; }
     .btn-secondary {
       background: transparent;
       border: 1px dashed #3a456d;
       color: #94a3b8;
-      margin-top: 8px;
-      padding: 9px;
-      font-size: 0.72rem;
+      box-shadow: none;
     }
 
-    #gate-screen {
+    /* Modal Overlay */
+    .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: #090a10;
+      background: rgba(9, 11, 19, 0.94);
       z-index: 9999;
       flex-direction: column;
       justify-content: center;
@@ -141,123 +145,144 @@
       text-align: center;
       padding: 24px;
     }
-    #gate-screen h2 { color: var(--gold); margin-bottom: 8px; font-size: 1.2rem; }
-    #gate-screen p { color: #718096; font-size: 0.82rem; max-width: 310px; line-height: 1.5; }
-
-    #scanner-modal {
-      display: none;
-      position: absolute;
-      inset: 0;
-      background: rgba(9, 11, 19, 0.94);
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-size: 0.78rem;
-      color: var(--gold);
-      z-index: 10;
-    }
+    .modal-overlay h2 { color: var(--gold); margin-bottom: 8px; font-size: 1.15rem; }
+    .modal-overlay p { color: #a0aec0; font-size: 0.8rem; max-width: 310px; line-height: 1.5; margin-bottom: 12px; }
   </style>
 </head>
 <body>
 
-  <!-- STASIS GATE FOR 08.11.2026 -->
-  <div id="gate-screen">
-    <div style="font-size: 50px; margin-bottom: 12px;">⏳👾</div>
+  <!-- STASIS GATE SCREEN (Target 08.11.2026) -->
+  <div id="gate-screen" class="modal-overlay">
+    <div style="font-size: 50px; margin-bottom: 12px;">🐸⏳</div>
     <h2>STASIS LOCKOUT</h2>
     <p>Official Opening on <strong>08.11.2026</strong>.</p>
-    <p style="margin-top: 8px; color: #a0aec0;">Today is <strong>07.11.2026</strong>.<br>Countdown: <strong>1 Day remaining</strong>.</p>
-    <button class="btn btn-secondary" style="margin-top: 20px;" onclick="bypassLock()">[Developer: Bypass Test Mode]</button>
+    <p>Today is <strong>07.11.2026</strong>.<br>Countdown: <strong>1 Day remaining</strong>.</p>
+    <button class="btn btn-secondary" onclick="bypassLock()">[Developer: Bypass Test Mode]</button>
+  </div>
+
+  <!-- WALLPAPER HELPER MODAL -->
+  <div id="wallpaper-modal" class="modal-overlay">
+    <div style="font-size: 40px; margin-bottom: 8px;">📱🐸</div>
+    <h2>SET LIVE WALLPAPER</h2>
+    <p>Because iOS restricts web pages from touching your settings directly:</p>
+    <p style="text-align: left; background: #131728; padding: 10px; border-radius: 8px; font-size: 0.75rem;">
+      1. Take a screenshot of Froggy right now.<br>
+      2. Open iPhone <strong>Settings → Wallpaper</strong>.<br>
+      3. Select this photo and set as Lock Screen!<br>
+      4. Tip: Use "Add to Home Screen" to launch him anytime like a real app.
+    </p>
+    <button class="btn" style="margin-top: 12px;" onclick="closeModal('wallpaper-modal')">Got it!</button>
   </div>
 
   <header>
-    <h1>BEHAVIORAL COMPANION</h1>
+    <h1>FROGGY COMPANION</h1>
     <div class="meta-tag">400 BOOKS • 30 DIMENSIONS • CALENDAR ENGINE</div>
   </header>
 
+  <!-- Visual Stage with Exact Frog Suit Sprite -->
   <div id="stage-wrap">
-    <!-- Built-in direct SVG: physically impossible to remain a blank black box -->
     <svg id="stage-svg" viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%;">
-      <!-- Room Floor & Wall -->
-      <rect x="0" y="100" width="200" height="30" fill="#161b2e" />
-      <rect x="0" y="98" width="200" height="2" fill="#252d4a" />
+      <!-- Floor & Wall -->
+      <rect x="0" y="105" width="200" height="25" fill="#14182b" />
+      <rect x="0" y="103" width="200" height="2" fill="#202740" />
 
-      <!-- Bookshelf with 400-Book Stack -->
-      <rect x="10" y="55" width="26" height="45" fill="#3d271d" />
-      <rect x="12" y="59" width="22" height="5" fill="#e54d42" />
-      <rect x="12" y="66" width="22" height="5" fill="#5d68d1" />
-      <rect x="12" y="73" width="22" height="5" fill="#f4b251" />
-      <rect x="12" y="80" width="22" height="5" fill="#39b54a" />
-      <rect x="12" y="87" width="22" height="5" fill="#9f7aea" />
+      <!-- Bookshelf with 400 Books -->
+      <rect x="8" y="60" width="26" height="43" fill="#3d271d" />
+      <rect x="10" y="64" width="22" height="5" fill="#e54d42" />
+      <rect x="10" y="71" width="22" height="5" fill="#00b894" />
+      <rect x="10" y="78" width="22" height="5" fill="#f4b251" />
+      <rect x="10" y="85" width="22" height="5" fill="#fd79a8" />
+      <rect x="10" y="92" width="22" height="5" fill="#a29bfe" />
 
-      <!-- Quest Decor (Hidden by default, toggled via JS) -->
+      <!-- Bonus Decor Items -->
       <g id="decor-desk" style="display: none;">
-        <rect x="135" y="82" width="55" height="18" fill="#4a2e1b" />
-        <rect x="140" y="100" width="4" height="15" fill="#4a2e1b" />
-        <rect x="180" y="100" width="4" height="15" fill="#4a2e1b" />
-        <rect x="146" y="75" width="8" height="7" fill="#ffffff" />
-        <rect x="154" y="77" width="2" height="3" fill="#ffffff" />
+        <rect x="140" y="84" width="52" height="18" fill="#4a2e1b" />
+        <rect x="144" y="102" width="4" height="15" fill="#4a2e1b" />
+        <rect x="184" y="102" width="4" height="15" fill="#4a2e1b" />
+        <rect x="150" y="77" width="8" height="7" fill="#ffffff" />
       </g>
       <g id="decor-lamp" style="display: none;">
-        <rect x="172" y="55" width="14" height="9" fill="#f4b251" />
-        <rect x="177" y="64" width="3" height="18" fill="#718096" />
+        <rect x="175" y="58" width="14" height="9" fill="#f4b251" />
+        <rect x="180" y="67" width="3" height="17" fill="#718096" />
       </g>
 
-      <!-- Pet Container with Natural CSS Bobbing -->
-      <g id="pet-character" transform="translate(86, 64)">
-        <!-- Body -->
-        <rect id="pet-body" x="0" y="0" width="28" height="26" fill="#5d68d1" rx="2" />
-        <!-- Horns/Ears -->
-        <rect id="pet-ear-l" x="3" y="-5" width="5" height="5" fill="#5d68d1" />
-        <rect id="pet-ear-r" x="20" y="-5" width="5" height="5" fill="#5d68d1" />
+      <!-- Animated Fly -->
+      <g id="fly-target" style="display: none;">
+        <circle id="fly-dot" cx="40" cy="50" r="2.5" fill="#ffffff" />
+        <path d="M38,48 Q40,46 42,48" stroke="#a0aec0" stroke-width="1" fill="none" />
+      </g>
+
+      <!-- Frog Tongue Animation Line -->
+      <line id="frog-tongue" x1="100" y1="78" x2="100" y2="78" stroke="#ff7675" stroke-width="3" stroke-linecap="round" style="display: none;" />
+
+      <!-- EXACT FROG SUIT CHARACTER -->
+      <g id="pet-character" transform="translate(85, 52)">
+        <!-- Frog Eyes on Hood -->
+        <rect x="4" y="-8" width="8" height="8" fill="#ffffff" stroke="#2a2b30" stroke-width="1" />
+        <rect x="18" y="-8" width="8" height="8" fill="#ffffff" stroke="#2a2b30" stroke-width="1" />
+        <rect x="7" y="-5" width="3" height="3" fill="#2a2b30" />
+        <rect x="21" y="-5" width="3" height="3" fill="#2a2b30" />
+        <rect x="4" y="-8" width="8" height="2" fill="#a29bfe" />
+        <rect x="18" y="-8" width="8" height="2" fill="#a29bfe" />
+
+        <!-- Frog Suit Outer Body -->
+        <rect x="0" y="0" width="30" height="42" fill="#006241" rx="4" />
+        <rect x="2" y="0" width="28" height="40" fill="#00b894" rx="4" />
+        <rect x="10" y="0" width="18" height="40" fill="#00d2a0" rx="3" />
+
+        <!-- Face Window Border (Pink Hood Trim) -->
+        <rect x="5" y="7" width="20" height="18" fill="#ff7675" rx="2" />
+        <!-- Inner Face Skin (Peach) -->
+        <rect x="7" y="9" width="16" height="14" fill="#fed39f" />
+
         <!-- Eyes -->
-        <rect x="5" y="7" width="6" height="6" fill="#ffffff" />
-        <rect x="17" y="7" width="6" height="6" fill="#ffffff" />
-        <rect id="pet-pupil-l" x="7" y="9" width="3" height="3" fill="#000000" />
-        <rect id="pet-pupil-r" x="19" y="9" width="3" height="3" fill="#000000" />
-        <!-- Cheeks -->
-        <rect x="2" y="16" width="3" height="2" fill="rgba(244,114,182,0.8)" />
-        <rect x="23" y="16" width="3" height="2" fill="rgba(244,114,182,0.8)" />
-        <!-- Blanket Cape -->
-        <g id="decor-blanket" style="display: none;">
-          <rect x="-3" y="10" width="4" height="16" fill="#9f7aea" />
-          <rect x="27" y="10" width="4" height="16" fill="#9f7aea" />
+        <rect id="frog-eye-l" x="9" y="12" width="3" height="5" fill="#2a2b30" />
+        <rect id="frog-eye-r" x="18" y="12" width="3" height="5" fill="#2a2b30" />
+
+        <!-- Mouth -->
+        <rect id="frog-mouth" x="13" y="18" width="4" height="2" fill="#2a2b30" />
+
+        <!-- Blush Cheeks -->
+        <rect x="6" y="17" width="2" height="3" fill="#fd79a8" />
+        <rect x="22" y="17" width="2" height="3" fill="#fd79a8" />
+
+        <!-- Yellow Belly -->
+        <rect x="6" y="25" width="18" height="14" fill="#fef08a" rx="2" />
+        <!-- Pink Belly Heart -->
+        <path id="belly-heart" d="M12,28 A2,2 0 0,1 15,30 A2,2 0 0,1 18,28 Q18,32 15,34 Q12,32 12,28 Z" fill="#e84393" />
+
+        <!-- Feet & Hands -->
+        <rect x="-2" y="24" width="4" height="8" fill="#00b894" rx="2" />
+        <rect x="28" y="24" width="4" height="8" fill="#00d2a0" rx="2" />
+        <rect x="3" y="41" width="8" height="4" fill="#00b894" rx="2" />
+        <rect x="19" y="41" width="8" height="4" fill="#00d2a0" rx="2" />
+
+        <!-- Study Book in Hand (Appears during Reading animation) -->
+        <g id="mini-book" style="display: none;">
+          <rect x="18" y="20" width="12" height="10" fill="#f4b251" stroke="#2a2b30" stroke-width="1" />
+          <line x1="24" y1="20" x2="24" y2="30" stroke="#2a2b30" stroke-width="1" />
+          <line x1="20" y1="23" x2="23" y2="23" stroke="#2a2b30" stroke-width="0.8" />
+          <line x1="25" y1="23" x2="28" y2="23" stroke="#2a2b30" stroke-width="0.8" />
         </g>
-        <!-- Detective Hat -->
-        <g id="decor-hat" style="display: none;">
-          <rect x="-2" y="-4" width="32" height="3" fill="#2d3748" />
-          <rect x="4" y="-10" width="20" height="6" fill="#2d3748" />
-        </g>
-        <!-- Sweat Drop -->
-        <rect id="pet-sweat" x="30" y="2" width="3" height="5" fill="#63b3ed" style="display: none;" />
       </g>
 
-      <!-- Sleeping Bed State (Hidden until 5/5) -->
+      <!-- Sleeping State -->
       <g id="pet-bed" style="display: none;">
-        <rect x="75" y="76" width="55" height="24" fill="#4a2e1b" />
-        <rect x="78" y="73" width="14" height="9" fill="#e2e8f0" />
-        <rect x="88" y="74" width="16" height="12" fill="#5d68d1" />
-        <rect x="91" y="79" width="3" height="1" fill="#000000" />
-        <rect x="97" y="79" width="3" height="1" fill="#000000" />
-        <rect id="bed-cover" x="92" y="78" width="38" height="22" fill="#3182ce" />
-        <text x="122" y="65" fill="#cbd5e1" font-family="monospace" font-size="10">Zzz...</text>
-      </g>
-
-      <!-- Exploded State -->
-      <g id="pet-explosion" style="display: none;">
-        <text x="75" y="75" font-size="28">💥💀💥</text>
-        <text x="60" y="95" fill="#e54d42" font-family="monospace" font-size="9" font-weight="bold">CORE DETONATED</text>
+        <rect x="75" y="80" width="55" height="22" fill="#4a2e1b" />
+        <rect x="78" y="77" width="14" height="9" fill="#e2e8f0" />
+        <rect x="88" y="78" width="16" height="12" fill="#00b894" />
+        <rect x="91" y="82" width="3" height="1" fill="#000" />
+        <rect x="97" y="82" width="3" height="1" fill="#000" />
+        <rect x="92" y="80" width="38" height="22" fill="#fd79a8" />
+        <text x="122" y="70" fill="#cbd5e1" font-family="monospace" font-size="10">Zzz...</text>
       </g>
     </svg>
-
-    <div id="scanner-modal">
-      <div style="font-size: 32px; margin-bottom: 8px;">⚙️</div>
-      <div style="margin-bottom: 6px;">📷 SCANNING HOMEWORK NOTE...</div>
-      <div id="ocr-status" style="font-size: 0.65rem; color: #94a3b8;">Extracting handwriting keywords...</div>
-    </div>
   </div>
 
-  <div id="dialogue-container">Connecting to behavioral neural matrix...</div>
+  <!-- Speech Bubble -->
+  <div id="dialogue-container">Ribbit! Syncing your behavioral metrics...</div>
 
+  <!-- Dashboard -->
   <div class="dashboard">
     <div class="metric-row">
       <span id="topic-label">Week 1: Values</span>
@@ -269,18 +294,36 @@
 
     <div class="checklist" id="subcat-list"></div>
 
-    <label for="camera-file" class="btn">
+    <!-- Main Camera Button -->
+    <label for="camera-file" class="btn btn-full">
       📸 Scan Paper Homework
     </label>
     <input type="file" id="camera-file" accept="image/*" capture="environment" style="display: none;">
 
-    <button class="btn btn-secondary" onclick="unlockBonusQuest()">
-      🎁 Bonus Quest: Equip Blanket, Desk, Lamp, or Hat
-    </button>
+    <!-- Action Buttons -->
+    <div class="btn-row">
+      <button class="btn" onclick="triggerReadRule()">📖 Read a Rule</button>
+      <button class="btn" onclick="triggerEatFly()">🪰 Catch Fly</button>
+      <button class="btn btn-secondary" onclick="unlockBonusQuest()">🎁 Bonus Quests</button>
+      <button class="btn btn-secondary" onclick="showModal('wallpaper-modal')">📱 Live Wallpaper</button>
+    </div>
   </div>
 
   <script>
-    // 1. ALL 30 CURRICULUM DIMENSIONS (Structured cleanly)
+    // 1. EXTRACTED 400-BOOK RULES & EXAMPLES
+    const BOOK_RULES = [
+      "Rule #1 (Values): Isolate non-negotiable criteria from surface noise. If timeline speed is king, never compromise it for cost.",
+      "Rule #2 (Roles): Never accept the 'Savior' role in the Drama Triangle. Shift accountability back: 'What options did you conclude are best?'",
+      "Rule #3 (Active Listening): The Last-3-Words Mirror. Repeat the last 3 words back in a questioning tone to force deeper disclosure.",
+      "Rule #4 (Anger): The Vocal Downshift. When their volume spikes, drop your vocal pitch an octave and speak in a flat, slow monotone.",
+      "Rule #5 (Fear): Safety Guarantee. Bypass the primitive flight reflex by assuring: 'Regardless of outcome, your position is completely secure.'",
+      "Rule #6 (Command): The Core Stripper. Cut through confusion by isolating: 'The core bottleneck boils down to one simple thing.'",
+      "Rule #7 (Biases): Loss-Aversion Inversion. People fight twice as hard to avoid losing 100 RON than to gain 100 RON. Frame risks as losses.",
+      "Rule #8 (Habits): The Two-Minute Rule. Open the psychology repository for only 120 seconds to completely bypass friction.",
+      "Rule #9 (Compliance): Autonomy Release Lock. Add freedom clauses: 'You are entirely free to say no to this.' It kills resistance."
+    ];
+
+    // 2. 30 MASTER DIMENSIONS WITH SCRIPT KEYWORDS
     const TOPIC_NAMES = [
       "Values", "Roles", "Traits", "Framing", "States", "Loops",
       "Fear", "Anger", "Shame", "Pride", "Desire", "Listening",
@@ -289,139 +332,129 @@
       "Cleansers", "Persuasion", "Vulnerability", "Facades", "Insulation", "Synthesis"
     ];
 
-    const DEFAULT_KEYWORDS = [
-      ["non-negotiable", "metric", "specific element"],
-      ["data logs", "specific metrics", "control"],
-      ["parameter", "matching code", "boundaries"],
-      ["singular objective", "memory lag", "parameters"],
-      ["step-by-step", "verification plan", "stabilize"]
-    ];
-
     const TOPICS = TOPIC_NAMES.map((name, i) => ({
       id: i + 1,
       title: `${name} (Books ${1 + i * 13}–${13 + i * 13})`,
       parts: [
-        { name: "Part 1: Diagnostic Verification", kw: DEFAULT_KEYWORDS[0] },
-        { name: "Part 2: Behavioral Adjustment", kw: DEFAULT_KEYWORDS[1] },
-        { name: "Part 3: Strategic Neutralization", kw: DEFAULT_KEYWORDS[2] },
-        { name: "Part 4: Operational Anchor", kw: DEFAULT_KEYWORDS[3] },
-        { name: "Part 5: Combined Matrix Outcome", kw: DEFAULT_KEYWORDS[4] }
+        { name: "Part 1: Core Diagnostic Probe", kw: ["non-negotiable", "metric", "specific element"] },
+        { name: "Part 2: Behavioral Adjustment", kw: ["data logs", "specific metrics", "control"] },
+        { name: "Part 3: Strategic Neutralization", kw: ["parameter", "matching code", "boundaries"] },
+        { name: "Part 4: Operational Anchor", kw: ["singular objective", "memory lag", "parameters"] },
+        { name: "Part 5: Combined Matrix Outcome", kw: ["step-by-step", "verification plan", "stabilize"] }
       ]
     }));
 
-    // 2. PROCEDURAL DIALOGUE ENGINE (3,000+ Combinations based on 96 Analytical, 88 Warmth, 55 Sarcasm)
-    const D_GREET = [
-      "Telemetry sync confirmed: ",
-      "Analytical baseline scan complete: ",
-      "Reviewing behavioral metrics: ",
-      "Direct neural observation: ",
-      "Between you and me, human: "
-    ];
-    const D_ANALYSIS = [
-      "the 400 books confirm communication breaks down without rigid frameworks. ",
-      "consistency in behavioral calibration prevents catastrophic cognitive drift. ",
-      "our active dimension holds 5 non-negotiable subcategories this week. ",
-      "the research clearly shows execution speed outweighs passive planning. ",
-      "emotional leverage is mathematically proven to stimulate deep focus. "
-    ];
-    const D_THREAT = [
-      "Verify all 5 parts by scanning your notes, or my core integrity violently detonates.",
-      "If we don't clear the 5 checklist items, my cellular matrix goes boom into 100 pixels.",
-      "Complete this week's checklist so I can safely curl into bed without exploding.",
-      "My little pixelated survival depends entirely on your homework scans."
-    ];
-    const D_SARCASM = [
-      " No pressure, of course.",
-      " Statistically, I have faith in your brain.",
-      " Just a friendly existential risk between friends.",
-      " Let us avoid turning me into pixel dust today."
+    // 3. CHARISMATIC DIALOGUE MATRIX (95 Curiosity, 96 Analytical, 88 Warmth, 78 Humor, 55 Sarcasm)
+    const FROG_QUOTES = [
+      "Ribbit! Did you know my little frog brain processes human psychology at 400 books per second? Let's verify this week's checklist!",
+      "I look cute in this hoodie, but don't be fooled: if you skip your homework, my cellular cohesion dissolves into a fireball. No pressure!",
+      "Daily reminder: Communication is just algorithms with emotions. Scan your notes so my little pink heart keeps beating happily!",
+      "Statistically speaking, you are 87% more charismatic today. Let's make it 100% by checking off another subcategory!"
     ];
 
-    function getDialogue(type) {
-      if (type === "idle") {
-        const g = D_GREET[Math.floor(Math.random() * D_GREET.length)];
-        const a = D_ANALYSIS[Math.floor(Math.random() * D_ANALYSIS.length)];
-        const t = D_THREAT[Math.floor(Math.random() * D_THREAT.length)];
-        const s = D_SARCASM[Math.floor(Math.random() * D_SARCASM.length)];
-        return g + a + t + s;
-      }
-      if (type === "sleep") {
-        return "All 5/5 subcategories verified! Core temperature nominal. Tucking into bed for optimal restorative sleep. Good night! 🛌";
-      }
-      return "Ready to analyze the next paper note with camera scanning!";
-    }
-
-    // 3. APP STATE
+    // State
     let STATE = {
       weekIndex: 0,
       checked: [false, false, false, false, false],
       hasBlanket: false,
       hasDesk: false,
       hasLamp: false,
-      hasHat: false,
-      isExploded: false,
       isSleeping: false
     };
 
     function save() {
-      try { localStorage.setItem("pixel_app_clean_state", JSON.stringify(STATE)); } catch(e) {}
+      try { localStorage.setItem("pixel_frog_state", JSON.stringify(STATE)); } catch(e) {}
     }
     try {
-      const s = localStorage.getItem("pixel_app_clean_state");
+      const s = localStorage.getItem("pixel_frog_state");
       if (s) STATE = JSON.parse(s);
     } catch(e) {}
 
-    // 4. DATE LOCK FOR 08.11.2026
+    // Calendar Stasis Gate (Target 08.11.2026)
     function checkCalendar() {
       const now = new Date();
       const launch = new Date("2026-11-08T00:00:00");
-      if (now < launch && !sessionStorage.getItem("gate_pass_ok")) {
+      if (now < launch && !sessionStorage.getItem("frog_pass")) {
         document.getElementById("gate-screen").style.display = "flex";
       } else {
         document.getElementById("gate-screen").style.display = "none";
       }
     }
     function bypassLock() {
-      sessionStorage.setItem("gate_pass_ok", "1");
+      sessionStorage.setItem("frog_pass", "1");
       document.getElementById("gate-screen").style.display = "none";
-      setBubble("Developer bypass granted. Systems operational! Companion online.");
+      setBubble("Developer bypass active! Ribbit! Welcome to the Master Corpus.");
     }
     checkCalendar();
 
-    // 5. ANIMATION LOOP (Runs smoothly without crashing)
+    // Natural Animation Loop
     let tick = 0;
     const petChar = document.getElementById("pet-character");
-    const pupilL = document.getElementById("pet-pupil-l");
-    const pupilR = document.getElementById("pet-pupil-r");
-    const sweat = document.getElementById("pet-sweat");
+    const eyeL = document.getElementById("frog-eye-l");
+    const eyeR = document.getElementById("frog-eye-r");
+    const heart = document.getElementById("belly-heart");
 
     function animate() {
       tick++;
-      if (!STATE.isSleeping && !STATE.isExploded) {
-        // Natural vertical bounce
-        const bounce = Math.sin(tick * 0.12) * 3;
-        petChar.setAttribute("transform", `translate(86, ${64 + bounce})`);
+      if (!STATE.isSleeping) {
+        // Subtle breathing bounce
+        const bounce = Math.sin(tick * 0.1) * 2.5;
+        petChar.setAttribute("transform", `translate(85, ${52 + bounce})`);
 
-        // Eye pupil shift
-        const gaze = Math.sin(tick * 0.05) > 0.4 ? 1 : 0;
-        pupilL.setAttribute("x", 7 + gaze);
-        pupilR.setAttribute("x", 19 + gaze);
-
-        // Sweating when under 3 checked
-        const done = STATE.checked.filter(Boolean).length;
-        if (done > 0 && done < 3) {
-          sweat.style.display = "block";
-          document.getElementById("pet-body").setAttribute("fill", "#e54d42");
-        } else {
-          sweat.style.display = "none";
-          document.getElementById("pet-body").setAttribute("fill", "#5d68d1");
+        // Natural eye blinks
+        if (tick % 70 === 0) {
+          eyeL.setAttribute("height", "1");
+          eyeR.setAttribute("height", "1");
+          setTimeout(() => {
+            eyeL.setAttribute("height", "5");
+            eyeR.setAttribute("height", "5");
+          }, 150);
         }
+
+        // Heart pulse
+        const heartScale = 1 + Math.sin(tick * 0.15) * 0.08;
+        heart.setAttribute("transform", `scale(${heartScale}) translate(${15 - 15*heartScale}, ${30 - 30*heartScale})`);
       }
       requestAnimationFrame(animate);
     }
     animate();
 
-    // 6. UI UPDATES
+    // Animation 1: Read a Rule
+    function triggerReadRule() {
+      const book = document.getElementById("mini-book");
+      book.style.display = "block";
+      const rule = BOOK_RULES[Math.floor(Math.random() * BOOK_RULES.length)];
+      setBubble(`📖 Froggy opened the archives! "${rule}"`);
+      setTimeout(() => { book.style.display = "none"; }, 5000);
+    }
+
+    // Animation 2: Catch & Eat Fly
+    function triggerEatFly() {
+      const fly = document.getElementById("fly-target");
+      const tongue = document.getElementById("frog-tongue");
+      const mouth = document.getElementById("frog-mouth");
+
+      fly.style.display = "block";
+      setBubble("A wild distraction appeared! Froggy is locking focus...");
+
+      setTimeout(() => {
+        // Zip tongue out
+        tongue.style.display = "block";
+        tongue.setAttribute("x2", "40");
+        tongue.setAttribute("y2", "50");
+        mouth.setAttribute("height", "4"); // open mouth
+
+        setTimeout(() => {
+          // Swallow
+          fly.style.display = "none";
+          tongue.style.display = "none";
+          mouth.setAttribute("height", "2");
+          setBubble("SLURP! 🪰 Distraction eliminated! Synaptic focus restored to 100%.");
+        }, 300);
+      }, 1000);
+    }
+
+    // UI Updates
     function setBubble(txt) {
       document.getElementById("dialogue-container").innerText = txt;
     }
@@ -442,117 +475,89 @@
         list.appendChild(item);
       });
 
-      // Show/hide decor based on state
       document.getElementById("decor-desk").style.display = STATE.hasDesk ? "block" : "none";
       document.getElementById("decor-lamp").style.display = STATE.hasLamp ? "block" : "none";
-      document.getElementById("decor-blanket").style.display = STATE.hasBlanket ? "block" : "none";
-      document.getElementById("decor-hat").style.display = STATE.hasHat ? "block" : "none";
 
       if (STATE.isSleeping) {
-        document.getElementById("pet-character").style.display = "none";
+        petChar.style.display = "none";
         document.getElementById("pet-bed").style.display = "block";
-      } else if (STATE.isExploded) {
-        document.getElementById("pet-character").style.display = "none";
-        document.getElementById("pet-explosion").style.display = "block";
       } else {
-        document.getElementById("pet-character").style.display = "block";
+        petChar.style.display = "block";
         document.getElementById("pet-bed").style.display = "none";
-        document.getElementById("pet-explosion").style.display = "none";
       }
     }
 
     function unlockBonusQuest() {
-      if (!STATE.hasBlanket) {
-        STATE.hasBlanket = true;
-        setBubble("🎁 Bonus Quest Complete! Equipped cozy blanket. Core insulation optimized!");
-      } else if (!STATE.hasDesk) {
+      if (!STATE.hasDesk) {
         STATE.hasDesk = true;
-        setBubble("🎁 Bonus Quest Complete! Study desk & warm coffee deployed.");
+        setBubble("🎁 Quest Complete! Deployed study desk & warm drink for Froggy!");
       } else if (!STATE.hasLamp) {
         STATE.hasLamp = true;
-        setBubble("🎁 Bonus Quest Complete! Reading lamp placed on the desk.");
-      } else if (!STATE.hasHat) {
-        STATE.hasHat = true;
-        setBubble("🎁 Bonus Quest Complete! Detective thinking cap equipped.");
+        setBubble("🎁 Quest Complete! Equipped cozy reading lamp for night study!");
       } else {
-        setBubble("All cosmetics unlocked! Your companion lives in utmost intellectual comfort.");
+        setBubble("All room quests complete! Froggy is living in elite academic luxury.");
       }
       save();
       refreshUI();
     }
 
-    // 7. CAMERA OCR SCANNER
-    const cameraFile = document.getElementById("camera-file");
-    const scannerModal = document.getElementById("scanner-modal");
-    const ocrStatus = document.getElementById("ocr-status");
+    function showModal(id) { document.getElementById(id).style.display = "flex"; }
+    function closeModal(id) { document.getElementById(id).style.display = "none"; }
 
+    // Camera OCR Trigger
+    const cameraFile = document.getElementById("camera-file");
     cameraFile.addEventListener("change", (e) => {
       const file = e.target.files[0];
-      if (!file || STATE.isExploded) return;
+      if (!file) return;
 
-      scannerModal.style.display = "flex";
-      ocrStatus.innerText = "Reading camera image...";
-
+      setBubble("Analyzing your paper notes with OCR vision...");
       if (!window.Tesseract) {
         const s = document.createElement("script");
         s.src = "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
-        s.onload = () => runScan(file);
-        s.onerror = () => {
-          scannerModal.style.display = "none";
-          setBubble("Network error: Could not load OCR scanner. Check your internet!");
-        };
+        s.onload = () => runOCR(file);
         document.body.appendChild(s);
       } else {
-        runScan(file);
+        runOCR(file);
       }
     });
 
-    async function runScan(file) {
+    async function runOCR(file) {
       try {
-        ocrStatus.innerText = "Extracting handwriting keywords...";
         const worker = await Tesseract.createWorker('eng');
         const res = await worker.recognize(file);
         const scanned = res.data.text.toLowerCase();
         await worker.terminate();
 
-        scannerModal.style.display = "none";
-        evaluatePaper(scanned);
-      } catch (err) {
-        scannerModal.style.display = "none";
-        setBubble("Scanner error: Please ensure good lighting and clear text!");
-      }
-    }
-
-    function evaluatePaper(scanned) {
-      const current = TOPICS[STATE.weekIndex];
-      let newlyPassed = 0;
-
-      current.parts.forEach((part, idx) => {
-        if (!STATE.checked[idx]) {
-          const matched = part.kw.some(kw => scanned.includes(kw.toLowerCase()));
-          if (matched) {
-            STATE.checked[idx] = true;
-            newlyPassed++;
+        const current = TOPICS[STATE.weekIndex];
+        let found = 0;
+        current.parts.forEach((part, idx) => {
+          if (!STATE.checked[idx]) {
+            if (part.kw.some(kw => scanned.includes(kw.toLowerCase()))) {
+              STATE.checked[idx] = true;
+              found++;
+            }
           }
-        }
-      });
+        });
 
-      const total = STATE.checked.filter(Boolean).length;
-      if (total === 5) {
-        STATE.isSleeping = true;
-        setBubble(getDialogue("sleep"));
-      } else if (newlyPassed > 0) {
-        setBubble(`Verified! Checked ${total}/5 subcategories. The curriculum matches!`);
-      } else {
-        setBubble("Scanned the paper, but didn't find this week's exact script keywords. Check the checklist below!");
+        const total = STATE.checked.filter(Boolean).length;
+        if (total === 5) {
+          STATE.isSleeping = true;
+          setBubble("Ribbit! 5/5 verified! Froggy is safely sleeping in bed without exploding! 🛌");
+        } else if (found > 0) {
+          setBubble(`Found matching criteria! Checked ${total}/5 subcategories.`);
+        } else {
+          setBubble("Scanned paper, but didn't detect this week's keywords. Review the checklist!");
+        }
+        save();
+        refreshUI();
+      } catch (err) {
+        setBubble("Scan error: Ensure bright lighting and readable text!");
       }
-      save();
-      refreshUI();
     }
 
-    // BOOT UP!
+    // Launch
     refreshUI();
-    setBubble(getDialogue("idle"));
+    setBubble(FROG_QUOTES[Math.floor(Math.random() * FROG_QUOTES.length)]);
   </script>
 </body>
 </html>
