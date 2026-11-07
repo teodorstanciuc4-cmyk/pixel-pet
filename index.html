@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>UNDERTALE • FROGGY BEHAVIORAL MATRIX</title>
+  <title>FROGGY • SANS PERSONALITY MATRIX</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PixelFrog">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <link rel="manifest" href='data:application/manifest+json,{"name":"PixelFrog","short_name":"PixelFrog","start_url":".","display":"standalone","background_color":"#000000","theme_color":"#000000"}'>
 
-  <!-- 8-Bit Pixel Font -->
+  <!-- Retro Pixel Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -36,6 +36,7 @@
       user-select: none;
       -webkit-tap-highlight-color: transparent;
       image-rendering: pixelated;
+      shape-rendering: crispEdges;
     }
 
     body {
@@ -50,7 +51,6 @@
       overflow-x: hidden;
     }
 
-    /* Screen container wrapper */
     .screen-wrapper {
       width: 100%;
       max-width: 440px;
@@ -59,13 +59,13 @@
       align-items: center;
     }
 
-    /* Top Stasis Header */
+    /* Top HUD */
     .stasis-header {
       width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.46rem;
+      font-size: 0.44rem;
       border: 3px solid var(--ut-white);
       padding: 6px 8px;
       margin-bottom: 6px;
@@ -73,10 +73,10 @@
       color: var(--ut-yellow);
     }
 
-    /* Undertale Encounter Arena Canvas (Green Grid Box) */
+    /* Undertale Green Grid Arena Canvas */
     #arena-container {
       width: 100%;
-      height: 210px;
+      height: 215px;
       background: #000;
       border: 4px solid var(--ut-white);
       position: relative;
@@ -97,7 +97,7 @@
       background: #000;
       border: 4px solid var(--ut-white);
       padding: 10px;
-      min-height: 110px;
+      min-height: 115px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -105,11 +105,12 @@
     }
 
     .dialogue-text {
-      font-size: 0.55rem;
+      font-size: 0.53rem;
       line-height: 1.6;
       color: var(--ut-white);
-      min-height: 48px;
+      min-height: 50px;
       word-break: break-word;
+      text-transform: lowercase; /* Sans speaks in all-lowercase */
     }
 
     /* 2-Way Branch Choices inside Box */
@@ -130,15 +131,10 @@
       cursor: pointer;
       text-align: left;
       line-height: 1.3;
+      text-transform: lowercase;
     }
-    .choice-btn::before {
-      content: "❤️ ";
-      color: var(--ut-red);
-    }
-    .choice-btn:active {
-      background: var(--ut-orange);
-      color: #000;
-    }
+    .choice-btn::before { content: "❤️ "; color: var(--ut-red); }
+    .choice-btn:active { background: var(--ut-orange); color: #000; }
 
     /* Bottom Undertale Status HUD */
     .ut-status-bar {
@@ -147,7 +143,7 @@
       align-items: center;
       justify-content: space-between;
       margin-top: 8px;
-      font-size: 0.58rem;
+      font-size: 0.56rem;
       padding: 0 4px;
     }
 
@@ -170,7 +166,7 @@
       background: var(--ut-yellow);
     }
 
-    /* The 4 Iconic Undertale Action Buttons (FIGHT, ACT, ITEM, MERCY) */
+    /* 4 Action Buttons */
     .action-button-grid {
       width: 100%;
       display: grid;
@@ -193,10 +189,7 @@
       align-items: center;
       gap: 4px;
     }
-    .btn-undertale:active, .btn-undertale.selected {
-      background: var(--ut-orange);
-      color: #000;
-    }
+    .btn-undertale:active { background: var(--ut-orange); color: #000; }
 
     /* Subcategory Track Dashboard */
     .curriculum-tray {
@@ -223,23 +216,17 @@
       padding: 4px 10px;
       cursor: pointer;
     }
-    .nav-arrow:disabled {
-      color: var(--ut-gray);
-      border-color: var(--ut-gray);
-    }
+    .nav-arrow:disabled { color: var(--ut-gray); border-color: var(--ut-gray); }
 
     .track-title {
-      font-size: 0.48rem;
+      font-size: 0.46rem;
       color: var(--ut-yellow);
       text-align: center;
       max-width: 250px;
       line-height: 1.4;
     }
 
-    .subcat-list {
-      margin-top: 6px;
-    }
-
+    .subcat-list { margin-top: 6px; }
     .subcat-item {
       font-size: 0.44rem;
       padding: 5px;
@@ -250,10 +237,7 @@
       display: flex;
       align-items: center;
     }
-    .subcat-item.done {
-      color: #00ff66;
-      border-color: #00aa44;
-    }
+    .subcat-item.done { color: #00ff66; border-color: #00aa44; }
     .subcat-item::before { content: "[ ] "; margin-right: 6px; }
     .subcat-item.done::before { content: "[*] "; color: var(--ut-yellow); }
 
@@ -299,8 +283,8 @@
   <div class="screen-wrapper">
     <!-- Top Countdown HUD -->
     <div class="stasis-header">
-      <div>TARGET: 08.11.2026</div>
-      <div>COUNTDOWN: <span id="stasis-timer" style="color:var(--ut-white);">--:--:--</span></div>
+      <div id="countdown-label">LAUNCH: 08.11.2026</div>
+      <div>TIMER: <span id="stasis-timer" style="color:var(--ut-white);">--:--:--</span></div>
     </div>
 
     <!-- Undertale Green Grid Arena Canvas -->
@@ -332,33 +316,33 @@
 
     <!-- 4 Action Buttons -->
     <div class="action-button-grid">
-      <!-- FIGHT = Open Camera Scanner -->
-      <label for="camera-input" class="btn-undertale" onclick="playAudioBlip(550)">
+      <!-- FIGHT = Camera Scan -->
+      <label for="camera-input" class="btn-undertale" onclick="playAudioBlip(120)">
         <span>⚔️</span>
         <span>FIGHT</span>
       </label>
       <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;">
 
-      <!-- ACT = Talk / Check Rules -->
+      <!-- ACT = Talk / Puns / Flowchart Blueprint -->
       <button class="btn-undertale" onclick="handleActMenu()">
         <span>🗣</span>
         <span>ACT</span>
       </button>
 
-      <!-- ITEM = Unlocked Room Decor -->
+      <!-- ITEM = Room Gear -->
       <button class="btn-undertale" onclick="handleItemMenu()">
         <span>🎒</span>
         <span>ITEM</span>
       </button>
 
-      <!-- MERCY = Stasis Details / Surrender -->
+      <!-- MERCY = Powers / Sleep -->
       <button class="btn-undertale" onclick="handleMercyMenu()">
         <span>💔</span>
         <span>MERCY</span>
       </button>
     </div>
 
-    <!-- 30 Progression-Locked Curriculum Tray -->
+    <!-- 30 Progression-Locked Tracks Tray -->
     <div class="curriculum-tray">
       <div class="nav-row">
         <button id="nav-left" class="nav-arrow" onclick="stepTrack(-1)">&lt;</button>
@@ -375,7 +359,7 @@
     <div class="ut-modal-box">
       <div style="font-size:0.5rem; color:var(--ut-yellow); margin-bottom:6px;">* FLOWCHART LOGIC BLUEPRINT</div>
       <p style="font-size:0.42rem; color:#aaa; line-height:1.4;">
-        Every pixel node must be drawn clearly on real paper for FIGHT (Scan) recognition:
+        Draw these exact symbolic branches onto paper for FIGHT (Scan) verification:
       </p>
       <div id="ascii-mount" class="ascii-blueprint"></div>
       <button class="btn-undertale" style="width:100%; padding:8px;" onclick="closeModal('blueprint-modal')">
@@ -397,7 +381,7 @@
 
   <script>
     /* =========================================================================
-       1. WEB AUDIO 8-BIT UNDERTALE SOUND ENGINE
+       1. SYNTHESIZED SANS VOICE & SOUND EFFECTS (Web Audio API)
        ========================================================================= */
     let audioContext = null;
     function getAudio() {
@@ -406,45 +390,102 @@
       return audioContext;
     }
 
-    function playAudioBlip(freq = 150) {
+    // Authentic Sans low square-wave voice blip
+    function playSansVoiceBlip() {
       try {
         const ctx = getAudio();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'square';
-        osc.frequency.setValueAtTime(freq + Math.random() * 20, ctx.currentTime);
-        gain.gain.setValueAtTime(0.04, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.035);
+        // Sans has a very low fundamental tone (~75-90 Hz)
+        osc.frequency.setValueAtTime(82 + (Math.random() * 8), ctx.currentTime);
+        gain.gain.setValueAtTime(0.06, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.start();
-        osc.stop(ctx.currentTime + 0.035);
+        osc.stop(ctx.currentTime + 0.04);
       } catch (e) {}
     }
 
-    /* =========================================================================
-       2. REAL-TIME TARGET COUNTDOWN (08.11.2026)
-       ========================================================================= */
-    function updateStasisCountdown() {
-      const now = new Date();
-      const target = new Date("2026-11-08T00:00:00");
-      const diff = target - now;
+    function playAudioBlip(freq = 120) {
+      try {
+        const ctx = getAudio();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.08);
+      } catch (e) {}
+    }
 
-      if (diff > 0) {
-        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const m = Math.floor((diff / (1000 * 60)) % 60);
-        const s = Math.floor((diff / 1000) % 60);
+    // Exaggerated Undertale Trombone Pun Fanfare: "wah-wah-waaah"
+    function playTrombonePun() {
+      const notes = [311.13, 293.66, 277.18, 261.63]; // Eb, D, Db, C
+      notes.forEach((freq, i) => {
+        setTimeout(() => {
+          try {
+            const ctx = getAudio();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(freq, ctx.currentTime);
+            gain.gain.setValueAtTime(0.07, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.22);
+          } catch(e) {}
+        }, i * 220);
+      });
+    }
+
+    /* =========================================================================
+       2. REVISED CALENDAR & DEADLINE ENGINE (Starts 08.11.2026, Sunday-to-Sunday)
+       ========================================================================= */
+    const LAUNCH_DATE = new Date("2026-11-08T00:00:00"); // 8 Nov 2026 is a Sunday!
+
+    function updateCalendarSchedule() {
+      const now = new Date();
+      const diffToLaunch = LAUNCH_DATE - now;
+
+      // BEFORE 08.11.2026: NO weekly deadline panic! Only count down to the grand start.
+      if (diffToLaunch > 0 && !sessionStorage.getItem("frog_bypass_active")) {
+        document.getElementById("countdown-label").innerText = "START: 08.11.2026";
+        const d = Math.floor(diffToLaunch / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diffToLaunch / (1000 * 60 * 60)) % 24);
+        const m = Math.floor((diffToLaunch / (1000 * 60)) % 60);
+        const s = Math.floor((diffToLaunch / 1000) % 60);
         document.getElementById("stasis-timer").innerText = `${d}d ${h}h ${m}m ${s}s`;
       } else {
-        document.getElementById("stasis-timer").innerText = `OFFICIALLY LAUNCHED!`;
+        // AFTER 08.11.2026 (or bypass test mode): Week starts Sunday 00:00 and finishes next Sunday 23:59
+        document.getElementById("countdown-label").innerText = "WEEK DEADLINE (SUN)";
+        const dayOfWeek = now.getDay(); // 0 is Sunday
+        const daysUntilNextSunday = (7 - dayOfWeek) % 7;
+        const nextSundayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilNextSunday, 23, 59, 59);
+        const diffMs = nextSundayEnd - now;
+
+        if (diffMs > 0) {
+          const d = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+          const h = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
+          const m = Math.floor((diffMs / (1000 * 60)) % 60);
+          document.getElementById("stasis-timer").innerText = `${d}d ${h}h ${m}m`;
+        } else {
+          document.getElementById("stasis-timer").innerText = `WEEK RESET`;
+        }
       }
     }
-    setInterval(updateStasisCountdown, 1000);
-    updateStasisCountdown();
+    setInterval(updateCalendarSchedule, 1000);
+    updateCalendarSchedule();
 
     /* =========================================================================
-       3. STRICT PROGRESSION 30 TRACK CURRICULUM
+       3. 30 STRICT PROGRESSION TRACKS (Curriculum 1 to 30)
        ========================================================================= */
     const TRACK_NAMES = [
       "Values", "Roles", "Traits", "Framing", "States", "Conversation Loops",
@@ -457,7 +498,7 @@
     const TRACKS = TRACK_NAMES.map((name, i) => ({
       id: i + 1,
       title: `TRACK ${i + 1}: ${name.toUpperCase()} (BOOKS ${1 + i * 13}–${13 + i * 13})`,
-      powerBadge: `${name} Mastery Shield`,
+      powerBadge: `${name} Mastery Matrix`,
       parts: [
         { name: "Part 1: Core Diagnostic Probe", kw: ["non-negotiable", "metric", "element"] },
         { name: "Part 2: Decision Frame Check", kw: ["prioritize", "specific path", "choices"] },
@@ -487,25 +528,25 @@
     }));
 
     /* =========================================================================
-       4. PURE PIXEL CANVAS RENDERING ENGINE & WANDERING AI
+       4. PURE PIXEL CANVAS RENDERING ENGINE & FACIAL STATES
        ========================================================================= */
     const canvas = document.getElementById("pixelCanvas");
     const ctx = canvas.getContext("2d");
     ctx.imageSmoothingEnabled = false;
 
-    // AI Walking State Machine
+    // Froggy state & dynamic facial expressions while talking
     let frog = {
       x: 90,
       y: 72,
       targetX: 90,
-      vx: 0,
-      facing: 1, // 1: right, -1: left
-      state: "IDLE", // IDLE, WALK, SIT, SLEEP
+      facing: 1,
+      state: "IDLE", // IDLE, WALK, SHOT
+      face: "GRIN",   // GRIN, WINK, EMPTY, DERP, SHRUG
       timer: 0,
-      animFrame: 0
+      animFrame: 0,
+      isMouthOpen: false
     };
 
-    // Low-res chunky pixel palettes
     const P = {
       black: "#000000",
       outline: "#15181f",
@@ -517,7 +558,7 @@
       bellyYellow: "#fce373",
       bellyPink: "#e83a82",
       white: "#ffffff",
-      gridGreen: "#006622"
+      gridGreen: "#005522"
     };
 
     function drawPixelRect(x, y, w, h, color) {
@@ -526,11 +567,10 @@
     }
 
     function renderScene() {
-      // 1. Draw Undertale Green Grid Arena Background
+      // 1. Clear & draw Green Grid Arena Background
       ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Grid lines (pure pixel stepping)
       ctx.strokeStyle = P.gridGreen;
       ctx.lineWidth = 1;
       for (let x = 0; x < canvas.width; x += 16) {
@@ -546,18 +586,16 @@
         ctx.stroke();
       }
 
-      // 2. Room Furniture (Bookshelf)
+      // 2. Bookshelf
       drawPixelRect(8, 60, 24, 48, P.black);
-      // Outer pixel outline
       ctx.strokeStyle = P.white;
       ctx.strokeRect(8, 60, 24, 48);
-      // Colored book spines
       drawPixelRect(11, 65, 18, 5, "#ff4757");
       drawPixelRect(11, 74, 18, 5, "#00a86b");
       drawPixelRect(11, 83, 18, 5, "#fce373");
       drawPixelRect(11, 92, 18, 5, "#ff597b");
 
-      // Desk & Lamp (if unlocked)
+      // Desk & Lamp
       if (STATE.highestTrack >= 1) {
         drawPixelRect(150, 84, 42, 24, P.black);
         ctx.strokeRect(150, 84, 42, 24);
@@ -568,9 +606,8 @@
         drawPixelRect(173, 54, 12, 6, "#ffff00");
       }
 
-      // 3. Render Froggy Pixel Sprite
+      // 3. Render Froggy Sprite with Dynamic Sans Faces
       if (STATE.isSleeping) {
-        // Bed with sleeping frog
         drawPixelRect(80, 80, 48, 26, P.black);
         ctx.strokeRect(80, 80, 48, 26);
         drawPixelRect(83, 76, 12, 8, P.white);
@@ -579,47 +616,82 @@
         drawPixelRect(100, 82, 3, 1, P.black);
         drawPixelRect(96, 80, 30, 24, P.pinkTrim);
       } else {
-        renderFrogSprite(frog.x, frog.y, frog.facing, frog.state, frog.animFrame);
+        renderFrogSprite(frog.x, frog.y, frog.face, frog.animFrame, frog.isMouthOpen);
       }
 
       requestAnimationFrame(renderScene);
     }
 
-    function renderFrogSprite(fx, fy, facing, state, frame) {
-      const legOffset = (state === "WALK") ? (Math.floor(frame / 6) % 2 === 0 ? 2 : -2) : 0;
+    function renderFrogSprite(fx, fy, face, frame, mouthOpen) {
+      const legOffset = (frog.state === "WALK") ? (Math.floor(frame / 6) % 2 === 0 ? 2 : -2) : 0;
+      const shrugOffset = (face === "SHRUG") ? -3 : 0;
 
       // Outer outline box
-      drawPixelRect(fx, fy, 26, 36, P.outline);
+      drawPixelRect(fx, fy + shrugOffset, 26, 36, P.outline);
 
       // Hood Base
-      drawPixelRect(fx + 2, fy + 2, 22, 32, P.greenMain);
-      drawPixelRect(fx + 2, fy + 2, 6, 32, P.greenDark);
-      drawPixelRect(fx + 10, fy + 2, 12, 32, P.greenBright);
+      drawPixelRect(fx + 2, fy + 2 + shrugOffset, 22, 32, P.greenMain);
+      drawPixelRect(fx + 2, fy + 2 + shrugOffset, 6, 32, P.greenDark);
+      drawPixelRect(fx + 10, fy + 2 + shrugOffset, 12, 32, P.greenBright);
 
       // Hood Frog Eyes on top
-      drawPixelRect(fx + 3, fy - 6, 7, 7, P.white);
-      drawPixelRect(fx + 16, fy - 6, 7, 7, P.white);
-      drawPixelRect(fx + 5, fy - 4, 3, 3, P.black);
-      drawPixelRect(fx + 18, fy - 4, 3, 3, P.black);
-      // Outlines on hood eyes
-      drawPixelRect(fx + 3, fy - 6, 7, 1, P.outline);
-      drawPixelRect(fx + 16, fy - 6, 7, 1, P.outline);
+      drawPixelRect(fx + 3, fy - 6 + shrugOffset, 7, 7, P.white);
+      drawPixelRect(fx + 16, fy - 6 + shrugOffset, 7, 7, P.white);
+
+      // Hood Eye pupils react to Empty Socket face!
+      if (face === "EMPTY") {
+        drawPixelRect(fx + 3, fy - 6 + shrugOffset, 7, 7, P.black);
+        drawPixelRect(fx + 16, fy - 6 + shrugOffset, 7, 7, P.black);
+      } else {
+        drawPixelRect(fx + 5, fy - 4 + shrugOffset, 3, 3, P.black);
+        drawPixelRect(fx + 18, fy - 4 + shrugOffset, 3, 3, P.black);
+      }
 
       // Peach Face Opening
-      drawPixelRect(fx + 4, fy + 6, 18, 15, P.pinkTrim);
-      drawPixelRect(fx + 6, fy + 8, 14, 11, P.skin);
+      drawPixelRect(fx + 4, fy + 6 + shrugOffset, 18, 15, P.pinkTrim);
+      drawPixelRect(fx + 6, fy + 8 + shrugOffset, 14, 11, P.skin);
 
-      // Eyes
-      drawPixelRect(fx + 8, fy + 10, 3, 4, P.black);
-      drawPixelRect(fx + 15, fy + 10, 3, 4, P.black);
+      // ==========================================
+      // DYNAMIC FACIAL EXPRESSIONS WHILE TALKING:
+      // ==========================================
+      if (face === "EMPTY") {
+        // Complete empty black eye sockets (classic Sans pause)
+        drawPixelRect(fx + 8, fy + 10 + shrugOffset, 3, 4, P.black);
+        drawPixelRect(fx + 15, fy + 10 + shrugOffset, 3, 4, P.black);
+      } else if (face === "WINK") {
+        // Right eye winking shut
+        drawPixelRect(fx + 8, fy + 11 + shrugOffset, 4, 2, P.black);
+        drawPixelRect(fx + 15, fy + 10 + shrugOffset, 3, 4, P.black);
+      } else if (face === "DERP") {
+        // Pupils looking all the way sideways
+        drawPixelRect(fx + 6, fy + 10 + shrugOffset, 3, 4, P.black);
+        drawPixelRect(fx + 13, fy + 10 + shrugOffset, 3, 4, P.black);
+      } else {
+        // Normal lazy grin eyes
+        drawPixelRect(fx + 8, fy + 10 + shrugOffset, 3, 4, P.black);
+        drawPixelRect(fx + 15, fy + 10 + shrugOffset, 3, 4, P.black);
+      }
 
       // Cheeks
-      drawPixelRect(fx + 5, fy + 14, 2, 2, P.pinkTrim);
-      drawPixelRect(fx + 19, fy + 14, 2, 2, P.pinkTrim);
+      drawPixelRect(fx + 5, fy + 14 + shrugOffset, 2, 2, P.pinkTrim);
+      drawPixelRect(fx + 19, fy + 14 + shrugOffset, 2, 2, P.pinkTrim);
+
+      // Mouth: talks/bobs when talking!
+      if (mouthOpen) {
+        drawPixelRect(fx + 11, fy + 16 + shrugOffset, 5, 3, P.black);
+      } else {
+        drawPixelRect(fx + 10, fy + 17 + shrugOffset, 7, 1, P.black);
+      }
 
       // Yellow Belly with Pink Heart
-      drawPixelRect(fx + 5, fy + 22, 16, 11, P.bellyYellow);
-      drawPixelRect(fx + 10, fy + 24, 6, 6, P.bellyPink);
+      drawPixelRect(fx + 5, fy + 22 + shrugOffset, 16, 11, P.bellyYellow);
+      drawPixelRect(fx + 10, fy + 24 + shrugOffset, 6, 6, P.bellyPink);
+
+      // Shrugging hands or regular hands
+      if (face === "SHRUG") {
+        drawPixelRect(fx - 4, fy + 16, 5, 6, P.greenMain);
+        drawPixelRect(fx + 25, fy + 16, 5, 6, P.greenMain);
+      }
 
       // Stepping Feet (Animated Walk Cycle)
       drawPixelRect(fx + 3, fy + 35 + legOffset, 7, 3, P.greenDark);
@@ -629,14 +701,12 @@
     // Wandering AI Loop
     function updateWanderingAI() {
       if (STATE.isSleeping) return;
-
       frog.timer++;
       frog.animFrame++;
 
       if (frog.state === "IDLE") {
-        if (frog.timer > 120) {
-          // Pick new spot to walk to
-          frog.targetX = 40 + Math.floor(Math.random() * 110);
+        if (frog.timer > 140) {
+          frog.targetX = 35 + Math.floor(Math.random() * 120);
           frog.state = "WALK";
           frog.facing = (frog.targetX > frog.x) ? 1 : -1;
           frog.timer = 0;
@@ -648,7 +718,7 @@
           frog.state = "IDLE";
           frog.timer = 0;
         } else {
-          frog.x += Math.sign(dx) * 0.8;
+          frog.x += Math.sign(dx) * 0.75;
         }
       }
     }
@@ -656,48 +726,67 @@
     renderScene();
 
     /* =========================================================================
-       5. RELATABLE CASUAL BANTER DIALOGUE MATRIX
+       5. SANS PERSONALITY BANTER MATRIX & LIVE FACE-MORPHING TYPEWRITER
        ========================================================================= */
-    const BANTER_TREE = [
+    const SANS_BANTER = [
       {
-        text: "* Yo. Look at this green grid. Remind you of anything? Draw your flowchart before my timer hits zero!",
-        c1: "I'm literally drawing it now.",
-        r1: "* Good! Because turning into 8-bit dust on Sunday was NOT on my schedule.",
-        c2: "Why are we in a battle grid?",
-        r2: "* Because human communication IS a battle! Now equip your pencil and scan the paper."
+        text: "* heya. what're you sweating about? week 1 doesn't even launch until 08.11.2026. take a nap, kiddo.",
+        facePlan: [ {at: 0, f: "GRIN"}, {at: 20, f: "WINK"}, {at: 55, f: "SHRUG"} ],
+        c1: "aren't we supposed to prepare?",
+        r1: "* prepare? i'm already a professional at doing nothing. but hey, feel free to inspect the tracks.",
+        c2: "tell me a psychology pun.",
+        r2: "* why did the skeleton fail his behavioral diagnostic? he didn't have the *guts* to state his non-negotiable."
       },
       {
-        text: "* Pro-tip from Book 14: When someone tries to guilt-trip you, agree instantly. It breaks their combat rhythm.",
-        c1: "Sounds like cheating.",
-        r1: "* It's called psychological jujitsu. Stop taking damage from emotional vampires.",
-        c2: "Does that work on you?",
-        r2: "* Absolutely not. I'm a frog in a hoodie. I am completely immune to guilt."
+        text: "* you know, human communication is kinda funny. people would rather argue for 4 hours about the dishes than admit they're tired.",
+        facePlan: [ {at: 0, f: "GRIN"}, {at: 30, f: "DERP"}, {at: 70, f: "EMPTY"} ],
+        c1: "that's just human nature.",
+        r1: "* nah, pal. that's just avoiding the Adult logic pivot. Book 14 literally solves that in 5 minutes.",
+        c2: "you ever do the dishes?",
+        r2: "* i'm a pixel frog wearing a green hoodie. dishes are physically outside my collision box."
       },
       {
-        text: "* I've been pacing back and forth across this screen for 2 hours. My tiny pixel legs demand progress!",
-        c1: "Take a break, buddy.",
-        r1: "* I can't take a break! The curriculum has 30 tracks and you're still on Track 1!",
-        c2: "I'll scan a note right now.",
-        r2: "* That's what I like to hear! Hit [ FIGHT ] and show the camera your node tree."
+        text: "* a week starts on sunday and finishes on sunday. until 08.11.2026 hits, consider yourself on paid vacation.",
+        facePlan: [ {at: 0, f: "GRIN"}, {at: 35, f: "WINK"}, {at: 65, f: "SHRUG"} ],
+        c1: "can i test the scanner anyway?",
+        r1: "* go right ahead, kiddo. hit [ FIGHT ] and show me your paper flowchart.",
+        c2: "what's with the green grid?",
+        r2: "* cozy, right? makes me feel like dodging attacks from a sentient flower."
       }
     ];
 
     let currentBanterIdx = 0;
     let typeTimer = null;
 
-    function runTypewriter(text, onDone) {
+    // Typewriter engine that morphs facial expressions and talks with Sans' voice!
+    function runTypewriterWithFaces(item, onDone) {
       const box = document.getElementById("dialogue-text");
       box.innerHTML = "";
       clearTimeout(typeTimer);
       let i = 0;
+      const fullText = item.text;
+      const plan = item.facePlan || [{at: 0, f: "GRIN"}];
 
       function step() {
-        if (i < text.length) {
-          box.innerHTML += text.charAt(i);
-          if (/[a-zA-Z0-9]/.test(text.charAt(i))) playAudioBlip(160);
+        if (i < fullText.length) {
+          // Check if face should morph at this letter index!
+          plan.forEach(p => {
+            if (i === p.at) frog.face = p.f;
+          });
+
+          box.innerHTML += fullText.charAt(i);
+
+          // Voice blip on letters + mouth toggle
+          if (/[a-zA-Z0-9]/.test(fullText.charAt(i))) {
+            playSansVoiceBlip();
+            frog.isMouthOpen = !frog.isMouthOpen;
+          }
+
           i++;
-          typeTimer = setTimeout(step, 20);
+          typeTimer = setTimeout(step, 24);
         } else {
+          frog.isMouthOpen = false;
+          frog.face = "GRIN";
           if (onDone) onDone();
         }
       }
@@ -705,12 +794,12 @@
     }
 
     function triggerDialogue(idx) {
-      currentBanterIdx = idx % BANTER_TREE.length;
-      const b = BANTER_TREE[currentBanterIdx];
+      currentBanterIdx = idx % SANS_BANTER.length;
+      const b = SANS_BANTER[currentBanterIdx];
       const choices = document.getElementById("dialogue-choices");
       choices.style.display = "none";
 
-      runTypewriter(b.text, () => {
+      runTypewriterWithFaces(b, () => {
         document.getElementById("choice-1").innerText = b.c1;
         document.getElementById("choice-2").innerText = b.c2;
         choices.style.display = "flex";
@@ -718,46 +807,57 @@
     }
 
     function makeChoice(opt) {
-      playAudioBlip(420);
-      const b = BANTER_TREE[currentBanterIdx];
+      playAudioBlip(320);
+      const b = SANS_BANTER[currentBanterIdx];
       const reply = (opt === 1) ? b.r1 : b.r2;
       document.getElementById("dialogue-choices").style.display = "none";
-      runTypewriter(reply);
+
+      // If pun triggered, play trombone!
+      if (reply.includes("guts") || reply.includes("dishes")) {
+        setTimeout(playTrombonePun, 600);
+      }
+
+      runTypewriterWithFaces({ text: reply, facePlan: [{at: 0, f: "WINK"}, {at: 30, f: "EMPTY"}, {at: 60, f: "GRIN"}] });
     }
 
     /* =========================================================================
        6. UNDERTALE ACTION BUTTON HANDLERS
        ========================================================================= */
     function handleActMenu() {
-      playAudioBlip(500);
+      playAudioBlip(380);
       const cur = TRACKS[STATE.activeTrack];
       document.getElementById("ascii-mount").innerText = cur.blueprint;
       document.getElementById("blueprint-modal").style.display = "flex";
     }
 
     function handleItemMenu() {
-      playAudioBlip(450);
-      runTypewriter(`* INVENTORY: [Desk: ${STATE.highestTrack >= 1 ? 'EQUIPPED' : 'LOCKED'}] [Lamp: ${STATE.highestTrack >= 2 ? 'EQUIPPED' : 'LOCKED'}] [Tea: READY]`);
+      playAudioBlip(350);
+      runTypewriterWithFaces({
+        text: `* items: [desk: ${STATE.highestTrack >= 1 ? 'equipped' : 'locked'}] [lamp: ${STATE.highestTrack >= 2 ? 'equipped' : 'locked'}] [bottle of ketchup: empty]`,
+        facePlan: [{at: 0, f: "WINK"}, {at: 50, f: "SHRUG"}]
+      });
     }
 
     function handleMercyMenu() {
-      playAudioBlip(300);
-      document.getElementById("powers-mount").innerHTML = STATE.powers.length ? STATE.powers.map(p => `<div>* ${p}</div>`).join('') : "<div>* No powers earned yet! Clear a track 5/5.</div>";
+      playAudioBlip(280);
+      document.getElementById("powers-mount").innerHTML = STATE.powers.length
+        ? STATE.powers.map(p => `<div>* ${p}</div>`).join('')
+        : "<div>* no powers yet, kiddo. finish a track 5/5 first.</div>";
       document.getElementById("powers-modal").style.display = "flex";
     }
 
     function closeModal(id) {
-      playAudioBlip(250);
+      playAudioBlip(220);
       document.getElementById(id).style.display = "none";
     }
 
     function pokeFrog() {
-      playAudioBlip(600);
-      triggerDialogue(Math.floor(Math.random() * BANTER_TREE.length));
+      playAudioBlip(440);
+      triggerDialogue(Math.floor(Math.random() * SANS_BANTER.length));
     }
 
     /* =========================================================================
-       7. PROGRESSION AND UI TRAY LOGIC
+       7. PROGRESSION TRACKS ENGINE
        ========================================================================= */
     let STATE = {
       activeTrack: 0,
@@ -768,10 +868,10 @@
     };
 
     function save() {
-      try { localStorage.setItem("frog_undertale_battle_save", JSON.stringify(STATE)); } catch (e) {}
+      try { localStorage.setItem("frog_sans_master_save", JSON.stringify(STATE)); } catch (e) {}
     }
     try {
-      const s = localStorage.getItem("frog_undertale_battle_save");
+      const s = localStorage.getItem("frog_sans_master_save");
       if (s) STATE = JSON.parse(s);
     } catch (e) {}
 
@@ -779,16 +879,22 @@
       const next = STATE.activeTrack + delta;
       if (next < 0) return;
       if (next > STATE.highestTrack) {
-        playAudioBlip(180);
-        runTypewriter("* That track is LOCKED 🔒! Finish this week's 5 flowchart nodes first!");
+        playAudioBlip(140);
+        runTypewriterWithFaces({
+          text: "* hold on, kiddo. that track is locked 🔒. no skipping steps on my watch.",
+          facePlan: [{at: 0, f: "EMPTY"}, {at: 30, f: "WINK"}]
+        });
         return;
       }
-      playAudioBlip(400);
+      playAudioBlip(320);
       STATE.activeTrack = next;
       STATE.isSleeping = false;
       save();
       refreshUI();
-      runTypewriter(`* Loaded ${TRACKS[STATE.activeTrack].title}. Draw the blueprint on real paper!`);
+      runTypewriterWithFaces({
+        text: `* loaded ${TRACKS[STATE.activeTrack].title}. check the blueprint and get your notes ready.`,
+        facePlan: [{at: 0, f: "GRIN"}]
+      });
     }
 
     function refreshUI() {
@@ -822,8 +928,11 @@
       const file = e.target.files[0];
       if (!file) return;
 
-      playAudioBlip(600);
-      runTypewriter("* FIGHT! Scanning paper notes with neural OCR vision...");
+      playAudioBlip(440);
+      runTypewriterWithFaces({
+        text: "* fight! scanning paper notes with neural ocr vision...",
+        facePlan: [{at: 0, f: "DERP"}]
+      });
 
       if (!window.Tesseract) {
         const s = document.createElement("script");
@@ -863,17 +972,29 @@
           STATE.isSleeping = true;
           if (!STATE.powers.includes(cur.powerBadge)) STATE.powers.push(cur.powerBadge);
           if (STATE.highestTrack === STATE.activeTrack) STATE.highestTrack++;
-          runTypewriter(`* VICTORY! 5/5 verified! Superpower unlocked: [${cur.powerBadge}]! Froggy goes to sleep! 🛌`);
+          runTypewriterWithFaces({
+            text: `* nice work, kiddo. 5/5 verified. unlocked [${cur.powerBadge}]. time for a well-deserved nap. 🛌`,
+            facePlan: [{at: 0, f: "WINK"}, {at: 40, f: "GRIN"}]
+          });
         } else if (found > 0) {
-          runTypewriter(`* Hit! Recognized ${found} valid flowchart nodes! Total: ${total}/5 complete.`);
+          runTypewriterWithFaces({
+            text: `* hit! recognized ${found} valid flowchart nodes. total: ${total}/5 complete.`,
+            facePlan: [{at: 0, f: "GRIN"}]
+          });
         } else {
-          runTypewriter("* Miss! Could not detect flowchart arrows (->) or keywords. Draw cleaner nodes!");
+          runTypewriterWithFaces({
+            text: "* miss! couldn't detect flowchart arrows (->) or keywords. draw cleaner nodes, kiddo.",
+            facePlan: [{at: 0, f: "EMPTY"}]
+          });
         }
 
         save();
         refreshUI();
       } catch (err) {
-        runTypewriter("* Error reading paper! Ensure bright lighting and hold camera steady.");
+        runTypewriterWithFaces({
+          text: "* error reading paper! hold camera steady with good lighting.",
+          facePlan: [{at: 0, f: "SHRUG"}]
+        });
       }
     }
 
