@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Froggy • Behavioral Companion</title>
+  <title>Froggy v3.0 • Behavioral Companion</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PixelFrog">
@@ -31,11 +31,12 @@
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      padding: 16px 12px 60px 12px;
+      padding: 14px 12px 60px 12px;
       overflow-x: hidden;
     }
 
-    header { text-align: center; margin-bottom: 12px; width: 100%; max-width: 420px; }
+    header { text-align: center; margin-bottom: 10px; width: 100%; max-width: 420px; }
+    .version-tag { font-size: 0.65rem; background: #202740; color: var(--accent-glow); padding: 2px 8px; border-radius: 10px; display: inline-block; margin-bottom: 4px; font-weight: bold; }
     h1 { font-size: 1.1rem; color: var(--accent-glow); letter-spacing: 1px; }
     .meta-tag { font-size: 0.68rem; color: #718096; margin-top: 2px; }
 
@@ -50,9 +51,7 @@
       border-radius: 14px;
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      cursor: pointer;
     }
 
     /* Dialogue Bubble */
@@ -84,7 +83,7 @@
       border-color: transparent transparent #ffffff transparent;
     }
 
-    /* Controls Grid */
+    /* Dashboard & Controls */
     .dashboard {
       width: 100%;
       max-width: 380px;
@@ -98,13 +97,26 @@
     .bar-bg { width: 100%; height: 8px; background: #202740; border-radius: 4px; overflow: hidden; margin-bottom: 12px; }
     .bar-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.3s ease; }
 
+    /* Category Dropdown Picker */
+    .selector-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 8px; }
+    select {
+      background: #1c233a;
+      color: var(--accent-glow);
+      border: 1px solid #2e3a5f;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-family: var(--font);
+      font-size: 0.75rem;
+      width: 100%;
+    }
+
     .checklist { margin: 8px 0 12px 0; font-size: 0.72rem; }
     .check-item { display: flex; align-items: center; margin: 4px 0; color: #a0aec0; }
     .check-item.done { color: var(--accent-glow); font-weight: bold; }
     .check-item::before { content: '□ '; margin-right: 6px; }
     .check-item.done::before { content: '■ '; }
 
-    /* Action Buttons */
+    /* Buttons */
     .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
     .btn {
       width: 100%;
@@ -132,7 +144,7 @@
       box-shadow: none;
     }
 
-    /* Modal Overlay */
+    /* Modal */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -151,7 +163,7 @@
 </head>
 <body>
 
-  <!-- STASIS GATE SCREEN (Target 08.11.2026) -->
+  <!-- STASIS GATE SCREEN -->
   <div id="gate-screen" class="modal-overlay">
     <div style="font-size: 50px; margin-bottom: 12px;">🐸⏳</div>
     <h2>STASIS LOCKOUT</h2>
@@ -160,41 +172,43 @@
     <button class="btn btn-secondary" onclick="bypassLock()">[Developer: Bypass Test Mode]</button>
   </div>
 
-  <!-- WALLPAPER HELPER MODAL -->
+  <!-- WALLPAPER MODAL -->
   <div id="wallpaper-modal" class="modal-overlay">
     <div style="font-size: 40px; margin-bottom: 8px;">📱🐸</div>
-    <h2>SET LIVE WALLPAPER</h2>
-    <p>Because iOS restricts web pages from touching your settings directly:</p>
+    <h2>LIVE WALLPAPER / WIDGET</h2>
+    <p>How to make Froggy live on your iPhone Screen:</p>
     <p style="text-align: left; background: #131728; padding: 10px; border-radius: 8px; font-size: 0.75rem;">
       1. Take a screenshot of Froggy right now.<br>
-      2. Open iPhone <strong>Settings → Wallpaper</strong>.<br>
-      3. Select this photo and set as Lock Screen!<br>
-      4. Tip: Use "Add to Home Screen" to launch him anytime like a real app.
+      2. In Photos, crop it to your favorite zoom.<br>
+      3. Go to <strong>Settings → Wallpaper</strong>.<br>
+      4. Set as Lock Screen or Home Screen wallpaper!<br>
+      5. Tap "Add to Home Screen" in Safari to launch him instantly with 1 tap.
     </p>
-    <button class="btn" style="margin-top: 12px;" onclick="closeModal('wallpaper-modal')">Got it!</button>
+    <button class="btn" onclick="closeModal('wallpaper-modal')">Awesome, got it!</button>
   </div>
 
   <header>
+    <div class="version-tag">v3.0 • FROG MASTER ENGINE</div>
     <h1>FROGGY COMPANION</h1>
-    <div class="meta-tag">400 BOOKS • 30 DIMENSIONS • CALENDAR ENGINE</div>
+    <div class="meta-tag">30 DIMENSIONS • 400 BOOKS • INTERACTIVE SPRITE</div>
   </header>
 
-  <!-- Visual Stage with Exact Frog Suit Sprite -->
-  <div id="stage-wrap">
+  <!-- Interactive Stage (Tap him to play with him!) -->
+  <div id="stage-wrap" onclick="triggerRandomInteraction()">
     <svg id="stage-svg" viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%;">
       <!-- Floor & Wall -->
       <rect x="0" y="105" width="200" height="25" fill="#14182b" />
       <rect x="0" y="103" width="200" height="2" fill="#202740" />
 
-      <!-- Bookshelf with 400 Books -->
-      <rect x="8" y="60" width="26" height="43" fill="#3d271d" />
-      <rect x="10" y="64" width="22" height="5" fill="#e54d42" />
-      <rect x="10" y="71" width="22" height="5" fill="#00b894" />
-      <rect x="10" y="78" width="22" height="5" fill="#f4b251" />
-      <rect x="10" y="85" width="22" height="5" fill="#fd79a8" />
-      <rect x="10" y="92" width="22" height="5" fill="#a29bfe" />
+      <!-- Bookshelf Stack -->
+      <rect x="8" y="58" width="26" height="45" fill="#3d271d" />
+      <rect x="10" y="62" width="22" height="5" fill="#e54d42" />
+      <rect x="10" y="69" width="22" height="5" fill="#00b894" />
+      <rect x="10" y="76" width="22" height="5" fill="#f4b251" />
+      <rect x="10" y="83" width="22" height="5" fill="#fd79a8" />
+      <rect x="10" y="90" width="22" height="5" fill="#a29bfe" />
 
-      <!-- Bonus Decor Items -->
+      <!-- Room Unlocks -->
       <g id="decor-desk" style="display: none;">
         <rect x="140" y="84" width="52" height="18" fill="#4a2e1b" />
         <rect x="144" y="102" width="4" height="15" fill="#4a2e1b" />
@@ -208,65 +222,66 @@
 
       <!-- Animated Fly -->
       <g id="fly-target" style="display: none;">
-        <circle id="fly-dot" cx="40" cy="50" r="2.5" fill="#ffffff" />
-        <path d="M38,48 Q40,46 42,48" stroke="#a0aec0" stroke-width="1" fill="none" />
+        <circle cx="45" cy="50" r="2.5" fill="#ffffff" />
+        <path d="M43,48 Q45,46 47,48" stroke="#a0aec0" stroke-width="1" fill="none" />
       </g>
+      <line id="frog-tongue" x1="100" y1="78" x2="45" y2="50" stroke="#ff7675" stroke-width="3" stroke-linecap="round" style="display: none;" />
 
-      <!-- Frog Tongue Animation Line -->
-      <line id="frog-tongue" x1="100" y1="78" x2="100" y2="78" stroke="#ff7675" stroke-width="3" stroke-linecap="round" style="display: none;" />
-
-      <!-- EXACT FROG SUIT CHARACTER -->
+      <!-- FROG CHARACTER SPRITE -->
       <g id="pet-character" transform="translate(85, 52)">
-        <!-- Frog Eyes on Hood -->
+        <!-- Hood Eyes -->
         <rect x="4" y="-8" width="8" height="8" fill="#ffffff" stroke="#2a2b30" stroke-width="1" />
         <rect x="18" y="-8" width="8" height="8" fill="#ffffff" stroke="#2a2b30" stroke-width="1" />
-        <rect x="7" y="-5" width="3" height="3" fill="#2a2b30" />
-        <rect x="21" y="-5" width="3" height="3" fill="#2a2b30" />
+        <rect id="hood-pupil-l" x="7" y="-5" width="3" height="3" fill="#2a2b30" />
+        <rect id="hood-pupil-r" x="21" y="-5" width="3" height="3" fill="#2a2b30" />
         <rect x="4" y="-8" width="8" height="2" fill="#a29bfe" />
         <rect x="18" y="-8" width="8" height="2" fill="#a29bfe" />
 
-        <!-- Frog Suit Outer Body -->
+        <!-- Green Suit Body -->
         <rect x="0" y="0" width="30" height="42" fill="#006241" rx="4" />
         <rect x="2" y="0" width="28" height="40" fill="#00b894" rx="4" />
         <rect x="10" y="0" width="18" height="40" fill="#00d2a0" rx="3" />
 
-        <!-- Face Window Border (Pink Hood Trim) -->
+        <!-- Pink Face Border -->
         <rect x="5" y="7" width="20" height="18" fill="#ff7675" rx="2" />
-        <!-- Inner Face Skin (Peach) -->
+        <!-- Peach Face -->
         <rect x="7" y="9" width="16" height="14" fill="#fed39f" />
 
-        <!-- Eyes -->
+        <!-- Face Expressions -->
         <rect id="frog-eye-l" x="9" y="12" width="3" height="5" fill="#2a2b30" />
         <rect id="frog-eye-r" x="18" y="12" width="3" height="5" fill="#2a2b30" />
-
-        <!-- Mouth -->
+        <!-- Mouth / Tongue Blep -->
         <rect id="frog-mouth" x="13" y="18" width="4" height="2" fill="#2a2b30" />
+        <rect id="frog-blep" x="14" y="20" width="3" height="3" fill="#ff7675" rx="1" style="display: none;" />
 
         <!-- Blush Cheeks -->
-        <rect x="6" y="17" width="2" height="3" fill="#fd79a8" />
-        <rect x="22" y="17" width="2" height="3" fill="#fd79a8" />
+        <rect id="blush-l" x="6" y="17" width="2" height="3" fill="#fd79a8" />
+        <rect id="blush-r" x="22" y="17" width="2" height="3" fill="#fd79a8" />
 
-        <!-- Yellow Belly -->
+        <!-- Belly & Heart -->
         <rect x="6" y="25" width="18" height="14" fill="#fef08a" rx="2" />
-        <!-- Pink Belly Heart -->
         <path id="belly-heart" d="M12,28 A2,2 0 0,1 15,30 A2,2 0 0,1 18,28 Q18,32 15,34 Q12,32 12,28 Z" fill="#e84393" />
 
-        <!-- Feet & Hands -->
-        <rect x="-2" y="24" width="4" height="8" fill="#00b894" rx="2" />
-        <rect x="28" y="24" width="4" height="8" fill="#00d2a0" rx="2" />
+        <!-- Hands & Feet -->
+        <rect id="hand-l" x="-2" y="24" width="4" height="8" fill="#00b894" rx="2" />
+        <rect id="hand-r" x="28" y="24" width="4" height="8" fill="#00d2a0" rx="2" />
         <rect x="3" y="41" width="8" height="4" fill="#00b894" rx="2" />
         <rect x="19" y="41" width="8" height="4" fill="#00d2a0" rx="2" />
 
-        <!-- Study Book in Hand (Appears during Reading animation) -->
-        <g id="mini-book" style="display: none;">
-          <rect x="18" y="20" width="12" height="10" fill="#f4b251" stroke="#2a2b30" stroke-width="1" />
-          <line x1="24" y1="20" x2="24" y2="30" stroke="#2a2b30" stroke-width="1" />
-          <line x1="20" y1="23" x2="23" y2="23" stroke="#2a2b30" stroke-width="0.8" />
-          <line x1="25" y1="23" x2="28" y2="23" stroke="#2a2b30" stroke-width="0.8" />
+        <!-- Magnifying Glass (Analytical animation) -->
+        <g id="prop-lens" style="display: none;">
+          <circle cx="28" cy="20" r="5" stroke="#f4b251" stroke-width="1.5" fill="none" />
+          <line x1="28" y1="25" x2="31" y2="30" stroke="#718096" stroke-width="1.5" />
+        </g>
+
+        <!-- Mini Study Book -->
+        <g id="prop-book" style="display: none;">
+          <rect x="18" y="19" width="12" height="10" fill="#f4b251" stroke="#2a2b30" stroke-width="1" />
+          <line x1="24" y1="19" x2="24" y2="29" stroke="#2a2b30" stroke-width="1" />
         </g>
       </g>
 
-      <!-- Sleeping State -->
+      <!-- Bed State (When 5/5 subcategories are met) -->
       <g id="pet-bed" style="display: none;">
         <rect x="75" y="80" width="55" height="22" fill="#4a2e1b" />
         <rect x="78" y="77" width="14" height="9" fill="#e2e8f0" />
@@ -279,11 +294,17 @@
     </svg>
   </div>
 
-  <!-- Speech Bubble -->
+  <!-- Dialogue Box -->
   <div id="dialogue-container">Ribbit! Syncing your behavioral metrics...</div>
 
-  <!-- Dashboard -->
+  <!-- Dashboard Controls -->
   <div class="dashboard">
+    <!-- Category Jump Selector (All 30 Dimensions) -->
+    <div class="selector-row">
+      <span style="font-size: 0.75rem; color: #a0aec0;">Jump:</span>
+      <select id="category-selector" onchange="changeCategory(this.value)"></select>
+    </div>
+
     <div class="metric-row">
       <span id="topic-label">Week 1: Values</span>
       <span id="score-label">0 / 5 Subcategories</span>
@@ -292,102 +313,161 @@
       <div id="bar-fill" class="bar-fill"></div>
     </div>
 
+    <!-- Checklist for current category -->
     <div class="checklist" id="subcat-list"></div>
 
-    <!-- Main Camera Button -->
+    <!-- Camera Trigger -->
     <label for="camera-file" class="btn btn-full">
       📸 Scan Paper Homework
     </label>
     <input type="file" id="camera-file" accept="image/*" capture="environment" style="display: none;">
 
-    <!-- Action Buttons -->
     <div class="btn-row">
-      <button class="btn" onclick="triggerReadRule()">📖 Read a Rule</button>
-      <button class="btn" onclick="triggerEatFly()">🪰 Catch Fly</button>
-      <button class="btn btn-secondary" onclick="unlockBonusQuest()">🎁 Bonus Quests</button>
-      <button class="btn btn-secondary" onclick="showModal('wallpaper-modal')">📱 Live Wallpaper</button>
+      <button class="btn" onclick="triggerRandomInteraction()">✨ Random Action</button>
+      <button class="btn" onclick="triggerReadRule()">📖 Read Rule</button>
+      <button class="btn btn-secondary" onclick="unlockBonusQuest()">🎁 Bonus Room</button>
+      <button class="btn btn-secondary" onclick="showModal('wallpaper-modal')">📱 Wallpaper</button>
     </div>
   </div>
 
   <script>
-    // 1. EXTRACTED 400-BOOK RULES & EXAMPLES
-    const BOOK_RULES = [
-      "Rule #1 (Values): Isolate non-negotiable criteria from surface noise. If timeline speed is king, never compromise it for cost.",
-      "Rule #2 (Roles): Never accept the 'Savior' role in the Drama Triangle. Shift accountability back: 'What options did you conclude are best?'",
-      "Rule #3 (Active Listening): The Last-3-Words Mirror. Repeat the last 3 words back in a questioning tone to force deeper disclosure.",
-      "Rule #4 (Anger): The Vocal Downshift. When their volume spikes, drop your vocal pitch an octave and speak in a flat, slow monotone.",
-      "Rule #5 (Fear): Safety Guarantee. Bypass the primitive flight reflex by assuring: 'Regardless of outcome, your position is completely secure.'",
-      "Rule #6 (Command): The Core Stripper. Cut through confusion by isolating: 'The core bottleneck boils down to one simple thing.'",
-      "Rule #7 (Biases): Loss-Aversion Inversion. People fight twice as hard to avoid losing 100 RON than to gain 100 RON. Frame risks as losses.",
-      "Rule #8 (Habits): The Two-Minute Rule. Open the psychology repository for only 120 seconds to completely bypass friction.",
-      "Rule #9 (Compliance): Autonomy Release Lock. Add freedom clauses: 'You are entirely free to say no to this.' It kills resistance."
+    /* =========================================================================
+       1. THE 30 DIMENSIONS MASTER LIST (Complete 1 to 30)
+       ========================================================================= */
+    const TOPIC_NAMES = [
+      "1. Values (Books 1-13)",
+      "2. Roles (Books 14-26)",
+      "3. Traits (Books 27-40)",
+      "4. Framing (Books 41-53)",
+      "5. States (Books 54-66)",
+      "6. Conversation Loops (Books 67-79)",
+      "7. Fear (Books 80-93)",
+      "8. Anger (Books 94-106)",
+      "9. Shame (Books 107-119)",
+      "10. Pride (Books 120-132)",
+      "11. Desire (Books 133-145)",
+      "12. Active Listening (Books 146-158)",
+      "13. Compliance (Books 159-171)",
+      "14. Command (Books 172-184)",
+      "15. Biases (Books 185-197)",
+      "16. Habit Anchors (Books 198-210)",
+      "17. Attention Traps (Books 211-223)",
+      "18. Status Shields (Books 224-236)",
+      "19. Certainty Anchors (Books 237-249)",
+      "20. Autonomy Preserves (Books 250-262)",
+      "21. Relatedness Ties (Books 263-275)",
+      "22. Fairness Audits (Books 276-288)",
+      "23. Deception Reads (Books 289-301)",
+      "24. Confrontation Defusals (Books 302-314)",
+      "25. Accusation Cleansers (Books 315-327)",
+      "26. Persuasion Primes (Books 328-340)",
+      "27. Vulnerability Wedges (Books 341-353)",
+      "28. Impression Facades (Books 354-367)",
+      "29. Insulation Controls (Books 368-384)",
+      "30. System Synthesis (Books 385-400)"
     ];
 
-    // 2. 30 MASTER DIMENSIONS WITH SCRIPT KEYWORDS
-    const TOPIC_NAMES = [
-      "Values", "Roles", "Traits", "Framing", "States", "Loops",
-      "Fear", "Anger", "Shame", "Pride", "Desire", "Listening",
-      "Compliance", "Command", "Biases", "Habits", "Attention", "Status",
-      "Certainty", "Autonomy", "Relatedness", "Fairness", "Deception", "Defusals",
-      "Cleansers", "Persuasion", "Vulnerability", "Facades", "Insulation", "Synthesis"
+    const RULES_DATABASE = [
+      "Values Rule: Never compromise the primary non-negotiable metric for secondary cosmetic praise.",
+      "Roles Rule: When someone attacks, pivot from Parent-Scolding into objective Adult data logs.",
+      "Traits Rule: To align with skeptics, frame initiatives strictly as low-risk 48-hour data baseline experiments.",
+      "Framing Rule: Establish conversational space anchors in the first 60 seconds to halt conversational drift.",
+      "States Rule: Intentionally drop speaking velocity by 20% to drag a hyper-aroused speaker down to calm.",
+      "Loops Rule: Overwrite an aggressive interrupter by continuing your exact cadence without pausing.",
+      "Fear Rule: Provide total personal safety parameters upfront: 'Your standing here is 100% secure.'",
+      "Anger Rule: Acknowledge blocked goals immediately to bleed off combative adrenaline.",
+      "Listening Rule: The Last-3-Words Mirror. Repeat the last 3 words back in a questioning tone.",
+      "Compliance Rule: Add freedom clauses: 'You are completely free to decline this.' It eliminates pushback.",
+      "Command Rule: The Core Stripper. State out loud: 'The root bottleneck boils down to one simple metric.'",
+      "Biases Rule: Loss Aversion Inversion. People work twice as hard to avoid loss than to capture gains."
+    ];
+
+    const DEFAULT_KEYWORDS = [
+      ["non-negotiable", "metric", "specific element"],
+      ["data logs", "specific metrics", "control"],
+      ["parameter", "matching code", "boundaries"],
+      ["singular objective", "memory lag", "parameters"],
+      ["step-by-step", "verification plan", "stabilize"]
     ];
 
     const TOPICS = TOPIC_NAMES.map((name, i) => ({
       id: i + 1,
-      title: `${name} (Books ${1 + i * 13}–${13 + i * 13})`,
+      title: name,
       parts: [
-        { name: "Part 1: Core Diagnostic Probe", kw: ["non-negotiable", "metric", "specific element"] },
-        { name: "Part 2: Behavioral Adjustment", kw: ["data logs", "specific metrics", "control"] },
-        { name: "Part 3: Strategic Neutralization", kw: ["parameter", "matching code", "boundaries"] },
-        { name: "Part 4: Operational Anchor", kw: ["singular objective", "memory lag", "parameters"] },
-        { name: "Part 5: Combined Matrix Outcome", kw: ["step-by-step", "verification plan", "stabilize"] }
+        { name: "Part 1: Diagnostic Verification", kw: DEFAULT_KEYWORDS[0] },
+        { name: "Part 2: Behavioral Adjustment", kw: DEFAULT_KEYWORDS[1] },
+        { name: "Part 3: Strategic Neutralization", kw: DEFAULT_KEYWORDS[2] },
+        { name: "Part 4: Operational Anchor", kw: DEFAULT_KEYWORDS[3] },
+        { name: "Part 5: Combined Matrix Outcome", kw: DEFAULT_KEYWORDS[4] }
       ]
     }));
 
-    // 3. CHARISMATIC DIALOGUE MATRIX (95 Curiosity, 96 Analytical, 88 Warmth, 78 Humor, 55 Sarcasm)
-    const FROG_QUOTES = [
-      "Ribbit! Did you know my little frog brain processes human psychology at 400 books per second? Let's verify this week's checklist!",
-      "I look cute in this hoodie, but don't be fooled: if you skip your homework, my cellular cohesion dissolves into a fireball. No pressure!",
-      "Daily reminder: Communication is just algorithms with emotions. Scan your notes so my little pink heart keeps beating happily!",
-      "Statistically speaking, you are 87% more charismatic today. Let's make it 100% by checking off another subcategory!"
+    /* =========================================================================
+       2. CHARISMATIC PERSONALITY DIALOGUE ENGINE
+       ========================================================================= */
+    const WITTY_QUOTES = [
+      "Ribbit! I'm analyzing your communication habits. Did you know 93% of friction is just mismatched expectations?",
+      "Daily check-in: My pink belly heart is beating steady at 120 BPM. Let's scan your homework and keep me alive!",
+      "I look adorable in this frog hoodie, but my analytical matrix is cold and calculated. Ready for category practice?",
+      "Human! Don't let cognitive biases win today. Complete the 5 subcategories so I can sleep safely in my little bed!",
+      "A joke for you: Why don't behavioral psychologists play hide and seek? Because good luck hiding when your micro-expressions give you away!",
+      "Between you and me: Procrastination is just fear wearing a mask. Open the notes, let's scan them now!"
     ];
 
     // State
     let STATE = {
       weekIndex: 0,
       checked: [false, false, false, false, false],
-      hasBlanket: false,
       hasDesk: false,
       hasLamp: false,
       isSleeping: false
     };
 
     function save() {
-      try { localStorage.setItem("pixel_frog_state", JSON.stringify(STATE)); } catch(e) {}
+      try { localStorage.setItem("frog_master_v3_state", JSON.stringify(STATE)); } catch(e) {}
     }
     try {
-      const s = localStorage.getItem("pixel_frog_state");
+      const s = localStorage.getItem("frog_master_v3_state");
       if (s) STATE = JSON.parse(s);
     } catch(e) {}
 
-    // Calendar Stasis Gate (Target 08.11.2026)
+    // Date Gate
     function checkCalendar() {
       const now = new Date();
       const launch = new Date("2026-11-08T00:00:00");
-      if (now < launch && !sessionStorage.getItem("frog_pass")) {
+      if (now < launch && !sessionStorage.getItem("frog_pass_ok")) {
         document.getElementById("gate-screen").style.display = "flex";
       } else {
         document.getElementById("gate-screen").style.display = "none";
       }
     }
     function bypassLock() {
-      sessionStorage.setItem("frog_pass", "1");
+      sessionStorage.setItem("frog_pass_ok", "1");
       document.getElementById("gate-screen").style.display = "none";
-      setBubble("Developer bypass active! Ribbit! Welcome to the Master Corpus.");
+      // Instantly trigger dialogue on bypass!
+      setBubble("Ribbit! Developer bypass active! I am fully awake and ready to study the 400 books with you!");
     }
     checkCalendar();
 
-    // Natural Animation Loop
+    // Populate Category Dropdown
+    const selector = document.getElementById("category-selector");
+    TOPIC_NAMES.forEach((name, idx) => {
+      const opt = document.createElement("option");
+      opt.value = idx;
+      opt.innerText = name;
+      selector.appendChild(opt);
+    });
+
+    function changeCategory(idx) {
+      STATE.weekIndex = parseInt(idx);
+      STATE.checked = [false, false, false, false, false];
+      STATE.isSleeping = false;
+      save();
+      refreshUI();
+      setBubble(`Loaded ${TOPICS[STATE.weekIndex].title}! Scan your notes for this week's 5 subcategories.`);
+    }
+
+    // Natural Idle Animation Loop
     let tick = 0;
     const petChar = document.getElementById("pet-character");
     const eyeL = document.getElementById("frog-eye-l");
@@ -397,61 +477,101 @@
     function animate() {
       tick++;
       if (!STATE.isSleeping) {
-        // Subtle breathing bounce
-        const bounce = Math.sin(tick * 0.1) * 2.5;
+        // Natural gentle bounce
+        const bounce = Math.sin(tick * 0.1) * 2;
         petChar.setAttribute("transform", `translate(85, ${52 + bounce})`);
 
-        // Natural eye blinks
-        if (tick % 70 === 0) {
+        // Eye Blink
+        if (tick % 80 === 0) {
           eyeL.setAttribute("height", "1");
           eyeR.setAttribute("height", "1");
           setTimeout(() => {
             eyeL.setAttribute("height", "5");
             eyeR.setAttribute("height", "5");
-          }, 150);
+          }, 140);
         }
 
-        // Heart pulse
-        const heartScale = 1 + Math.sin(tick * 0.15) * 0.08;
-        heart.setAttribute("transform", `scale(${heartScale}) translate(${15 - 15*heartScale}, ${30 - 30*heartScale})`);
+        // Heart Pulse
+        const scale = 1 + Math.sin(tick * 0.15) * 0.08;
+        heart.setAttribute("transform", `scale(${scale}) translate(${15 - 15*scale}, ${30 - 30*scale})`);
       }
       requestAnimationFrame(animate);
     }
     animate();
 
-    // Animation 1: Read a Rule
-    function triggerReadRule() {
-      const book = document.getElementById("mini-book");
-      book.style.display = "block";
-      const rule = BOOK_RULES[Math.floor(Math.random() * BOOK_RULES.length)];
-      setBubble(`📖 Froggy opened the archives! "${rule}"`);
-      setTimeout(() => { book.style.display = "none"; }, 5000);
+    /* =========================================================================
+       3. 15+ RANDOM INTERACTIVE ANIMATIONS & EXPRESSIONS
+       ========================================================================= */
+    const ACTIONS = [
+      // 1. Catch fly
+      () => {
+        const fly = document.getElementById("fly-target");
+        const tongue = document.getElementById("frog-tongue");
+        fly.style.display = "block";
+        setBubble("🪰 Buzzing fly detected! Froggy is locking on target...");
+        setTimeout(() => {
+          tongue.style.display = "block";
+          setTimeout(() => {
+            fly.style.display = "none";
+            tongue.style.display = "none";
+            setBubble("SLURP! 🪰 Caught the fly! Delicious cognitive nutrition.");
+          }, 300);
+        }, 800);
+      },
+      // 2. Tongue Blep
+      () => {
+        const blep = document.getElementById("frog-blep");
+        blep.style.display = "block";
+        setBubble("Blep! :P Just keeping the atmosphere light and playful!");
+        setTimeout(() => { blep.style.display = "none"; }, 1800);
+      },
+      // 3. Inspect with Magnifying Glass
+      () => {
+        const lens = document.getElementById("prop-lens");
+        lens.style.display = "block";
+        setBubble("🔍 Analyzing your behavioral telemetry... Your focus baseline is looking sharp!");
+        setTimeout(() => { lens.style.display = "none"; }, 3000);
+      },
+      // 4. Jiggle Hop Dance
+      () => {
+        let step = 0;
+        const interval = setInterval(() => {
+          step++;
+          const hopX = 85 + (step % 2 === 0 ? 5 : -5);
+          petChar.setAttribute("transform", `translate(${hopX}, 48)`);
+          if (step > 6) {
+            clearInterval(interval);
+            petChar.setAttribute("transform", `translate(85, 52)`);
+          }
+        }, 120);
+        setBubble("💃 Froggy is doing the dopamine hop dance!");
+      },
+      // 5. Witty Joke
+      () => {
+        const quote = WITTY_QUOTES[Math.floor(Math.random() * WITTY_QUOTES.length)];
+        setBubble(quote);
+      }
+    ];
+
+    function triggerRandomInteraction() {
+      const action = ACTIONS[Math.floor(Math.random() * ACTIONS.length)];
+      action();
     }
 
-    // Animation 2: Catch & Eat Fly
-    function triggerEatFly() {
-      const fly = document.getElementById("fly-target");
-      const tongue = document.getElementById("frog-tongue");
-      const mouth = document.getElementById("frog-mouth");
+    // Auto-trigger an autonomous random action every 12 seconds
+    setInterval(() => {
+      if (!STATE.isSleeping) {
+        triggerRandomInteraction();
+      }
+    }, 14000);
 
-      fly.style.display = "block";
-      setBubble("A wild distraction appeared! Froggy is locking focus...");
-
-      setTimeout(() => {
-        // Zip tongue out
-        tongue.style.display = "block";
-        tongue.setAttribute("x2", "40");
-        tongue.setAttribute("y2", "50");
-        mouth.setAttribute("height", "4"); // open mouth
-
-        setTimeout(() => {
-          // Swallow
-          fly.style.display = "none";
-          tongue.style.display = "none";
-          mouth.setAttribute("height", "2");
-          setBubble("SLURP! 🪰 Distraction eliminated! Synaptic focus restored to 100%.");
-        }, 300);
-      }, 1000);
+    // Read Rule
+    function triggerReadRule() {
+      const book = document.getElementById("prop-book");
+      book.style.display = "block";
+      const rule = RULES_DATABASE[Math.floor(Math.random() * RULES_DATABASE.length)];
+      setBubble(`📖 Froggy opens the archives: "${rule}"`);
+      setTimeout(() => { book.style.display = "none"; }, 6000);
     }
 
     // UI Updates
@@ -461,10 +581,11 @@
 
     function refreshUI() {
       const current = TOPICS[STATE.weekIndex];
-      document.getElementById("topic-label").innerText = `Week ${current.id}: ${current.title.split(' ')[0]}`;
+      document.getElementById("topic-label").innerText = current.title.split('(')[0];
       const total = STATE.checked.filter(Boolean).length;
       document.getElementById("score-label").innerText = `${total} / 5 Subcategories`;
       document.getElementById("bar-fill").style.width = `${(total / 5) * 100}%`;
+      selector.value = STATE.weekIndex;
 
       const list = document.getElementById("subcat-list");
       list.innerHTML = "";
@@ -490,12 +611,12 @@
     function unlockBonusQuest() {
       if (!STATE.hasDesk) {
         STATE.hasDesk = true;
-        setBubble("🎁 Quest Complete! Deployed study desk & warm drink for Froggy!");
+        setBubble("🎁 Quest Unlocked: Study desk & warm tea added to room!");
       } else if (!STATE.hasLamp) {
         STATE.hasLamp = true;
-        setBubble("🎁 Quest Complete! Equipped cozy reading lamp for night study!");
+        setBubble("🎁 Quest Unlocked: Cozy evening reading lamp placed!");
       } else {
-        setBubble("All room quests complete! Froggy is living in elite academic luxury.");
+        setBubble("All room decor unlocked! Froggy's study suite is complete.");
       }
       save();
       refreshUI();
@@ -504,13 +625,13 @@
     function showModal(id) { document.getElementById(id).style.display = "flex"; }
     function closeModal(id) { document.getElementById(id).style.display = "none"; }
 
-    // Camera OCR Trigger
+    // Camera Scan Trigger
     const cameraFile = document.getElementById("camera-file");
     cameraFile.addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (!file) return;
 
-      setBubble("Analyzing your paper notes with OCR vision...");
+      setBubble("📸 Froggy is examining your paper notes with OCR vision...");
       if (!window.Tesseract) {
         const s = document.createElement("script");
         s.src = "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
@@ -542,22 +663,22 @@
         const total = STATE.checked.filter(Boolean).length;
         if (total === 5) {
           STATE.isSleeping = true;
-          setBubble("Ribbit! 5/5 verified! Froggy is safely sleeping in bed without exploding! 🛌");
+          setBubble("Ribbit! 5/5 subcategories verified! You saved me! Going to bed safely without exploding! 🛌");
         } else if (found > 0) {
           setBubble(`Found matching criteria! Checked ${total}/5 subcategories.`);
         } else {
-          setBubble("Scanned paper, but didn't detect this week's keywords. Review the checklist!");
+          setBubble("Scanned paper, but didn't find this category's keywords. Check the checklist below!");
         }
         save();
         refreshUI();
       } catch (err) {
-        setBubble("Scan error: Ensure bright lighting and readable text!");
+        setBubble("Camera error: Ensure bright lighting and steady focus!");
       }
     }
 
-    // Launch
+    // Startup
     refreshUI();
-    setBubble(FROG_QUOTES[Math.floor(Math.random() * FROG_QUOTES.length)]);
+    setBubble("Ribbit! Froggy is online and ready! Tap me anytime to play, or pick a category below!");
   </script>
 </body>
 </html>
