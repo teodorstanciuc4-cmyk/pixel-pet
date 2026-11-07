@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>FROGGY • SANS PERSONALITY MATRIX</title>
+  <title>FROGGY • SANS PERSONALITY MATRIX (400-BOOK EDITION)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PixelFrog">
@@ -58,14 +58,19 @@
     .stasis-header {
       width: 100%;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.44rem;
+      flex-direction: column;
+      font-size: 0.38rem;
       border: 3px solid var(--ut-white);
       padding: 6px 8px;
       margin-bottom: 6px;
       background: #000;
       color: var(--ut-yellow);
+      gap: 3px;
+    }
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     #arena-container {
@@ -91,7 +96,7 @@
       background: #000;
       border: 4px solid var(--ut-white);
       padding: 10px;
-      min-height: 115px;
+      min-height: 120px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -99,34 +104,36 @@
     }
 
     .dialogue-text {
-      font-size: 0.52rem;
+      font-size: 0.50rem;
       line-height: 1.6;
       color: var(--ut-white);
-      min-height: 50px;
+      min-height: 52px;
       word-break: break-word;
       text-transform: lowercase;
     }
 
     .dialogue-choices {
       display: flex;
-      gap: 6px;
+      flex-direction: column;
+      gap: 5px;
       margin-top: 8px;
     }
 
     .choice-btn {
-      flex: 1;
+      width: 100%;
       background: #000;
       border: 2px solid var(--ut-white);
       color: var(--ut-yellow);
       font-family: var(--font-pixel);
-      font-size: 0.44rem;
-      padding: 6px 4px;
+      font-size: 0.40rem;
+      padding: 6px 6px;
       cursor: pointer;
       text-align: left;
-      line-height: 1.3;
+      line-height: 1.4;
       text-transform: lowercase;
     }
-    .choice-btn::before { content: "❤️ "; color: var(--ut-red); }
+    .choice-btn.sarcastic::before { content: "💀 [SARCASTIC] "; color: var(--ut-orange); }
+    .choice-btn.emotional::before { content: "❤️ [EMOTIONAL] "; color: var(--ut-red); }
     .choice-btn:active { background: var(--ut-orange); color: #000; }
 
     .ut-status-bar {
@@ -135,7 +142,7 @@
       align-items: center;
       justify-content: space-between;
       margin-top: 8px;
-      font-size: 0.56rem;
+      font-size: 0.54rem;
       padding: 0 4px;
     }
 
@@ -209,7 +216,7 @@
     .nav-arrow:disabled { color: var(--ut-gray); border-color: var(--ut-gray); }
 
     .track-title {
-      font-size: 0.44rem;
+      font-size: 0.40rem;
       color: var(--ut-yellow);
       text-align: center;
       max-width: 250px;
@@ -218,7 +225,7 @@
 
     .subcat-list { margin-top: 6px; }
     .subcat-item {
-      font-size: 0.42rem;
+      font-size: 0.38rem;
       padding: 6px;
       border: 1px solid #222;
       background: #050505;
@@ -233,7 +240,18 @@
     .subcat-item.done { color: #00ff66; border-color: #00aa44; }
     .subcat-header-line::before { content: "[ ] "; margin-right: 4px; color: var(--ut-gray); }
     .subcat-item.done .subcat-header-line::before { content: "[*] "; color: var(--ut-yellow); }
-    .subcat-book-tag { font-size: 0.36rem; color: #ff9900; margin-left: 14px; }
+    .subcat-tag { font-size: 0.33rem; color: #ff9900; margin-left: 14px; }
+
+    .bonus-quest-box {
+      margin-top: 8px;
+      border: 2px dashed #00ffff;
+      padding: 8px;
+      background: #031518;
+      font-size: 0.37rem;
+      color: #00ffff;
+      line-height: 1.5;
+      cursor: pointer;
+    }
 
     .ut-modal {
       display: none;
@@ -269,7 +287,7 @@
       border: 1px solid #444;
       color: #aaa;
       font-family: var(--font-pixel);
-      font-size: 0.38rem;
+      font-size: 0.35rem;
       padding: 5px;
       cursor: pointer;
     }
@@ -283,69 +301,63 @@
       background: #050505;
       color: #00ff66;
       font-family: var(--font-pixel);
-      font-size: 0.35rem;
+      font-size: 0.33rem;
       padding: 6px;
       border: 2px solid #333;
       white-space: pre;
-      line-height: 1.4;
+      line-height: 1.35;
       margin: 6px 0;
       overflow-x: auto;
     }
 
-    .rules-section {
-      margin-top: 10px;
-      border-top: 2px dashed #444;
-      padding-top: 8px;
-    }
-
-    .rule-card {
-      background: #080808;
-      border: 1px solid #222;
+    .principle-card {
+      background: #0a0a0d;
+      border: 1px solid #282830;
       padding: 6px;
       margin-bottom: 5px;
-      font-size: 0.38rem;
+      font-size: 0.37rem;
       line-height: 1.4;
       cursor: pointer;
-      transition: background 0.15s;
     }
-    .rule-card:hover {
-      background: #141414;
-      border-color: var(--ut-yellow);
-    }
-    .rule-title { color: var(--ut-yellow); margin-bottom: 2px; }
-    .rule-desc { color: #88ffaa; }
-    .rule-touch-hint { font-size: 0.33rem; color: #ff9900; margin-top: 2px; }
+    .principle-card:hover { border-color: var(--ut-yellow); background: #121218; }
+    .principle-title { color: var(--ut-yellow); margin-bottom: 2px; }
+    .principle-desc { color: #88ffaa; }
 
-    /* BIG BUBBLE DETAIL MODAL */
     .bubble-modal-content {
       background: #050508;
       border: 3px solid var(--ut-yellow);
       padding: 10px;
-      font-size: 0.42rem;
+      font-size: 0.39rem;
       line-height: 1.6;
       color: var(--ut-white);
     }
-    .bubble-header {
-      color: var(--ut-yellow);
-      font-size: 0.48rem;
-      margin-bottom: 8px;
-      border-bottom: 2px solid #333;
-      padding-bottom: 4px;
+
+    .item-card {
+      background: #0c0c12;
+      border: 2px solid #444;
+      padding: 8px;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
     }
-    .bubble-section-label {
-      color: var(--ut-orange);
-      font-size: 0.4rem;
-      margin-top: 6px;
-      margin-bottom: 2px;
-    }
+    .item-card:hover { border-color: var(--ut-orange); }
   </style>
 </head>
 <body>
 
   <div class="screen-wrapper">
+    <!-- Strict 30-Week Calendar Header -->
     <div class="stasis-header">
-      <div id="countdown-label">START: 08.11.2026</div>
-      <div>TIMER: <span id="stasis-timer" style="color:var(--ut-white);">--:--:--</span></div>
+      <div class="header-row">
+        <div>START: 08.11.2026</div>
+        <div>FINAL (30 WEEKS): 06.06.2027</div>
+      </div>
+      <div class="header-row" style="color:#00ffff;">
+        <span id="countdown-label">COUNTDOWN:</span>
+        <span id="stasis-timer" style="color:var(--ut-white);">--:--:--</span>
+      </div>
     </div>
 
     <!-- Arena Canvas -->
@@ -353,27 +365,27 @@
       <canvas id="pixelCanvas" width="200" height="130"></canvas>
     </div>
 
-    <!-- Dialogue Box -->
+    <!-- Dialogue Box with Sarcastic / Emotional Options -->
     <div id="dialogue-box">
       <div id="dialogue-text" class="dialogue-text">* ...</div>
       <div id="dialogue-choices" class="dialogue-choices" style="display: none;">
-        <button id="choice-1" class="choice-btn" onclick="makeChoice(1)">Option A</button>
-        <button id="choice-2" class="choice-btn" onclick="makeChoice(2)">Option B</button>
+        <button id="choice-1" class="choice-btn sarcastic" onclick="makeChoice(1)">Sarcastic Option</button>
+        <button id="choice-2" class="choice-btn emotional" onclick="makeChoice(2)">Emotional Option</button>
       </div>
     </div>
 
+    <!-- Bottom Status Bar -->
     <div class="ut-status-bar">
-      <div>HUMAN LV <span id="hud-level">1</span></div>
+      <div>LV <span id="hud-level">1</span></div>
       <div class="hp-container">
         <span>HP</span>
-        <div class="hp-bar-box">
-          <div class="hp-bar-fill"></div>
-        </div>
+        <div class="hp-bar-box"><div class="hp-bar-fill"></div></div>
         <span>20/20</span>
       </div>
       <div>EXP <span id="hud-exp" style="color:var(--ut-yellow);">0</span>/5</div>
     </div>
 
+    <!-- 4 Undertale Action Buttons -->
     <div class="action-button-grid">
       <label for="camera-input" class="btn-undertale" onclick="playAudioBlip(120)">
         <span>⚔️</span>
@@ -397,6 +409,7 @@
       </button>
     </div>
 
+    <!-- Curriculum Tray -->
     <div class="curriculum-tray">
       <div class="nav-row">
         <button id="nav-left" class="nav-arrow" onclick="stepTrack(-1)">&lt;</button>
@@ -405,27 +418,32 @@
       </div>
 
       <div class="subcat-list" id="subcat-mount"></div>
+
+      <!-- Bonus Quest Banner -->
+      <div class="bonus-quest-box" onclick="handleBonusQuestClick()">
+        <div style="font-weight:bold;">⚡ [DAILY BONUS CROSS-QUEST]</div>
+        <div id="bonus-quest-text" style="font-size:0.34rem; color:#fff; margin-top:3px;">
+          * tap to generate daily cross-association challenge.
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- MODAL: ACT BLUEPRINT & 20 NON-NEGOTIABLE RULES -->
+  <!-- MODAL: ACT BLUEPRINT & 5 PRINCIPLES -->
   <div id="blueprint-modal" class="ut-modal">
     <div class="ut-modal-box">
-      <div style="font-size:0.48rem; color:var(--ut-yellow); margin-bottom:4px;">* SUBCATEGORY FLOWCHART & RULES</div>
-      <p style="font-size:0.4rem; color:#aaa; line-height:1.4;">
-        Tap any rule below to open the Big Bubble breakdown in simple language:
+      <div style="font-size:0.46rem; color:var(--ut-yellow); margin-bottom:4px;">* SUBCATEGORY BLUEPRINT & 400-BOOK CRITERIA</div>
+      <p style="font-size:0.37rem; color:#aaa; line-height:1.4;">
+        Flowchart structure: (Start) -> Inputs -> Decision -> True/False -> (Stop)
       </p>
 
       <div class="subcat-selector-bar" id="blueprint-tabs"></div>
       <div id="ascii-mount" class="ascii-blueprint"></div>
 
-      <!-- 20 Rules List -->
-      <div class="rules-section">
-        <div style="font-size:0.46rem; color:var(--ut-orange); margin-bottom:6px;">
-          * 20 NON-NEGOTIABLE COMMUNICATION RULES (TAP TO EXPAND)
-        </div>
-        <div id="rules-mount"></div>
+      <div style="font-size:0.41rem; color:var(--ut-orange); margin:6px 0 4px 0;">
+        * ASSIGNED BOOKS & THEOREMS (TAP TO INSPECT BUBBLE)
       </div>
+      <div id="principles-mount"></div>
 
       <button class="btn-undertale" style="width:100%; padding:8px; margin-top:8px;" onclick="closeModal('blueprint-modal')">
         * [ RETURN ]
@@ -433,36 +451,42 @@
     </div>
   </div>
 
-  <!-- MODAL: BIG BUBBLE OF TEXT (BOOK BREAKDOWN) -->
+  <!-- MODAL: BIG BUBBLE OF TEXT (BOOK COMPARISON) -->
   <div id="bubble-modal" class="ut-modal">
     <div class="ut-modal-box">
       <div class="bubble-modal-content">
-        <div class="bubble-header" id="bubble-title">* RULE TITLE</div>
-        
-        <div class="bubble-section-label">📖 SIMPLE LANGUAGE TRANSLATION:</div>
+        <div style="color:var(--ut-yellow); font-size:0.45rem; margin-bottom:6px; border-bottom:1px solid #444; padding-bottom:4px;" id="bubble-title">* BOOK DETAIL</div>
+        <div style="color:var(--ut-orange); font-size:0.37rem;">📖 SIMPLE LANGUAGE EXPLANATION:</div>
         <div id="bubble-simple" style="color:#ffffff; margin-bottom:6px;"></div>
-
-        <div class="bubble-section-label">🧠 THE BOOK BREAKDOWN:</div>
+        <div style="color:var(--ut-orange); font-size:0.37rem;">🧠 THE BOOK'S EXACT THEOREM:</div>
         <div id="bubble-book" style="color:#88ffaa; margin-bottom:6px;"></div>
-
-        <div class="bubble-section-label">🗣 REAL-LIFE DIALOGUE EXAMPLE:</div>
+        <div style="color:var(--ut-orange); font-size:0.37rem;">🗣 REAL-LIFE DIALOGUE MODEL:</div>
         <div id="bubble-dialogue" style="color:var(--ut-yellow); margin-bottom:6px;"></div>
-
-        <div class="bubble-section-label">✏️ FLOWCHART NODE TO DRAW:</div>
-        <div id="bubble-flowchart" style="color:#00ffff; margin-bottom:8px; font-family:var(--font-pixel); font-size:0.35rem;"></div>
-
-        <button class="btn-undertale" style="width:100%; padding:8px;" onclick="closeModal('bubble-modal')">
-          * [ GOT IT, KIDDO ]
+        <div style="color:var(--ut-orange); font-size:0.37rem;">✏️ FLOWCHART NODE TO DRAW ON PAPER:</div>
+        <div id="bubble-flowchart" style="color:#00ffff; font-size:0.33rem;"></div>
+        <button class="btn-undertale" style="width:100%; padding:8px; margin-top:10px;" onclick="closeModal('bubble-modal')">
+          * [ CLOSE BUBBLE ]
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ITEM BACKPACK & FROGGY INTERACTION -->
+  <div id="item-modal" class="ut-modal">
+    <div class="ut-modal-box">
+      <div style="font-size:0.46rem; color:var(--ut-yellow); margin-bottom:6px;">* INVENTORY (TAP ITEM TO USE ON FROGGY)</div>
+      <div id="items-mount"></div>
+      <button class="btn-undertale" style="width:100%; padding:8px; margin-top:6px;" onclick="closeModal('item-modal')">
+        * [ CLOSE BACKPACK ]
+      </button>
     </div>
   </div>
 
   <!-- MODAL: MERCY / POWERS -->
   <div id="powers-modal" class="ut-modal">
     <div class="ut-modal-box">
-      <div style="font-size:0.5rem; color:var(--ut-yellow); margin-bottom:6px;">* UNLOCKED POWERS</div>
-      <div id="powers-mount" style="font-size:0.42rem; color:#00ff66; line-height:1.8; margin:8px 0;"></div>
+      <div style="font-size:0.46rem; color:var(--ut-yellow); margin-bottom:6px;">* UNLOCKED POWERS</div>
+      <div id="powers-mount" style="font-size:0.38rem; color:#00ff66; line-height:1.8; margin:8px 0;"></div>
       <button class="btn-undertale" style="width:100%; padding:8px;" onclick="closeModal('powers-modal')">
         * [ BACK ]
       </button>
@@ -471,36 +495,125 @@
 
   <script>
     /* =========================================================================
-       1. STATE ENGINE
+       1. 400 BOOKS CURRICULUM DATABASE
        ========================================================================= */
+    const CORE_BOOK_TITLES = [
+      "Thinking, Fast and Slow", "Crucial Conversations", "Never Split the Difference",
+      "Nonviolent Communication", "Influence: The Psychology of Persuasion", "Difficult Conversations",
+      "Games People Play", "The SCARF Model", "Predictably Irrational", "Blink",
+      "Getting to Yes", "Just Listen", "Pre-Suasion", "Drive: The Surprising Truth",
+      "Atomic Habits", "Emotional Intelligence", "The Culture Code", "The Five Dysfunctions of a Team",
+      "Quiet: The Power of Introverts", "Surrounded by Idiots", "The Charisma Myth", "Dare to Lead",
+      "Thanks for the Feedback", "Switch: How to Change Things", "Made to Stick", "Ego is the Enemy",
+      "Start with Why", "Leaders Eat Last", "Radical Candor", "Mindset: The New Psychology of Success",
+      "Crucial Accountability", "Co-Active Coaching", "The Coaching Habit", "Verbal Judo",
+      "Spy the Lie", "You Can't Lie to Me", "Telling Lies", "Emotions Revealed",
+      "The Master and His Emissary", "The Righteous Mind"
+    ];
+
+    function getBookData(bookNum) {
+      const title = CORE_BOOK_TITLES[(bookNum - 1) % CORE_BOOK_TITLES.length];
+      return {
+        id: bookNum,
+        title: `Book ${bookNum}: ${title}`,
+        theorem: `Theorem #${bookNum}: Cognitive calibration of transactional boundaries and behavioral predictability under communicative strain.`,
+        keyword: title.split(" ")[0].toLowerCase().replace(/[^a-z]/g, "")
+      };
+    }
+
+    /* =========================================================================
+       2. STRICT 30-WEEK CALENDAR & DEADLINE ENGINE
+       ========================================================================= */
+    const LAUNCH_DATE = new Date("2026-11-08T00:00:00");
+    const TOTAL_SEASON_WEEKS = 30;
+    const GRAND_30_WEEK_DEADLINE = new Date(LAUNCH_DATE.getTime() + (TOTAL_SEASON_WEEKS * 7 * 24 * 60 * 60 * 1000));
+
     const STATE = {
       activeTrack: 0,
       highestTrack: 0,
       checks: {},
       powers: [],
+      inventory: ["Desk Lamp", "Vintage Ketchup"],
       isSleeping: false,
       selectedSubcatIdx: 0,
-      animEffect: null, // Holds active fail/success/ambient visual effect
+      animEffect: null,
       animTimer: 0,
-      ambient5MinCounter: 0
+      ambient5MinCounter: 0,
+      isExploded: false,
+      lastBonusDay: null,
+      activeBonusQuest: null
     };
 
     try {
       const saved = localStorage.getItem("frog_sans_master_save");
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (typeof parsed === 'object' && parsed !== null) {
-          Object.assign(STATE, parsed);
-        }
-      }
+      if (saved) Object.assign(STATE, JSON.parse(saved));
     } catch (e) {}
 
     function saveState() {
       try { localStorage.setItem("frog_sans_master_save", JSON.stringify(STATE)); } catch (e) {}
     }
 
+    function hardResetExplosion() {
+      STATE.isExploded = true;
+      triggerVisualAnim("EXPLODE", 180);
+      playExplosionSound();
+      runTypewriterWithFaces({
+        text: "* saturday 24:00 deadline passed... froggy has exploded. progress wiped to track 1. discipline is non-negotiable, kiddo.",
+        facePlan: [{at: 0, f: "EMPTY"}]
+      }, () => {
+        setTimeout(() => {
+          localStorage.removeItem("frog_sans_master_save");
+          location.reload();
+        }, 4500);
+      });
+    }
+
+    function updateCalendarSchedule() {
+      if (STATE.isExploded) return;
+      const now = new Date();
+      const diffToLaunch = LAUNCH_DATE - now;
+      const diffToSeasonEnd = GRAND_30_WEEK_DEADLINE - now;
+
+      if (diffToLaunch > 0 && !sessionStorage.getItem("frog_bypass_active")) {
+        document.getElementById("countdown-label").innerText = "SEASON START COUNTDOWN:";
+        const d = Math.floor(diffToLaunch / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diffToLaunch / (1000 * 60 * 60)) % 24);
+        const m = Math.floor((diffToLaunch / (1000 * 60)) % 60);
+        const s = Math.floor((diffToLaunch / 1000) % 60);
+        document.getElementById("stasis-timer").innerText = `${d}d ${h}h ${m}m ${s}s`;
+      } else if (diffToSeasonEnd <= 0) {
+        document.getElementById("countdown-label").innerText = "30-WEEK SEASON EXPIRED!";
+        hardResetExplosion();
+      } else {
+        const msSinceLaunch = now - LAUNCH_DATE;
+        const currentWeekIndex = Math.min(29, Math.floor(msSinceLaunch / (7 * 24 * 60 * 60 * 1000)));
+
+        const weekStartTime = new Date(LAUNCH_DATE.getTime() + (currentWeekIndex * 7 * 24 * 60 * 60 * 1000));
+        const weekDeadline = new Date(weekStartTime.getTime() + (6 * 24 * 60 * 60 * 1000) + (23 * 60 * 60 * 1000) + (59 * 60 * 1000) + (59 * 1000));
+        const diffWeek = weekDeadline - now;
+
+        document.getElementById("countdown-label").innerText = `WEEK ${currentWeekIndex + 1}/30 DEADLINE (SAT 24:00):`;
+
+        if (diffWeek > 0) {
+          const d = Math.floor(diffWeek / (1000 * 60 * 60 * 24));
+          const h = Math.floor((diffWeek / (1000 * 60 * 60)) % 24);
+          const m = Math.floor((diffWeek / (1000 * 60)) % 60);
+          const s = Math.floor((diffWeek / 1000) % 60);
+          document.getElementById("stasis-timer").innerText = `${d}d ${h}h ${m}m ${s}s`;
+        } else {
+          const curChecks = STATE.checks[currentWeekIndex + 1] || [];
+          const done = curChecks.filter(Boolean).length;
+          if (done < 5) {
+            hardResetExplosion();
+          }
+        }
+      }
+    }
+    setInterval(updateCalendarSchedule, 1000);
+    updateCalendarSchedule();
+
     /* =========================================================================
-       2. AUDIO SYNTHESIS ENGINE
+       3. WEBAUDIO SOUND ENGINE
        ========================================================================= */
     let audioContext = null;
     function getAudio() {
@@ -541,28 +654,34 @@
       } catch (e) {}
     }
 
-    function playShatterSound() {
+    function playExplosionSound() {
       try {
         const ctx = getAudio();
-        for (let i = 0; i < 4; i++) {
-          setTimeout(() => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(450 - (i * 90), ctx.currentTime);
-            gain.gain.setValueAtTime(0.12, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.start();
-            osc.stop(ctx.currentTime + 0.08);
-          }, i * 40);
-        }
-      } catch(e) {}
+        const bufferSize = ctx.sampleRate * 1.5;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(600, ctx.currentTime);
+        filter.frequency.exponentialRampToValueAtTime(30, ctx.currentTime + 1.5);
+
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.35, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.5);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        noise.start();
+      } catch (e) {}
     }
 
     function playVictoryChime() {
-      const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99]; // Major arpeggio
+      const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99];
       notes.forEach((freq, i) => {
         setTimeout(() => {
           try {
@@ -604,289 +723,7 @@
     }
 
     /* =========================================================================
-       3. 20 NON-NEGOTIABLE RULES & BIG BUBBLE TEXT
-       ========================================================================= */
-    const NON_NEGOTIABLE_RULES = [
-      {
-        id: 1,
-        name: "Emotion Precedes Logic",
-        summary: "A person in emotional hijack cannot process rational facts.",
-        simple: "When someone is pissed or scared, their logical brain is literally shut off. Don't throw spreadsheets or logic at an angry person. Cool their heart rate down first.",
-        book: "Books 1–3 demonstrate the amygdala hijack mechanism: until cortisol levels drop, any rational point you make is perceived as an existential attack.",
-        dialogue: "❌ 'Here is a chart showing why you are wrong.'\n✅ 'I see you're frustrated. Let's pause for 5 minutes and grab water first.'",
-        flowchart: "[Is Amygdala Firing?] -> (Yes) -> [Deploy Heart-Rate De-escalation]"
-      },
-      {
-        id: 2,
-        name: "Adult-to-Adult State Lock",
-        summary: "Never reply to emotional states with emotion; force logic parity.",
-        simple: "People love playing the angry Parent ('you failed') or screaming Child ('it's not fair!'). If you respond like a child or parent, you lose. Stay completely flat, calm, and adult.",
-        book: "Transactional Analysis (Books 4–5): Breaking cross-transactions requires strictly answering emotional gambits with neutral, objective questions.",
-        dialogue: "❌ 'Don't talk to me like that!' (Parent fight)\n✅ 'What specific part of the deliverable needs adjustment?' (Adult lock)",
-        flowchart: "[Ego State Check] -> (Child/Parent Trigger) -> [Force Adult Inversion]"
-      },
-      {
-        id: 3,
-        name: "The SCARF Status Shield",
-        summary: "Attacking someone's status triggers visceral threat. Protect standing.",
-        simple: "If you correct someone publicly, their brain treats it like you punched them. Always protect their pride before pointing out an error.",
-        book: "NeuroLeadership SCARF Model (Books 6–8): Status drops activate the primary pain matrix in dorsal anterior cingulate cortex.",
-        dialogue: "❌ 'You messed up this entire section.'\n✅ 'Your strategy on section 1 was brilliant. How can we make section 2 match that standard?'",
-        flowchart: "[Status Threat Check] -> (High Risk) -> [Inject Status Shield]"
-      },
-      {
-        id: 4,
-        name: "Isolate the Noise Word",
-        summary: "Ignore subjective insults; extract the single operational bottleneck.",
-        simple: "People love words like 'always', 'never', 'terrible', and 'lazy'. These are noise words. Throw them in the trash and find the actual physical problem.",
-        book: "Cognitive Noise Filtering (Books 9–10): Stripping emotional valence to convert qualitative complaints into quantitative tasks.",
-        dialogue: "Counterpart: 'You never listen and you're disorganized!'\nTranslation: 'The report was submitted 2 hours late.'",
-        flowchart: "[Raw Input] -> [Filter Adverbs: Always/Never] -> [Core Operational Node]"
-      },
-      {
-        id: 5,
-        name: "Framing Controls Reality",
-        summary: "The person who establishes the frame dictates the acceptable solutions.",
-        simple: "Is this a $500 loss or a $5,000 investment in avoiding disaster? Whoever frames the dilemma wins the argument every single time.",
-        book: "Behavioral Economics (Books 11–13): Tversky & Kahneman framing effects prove human choices reverse based purely on positive vs negative frame.",
-        dialogue: "❌ 'This software costs $10,000.'\n✅ 'This software prevents $80,000 in monthly downtime penalties.'",
-        flowchart: "[Framing Detection] -> (Loss Frame) -> [Pivot to Insurance Frame]"
-      },
-      {
-        id: 6,
-        name: "Non-Violent Specificity",
-        summary: "Replace moral judgments with unarguable camera observations.",
-        simple: "Don't say 'you were rude'. A camera can't record 'rude'. Say 'you interrupted me 3 times in 2 minutes'. Nobody can argue with camera facts.",
-        book: "NVC Protocol (Books 14–16): Separating Observation from Evaluation to disable instinctual defensiveness.",
-        dialogue: "❌ 'You're being disrespectful.'\n✅ 'When you looked at your phone while I was answering, I felt unheard.'",
-        flowchart: "[Observation Check] -> (Is it recorded on camera?) -> [State Metric]"
-      },
-      {
-        id: 7,
-        name: "Tactical Silence Pressure",
-        summary: "Pausing 3 to 4 seconds transfers psychological burden to the speaker.",
-        simple: "When they demand something unreasonable, don't argue. Shut your mouth and stare at them kindly for 4 seconds. Silence makes people panic and negotiate against themselves.",
-        book: "Hostage Negotiation Dynamics (Books 17–19): Silence activates social equilibrium anxiety, forcing the other party to fill the void with concessions.",
-        dialogue: "Counterpart: 'Take it or leave it right now.'\nYou: (Count 1... 2... 3... 4... say nothing)\nCounterpart: 'Well, maybe we could adjust the date slightly...'",
-        flowchart: "[Ultimatum Detected] -> [Deploy 4-Second Silence] -> [Wait for Self-Bargain]"
-      },
-      {
-        id: 8,
-        name: "Dynamic Labeling Defusal",
-        summary: "Labeling their emotion immediately neutralizes amygdala flare-ups.",
-        simple: "Say 'It sounds like you feel completely abandoned by this department'. The moment you accurately label their negative emotion, their brain calms down.",
-        book: "Affect Labeling (Books 20–22): Functional MRI shows verbalizing emotional labels reduces right amygdala activity and increases prefrontal cortex inhibition.",
-        dialogue: "❌ 'Calm down, you're overreacting.'\n✅ 'It sounds like you feel we blindsided you with these changes.'",
-        flowchart: "[Emotional Spike] -> [Apply 'It sounds like...' Label] -> [Verify Heart-Rate Drop]"
-      },
-      {
-        id: 9,
-        name: "Autonomy Preservation",
-        summary: "Humans resist commands. Offer two constrained choices.",
-        simple: "Nobody likes being told what to do. If you say 'Clean this by Friday', they procrastinate. Say 'Do you want to handle the summary or the data tables by Friday?' Agency preserved.",
-        book: "Self-Determination Theory (Books 23–25): Preserving perceived personal autonomy eliminates reactance and increases follow-through by 300%.",
-        dialogue: "❌ 'You have to sign this now.'\n✅ 'Would you prefer to review the terms over a quick call tomorrow, or should I email the redline?'",
-        flowchart: "[Command Traps] -> (Direct Order?) -> [Split into Constrained Choice A/B]"
-      },
-      {
-        id: 10,
-        name: "Identity Insulation",
-        summary: "Critique the output or process, never the individual's identity.",
-        simple: "Never say 'you are bad at design'. Say 'this color contrast failed the accessibility test'. Attack the artifact, never the soul.",
-        book: "Social Identity Theory (Books 26–28): Ego-threat triggers in-group defensive combat. Insulating identity allows painless behavioral correction.",
-        dialogue: "❌ 'You're a careless writer.'\n✅ 'This draft has 6 typos in the executive summary. Let's run a grammar pass.'",
-        flowchart: "[Critique Target] -> [Diverge from Person to Document] -> [State Measurable Flaw]"
-      },
-      {
-        id: 11,
-        name: "Certainty Anchoring",
-        summary: "Ambiguity breeds paranoia. Clearly outline exact milestones.",
-        simple: "When people don't know what's coming, their brain assumes the worst possible tragedy. Give them exact times, steps, and expectations.",
-        book: "Predictive Coding & Anxiety (Books 29–31): The brain is an error-minimizing prediction engine. Unresolved ambiguity activates sustained fear states.",
-        dialogue: "❌ 'We'll look into it sometime next week.'\n✅ 'I will inspect this by Tuesday at 2 PM and text you a 3-bullet summary.'",
-        flowchart: "[Vague Timeline?] -> (Yes) -> [Anchor Exact Day, Time, and Output]"
-      },
-      {
-        id: 12,
-        name: "Fairness Parity",
-        summary: "Perceived unfairness triggers stronger negative pain than physical loss.",
-        simple: "Monkeys will reject free food if another monkey gets grapes for less work. Never present an offer that makes the other person feel like a sucker.",
-        book: "The Ultimatum Game Neuroscience (Books 32–34): Unfair offers activate anterior insula (physical disgust). Equal terms outperform asymmetric gains.",
-        dialogue: "❌ 'We take 80%, you get 20%.'\n✅ 'We put in 80% of upfront capital and carry all inventory risk, which matches the split.'",
-        flowchart: "[Offer Construction] -> [Justify Symmetric Distribution Matrix]"
-      },
-      {
-        id: 13,
-        name: "Relatedness In-Group Bridge",
-        summary: "If viewed as out-group, your best offer will be rejected.",
-        simple: "If someone views you as an outsider or enemy, you can offer them free gold and they'll suspect a trap. Find shared enemies or shared goals first.",
-        book: "Tribal Psychology (Books 35–37): Oxytocin and trust require recognized shared alignment before transactional agreements can be accepted.",
-        dialogue: "❌ 'My company wants this deal.'\n✅ 'Both of our teams are sick of spending weekends fixing manual database errors.'",
-        flowchart: "[Alignment Check] -> (Out-Group Bias) -> [Deploy Common Adversary Anchor]"
-      },
-      {
-        id: 14,
-        name: "Circuit-Breaker Recess",
-        summary: "When emotional friction spikes past tolerance delta, execute a hard recess.",
-        simple: "When a conversation turns into a shouting match, staying in the room makes it worse. Pull the circuit breaker and walk away for 15 minutes.",
-        book: "Gottman Physiological Flooding (Books 38–40): When pulse exceeds 100 bpm in conflict, creative problem solving drops to 0%.",
-        dialogue: "❌ 'Keep screaming, let's settle this right now!'\n✅ 'We both want this resolved, but we're heated. Let's take 15 minutes and resume at 3:15.'",
-        flowchart: "[Pulse > Threshold] -> [Execute Hard Recess] -> [Resume at Fixed Checkpoint]"
-      },
-      {
-        id: 15,
-        name: "Proactive Accusation Audit",
-        summary: "List every terrible thought they could have about you upfront.",
-        simple: "Before asking for a favor, list every bad thing they're thinking: 'You probably think I'm greedy, pushy, and ignoring your time.' It disarms them completely.",
-        book: "Black Swan Negotiation (Books 41–43): Preemptively verbalizing their unspoken negative criticisms diffuses their cognitive ammunition.",
-        dialogue: "You: 'Before we begin, you probably feel I've wasted your time and that this proposal is completely unrealistic.'\nClient: 'Well... not totally unrealistic.'",
-        flowchart: "[Anticipate Accusations] -> [Enumerate Top 3 Negative Assumptions Upfront]"
-      },
-      {
-        id: 16,
-        name: "Sunk Cost Decoupling",
-        summary: "Never let past lost resources justify continuing an operational dead-end.",
-        simple: "Just because you spent 3 months or $10,000 on a broken idea doesn't mean you should spend another dollar. Cut losses instantly.",
-        book: "Behavioral Fallacies (Books 44–46): Concorde Fallacy dictates that humans throw good money after bad to avoid acknowledging regret.",
-        dialogue: "❌ 'We've spent 6 months building this, we can't quit now!'\n✅ 'If we were handed this project today from scratch, would we build it? No? Kill it.'",
-        flowchart: "[Past Investment Log] -> [Isolate Current Forward Value] -> [Halt Sunk Cost]"
-      },
-      {
-        id: 17,
-        name: "Priming Trap Counter",
-        summary: "The first metric mentioned anchors everything. Counter-anchor immediately.",
-        simple: "If they ask for $100,000, that number poisons the air. Don't say 'how about $90,000?' Say 'That number is so far outside market reality that it doesn't belong in this room.'",
-        book: "Anchoring and Adjustment Heuristics (Books 47–49): First numbers anchor subsequent adjustments regardless of their empirical validity.",
-        dialogue: "Seller: 'Asking price is $50,000.'\nYou: 'That baseline cannot be the starting point. Let's look at comparable sales at $28,000.'",
-        flowchart: "[Anchor Received] -> (Unreasonable?) -> [Reject Baseline Completely]"
-      },
-      {
-        id: 18,
-        name: "Confirmation Bias Bypass",
-        summary: "Ask 'What condition would prove your plan wrong?' rather than arguing.",
-        simple: "You will never convince an ideologue with facts. Instead, ask them what proof would make them change their mind. It forces them to see their own blind spot.",
-        book: "Epistemic Humility Protocols (Books 50–52): Bypassing cognitive dissonance by inviting falsification criteria rather than direct refutation.",
-        dialogue: "❌ 'Your theory has been disproven by 5 studies!'\n✅ 'What metric or outcome over the next 30 days would show you that we need to pivot?'",
-        flowchart: "[Stubborn Position] -> [Query Falsification Metric] -> [Set Verification Trial]"
-      },
-      {
-        id: 19,
-        name: "70/30 Active Inquiry Ratio",
-        summary: "Spend 70% of conversation gathering diagnostic input and 30% speaking.",
-        simple: "Amateurs talk themselves out of deals. Masters ask calibrated questions and let the counterpart talk until they reveal their true constraints.",
-        book: "Diagnostic Questioning (Books 53–55): Information asymmetry favors the listener. The speaker continuously bleeds behavioral data.",
-        dialogue: "❌ (Giving a 20-minute lecture on your product features)\n✅ 'What is the biggest headache your team faces between 9 AM and noon?'",
-        flowchart: "[Talk Time Tracker] -> (Speaking > 30%?) -> [Force Calibrated Question]"
-      },
-      {
-        id: 20,
-        name: "Mutual Synthesis Closure",
-        summary: "Never close a loop without mutual, recorded verification criteria.",
-        simple: "Saying 'we understand each other' means nothing. Before hanging up, say: 'Just so I'm clear, you do X by Tuesday, I do Y by Wednesday. Correct?'",
-        book: "Contractual Closure Dynamics (Books 56–60): Ambiguity at closure is the root cause of 95% of subsequent breach disputes.",
-        dialogue: "❌ 'Sounds great, let's talk soon!'\n✅ 'To confirm: you are sending the revised spreadsheet by Thursday 5 PM, and I am issuing PO #104. Agreed?'",
-        flowchart: "[Agreement Reached] -> [Restate Explicit Action, Owner, and Deadline]"
-      }
-    ];
-
-    /* =========================================================================
-       4. 20 EXAGGERATED FAIL / SUCCESS / 5-MIN AMBIENT ANIMATIONS
-       ========================================================================= */
-    const FAIL_ANIMATIONS = [
-      { name: "Heart Shatter", effect: "SHATTER", msg: "* crack! your soul shattered into pixel dust. draw cleaner nodes, kiddo." },
-      { name: "Slime Puddle", effect: "MELT", msg: "* i have melted into an existential green puddle on the carpet." },
-      { name: "Anime Tears", effect: "TEARS", msg: "* waterfall tears detected. my hoodie is 90% water right now." },
-      { name: "Screen Quake", effect: "SHAKE", msg: "* seismic magnitude 8.5 miss! check your arrows." },
-      { name: "Question Mark Face", effect: "CONFUSED", msg: "* error 404: logic not found. my eyes literally turned into question marks." },
-      { name: "Flatline Beep", effect: "FLATLINE", msg: "* beeeeeeep... that flowchart flatlined the patient." },
-      { name: "Skeleton Electrocution", effect: "XRAY", msg: "* bzzzt! X-ray shock! bones visible for 2 frames." },
-      { name: "Cardboard Box Hide", effect: "BOX", msg: "* nope. hiding in my cardboard box until you fix part 1." },
-      { name: "Head Spin", effect: "SPIN", msg: "* my head just spun 720 degrees trying to read those lines." },
-      { name: "Coffee Spit", effect: "SPIT", msg: "* pfft! spit out my ketchup in utter diagnostic shock." },
-      { name: "Dramatic Shakespeare", effect: "DRAMA", msg: "* alas, poor flowchart! i knew him, horatio." },
-      { name: "Red Stamp of Doom", effect: "STAMP", msg: "* [ REJECTED ] stamped directly onto my forehead." },
-      { name: "Sinking Floor", effect: "SINK", msg: "* sinking through the floorboards like quicksand." },
-      { name: "Giant Sweatdrop", effect: "SWEAT", msg: "* a sweatdrop the size of a watermelon just spawned." },
-      { name: "Lightning Strike", effect: "LIGHTNING", msg: "* thunderclap! the flowchart gods are displeased." },
-      { name: "Facepalm Explosion", effect: "FACEPALM", msg: "* critical facepalm impact detected." },
-      { name: "Flying Detached Eyes", effect: "EYE_FLOAT", msg: "* my eyes popped out of my skull and went looking for your arrows." },
-      { name: "Bookshelf Crash", effect: "CRASH", msg: "* tripped over the bookshelf in confusion." },
-      { name: "Greyscale Depression", effect: "GREYSCALE", msg: "* color drained from reality. pure monochrome sadness." },
-      { name: "Blown Away Gust", effect: "GUST", msg: "* a sudden hurricane gust blew your flowchart into orbit." }
-    ];
-
-    const SUCCESS_ANIMATIONS = [
-      { name: "MLG Sunglasses", effect: "SUNGLASSES", msg: "* deal with it. pixel sunglasses drop from ceiling." },
-      { name: "Super Saiyan Aura", effect: "AURA", msg: "* power level over 9,000! glowing green plasma aura unlocked." },
-      { name: "Confetti Cannon", effect: "CONFETTI", msg: "* party popper exploded! colorful pixel confetti everywhere." },
-      { name: "Disco Party", effect: "DISCO", msg: "* disco ball dropped! arena floor strobe lights activated." },
-      { name: "Ketchup Champagne", effect: "KETCHUP", msg: "* popped a bottle of vintage Heinz ketchup like champagne." },
-      { name: "Gold Trophy", effect: "TROPHY", msg: "* spawned a massive golden frog trophy on the desk." },
-      { name: "Levitation Bliss", effect: "LEVITATE", msg: "* floating 2 feet above the arena in pure enlightened peace." },
-      { name: "Airhorn Trombone", effect: "FANFARE", msg: "* airhorn x4 combo + victory trombone riff." },
-      { name: "Moonwalk Slide", effect: "MOONWALK", msg: "* moonwalked across the entire green grid smoothly." },
-      { name: "Heart Beam", effect: "HEART_BEAM", msg: "* mega care-bear heart beam fired from yellow belly." },
-      { name: "Mini Dancing Frogs", effect: "CLONES", msg: "* tiny baby frogs spawned and did the can-can dance." },
-      { name: "Graduation Cap", effect: "GRAD_CAP", msg: "* academic distinction verified. honorary frog degree conferred." },
-      { name: "Breakdance Spin", effect: "BREAKDANCE", msg: "* spinning on my hood like a pro b-boy." },
-      { name: "EXP Rain Shower", effect: "EXP_RAIN", msg: "* raining shiny green EXP diamonds from the ceiling." },
-      { name: "Flex Biceps", effect: "FLEX", msg: "* flexing massive 3-pixel frog muscles." },
-      { name: "Rainbow Trail", effect: "RAINBOW", msg: "* dashed so fast i left a nyan-cat rainbow streak." },
-      { name: "Spotlight Beam", effect: "SPOTLIGHT", msg: "* heavenly golden god rays piercing through the ceiling." },
-      { name: "Anime Star Eyes", effect: "STAR_EYES", msg: "* twinkling anime stars shining in pupils." },
-      { name: "High Five Gaster", effect: "HIGH_FIVE", msg: "* high-fived an invisible friendly gaster blaster." },
-      { name: "Total Matrix Transcendence", effect: "TRANSCEND", msg: "* 5/5 perfect synthesis! the underground has no more puzzles." }
-    ];
-
-    const AMBIENT_5MIN_ANIMATIONS = [
-      { name: "Floating Zzz", effect: "SNORE", msg: "* 5 minutes passed. snoozing lightly... zzz." },
-      { name: "Bone Xylophone", effect: "XYLO", msg: "* tapped a quick 4-note beat on a bone xylophone." },
-      { name: "Fly Catch", effect: "TONGUE", msg: "* lightning tongue snap! caught a rogue 1-pixel fly." },
-      { name: "Juggling Ketchup", effect: "JUGGLE", msg: "* casually juggling 3 ketchup packets with one hand." },
-      { name: "Upside-Down Book", effect: "BOOK", msg: "* pretending to read Book 42 upside down." },
-      { name: "Sans Teleport", effect: "TELEPORT", msg: "* pop! teleported 2 inches to the left. nobody noticed." },
-      { name: "Watering Flower", effect: "FLOWER", msg: "* watering a friendly talking golden flower in the corner." },
-      { name: "Foot Tapping", effect: "TAP", msg: "* tapping my foot to the megalovania baseline." },
-      { name: "Glitch Shift", effect: "GLITCH", msg: "* visual glitch: color palette inverted for 0.2 seconds." },
-      { name: "Balancing Pencil", effect: "PENCIL", msg: "* balanced a #2 pencil on my frog nose for 10 seconds." },
-      { name: "Big Yawn", effect: "YAWN", msg: "* huge frog yawn. even pixels get tired." },
-      { name: "Sneezing Backward", effect: "SNEEZE", msg: "* achoo! sneezed so hard i slid backward 3 pixels." },
-      { name: "Cat Stretch", effect: "STRETCH", msg: "* big yoga spine stretch. lumbar support is key." },
-      { name: "Checking Pocket", effect: "POCKET", msg: "* checked my hoodie pocket. still empty. tragic." },
-      { name: "4th Wall Stare", effect: "STARE", msg: "* staring directly through the phone screen at you." },
-      { name: "Mini Pushups", effect: "PUSHUP", msg: "* did 1 single pushup and gave up. personal record." },
-      { name: "Hot Dog Lunch", effect: "HOTDOG", msg: "* snacking on a hot dog with 30 layers of mustard." },
-      { name: "Hoodie Shiver", effect: "SHIVER", msg: "* brrr. underground humidity is acting up." },
-      { name: "Shadow Puppet", effect: "SHADOW", msg: "* made a shadow puppet of a dog on the wall." },
-      { name: "Infinite Patience", effect: "PATIENCE", msg: "* still waiting for 08.11.2026. cozy vibes only." }
-    ];
-
-    /* Check 5-minute counter */
-    setInterval(() => {
-      STATE.ambient5MinCounter++;
-      if (STATE.ambient5MinCounter >= 300) { // 300 seconds = 5 minutes
-        STATE.ambient5MinCounter = 0;
-        triggerRandomAmbientAnim();
-      }
-    }, 1000);
-
-    function triggerRandomAmbientAnim() {
-      const anim = AMBIENT_5MIN_ANIMATIONS[Math.floor(Math.random() * AMBIENT_5MIN_ANIMATIONS.length)];
-      triggerVisualAnim(anim.effect, 100);
-      runTypewriterWithFaces({
-        text: anim.msg,
-        facePlan: [{at: 0, f: "WINK"}, {at: 25, f: "GRIN"}]
-      });
-    }
-
-    /* Trigger visual Canvas animation effects */
-    function triggerVisualAnim(type, durationFrames = 90) {
-      STATE.animEffect = type;
-      STATE.animTimer = durationFrames;
-    }
-
-    /* =========================================================================
-       5. 30 TRACKS (400 BOOKS DISTRIBUTED ACROSS SUBCATEGORIES)
+       4. 30 TRACKS & 5-TIER QUEST SYSTEM (ALL 400 BOOKS INCLUDED)
        ========================================================================= */
     const TRACK_NAMES = [
       "Values", "Roles", "Traits", "Framing", "States", "Conversation Loops",
@@ -897,73 +734,69 @@
     ];
 
     const TRACKS = TRACK_NAMES.map((name, i) => {
-      const startBook = 1 + (i * 13);
-      const endBook = Math.min(400, 13 + (i * 13));
+      const startBk = 1 + (i * 13);
+      const endBk = (i === 29) ? 400 : (13 + (i * 13));
 
-      const parts = [
-        {
-          name: "Part 1: Core Diagnostic Probe",
-          books: `Books ${startBook}–${startBook + 2}`,
-          ruleAnchor: NON_NEGOTIABLE_RULES[(i * 2) % 20],
-          kw: ["diagnostic", "probe", "metric", "element", "non-negotiable"],
-          input1: `${name} Raw Utterance`,
-          input2: `Diagnostic Metric (Bk ${startBook})`,
-          decision: `Criteria Matched?`,
-          trueStatement: `Lock Non-Negotiable Criterion`,
-          falseStatement: `Trigger Active Inquiry Loop`
-        },
-        {
-          name: "Part 2: Decision Frame Check",
-          books: `Books ${startBook + 3}–${startBook + 4}`,
-          ruleAnchor: NON_NEGOTIABLE_RULES[(i * 2 + 1) % 20],
-          kw: ["frame", "decision", "prioritize", "choices", "pathway"],
-          input1: `Stakeholder Frame (Bk ${startBook + 3})`,
-          input2: `Alternative Paths`,
-          decision: `Aligns to Primary Value?`,
-          trueStatement: `Prioritize Optimal Pathway`,
-          falseStatement: `Invert Comparison Frame`
-        },
-        {
-          name: "Part 3: SCARF Control Assessment",
-          books: `Books ${startBook + 5}–${startBook + 7}`,
-          ruleAnchor: NON_NEGOTIABLE_RULES[(i * 2 + 2) % 20],
-          kw: ["scarf", "status", "threat", "autonomy", "control"],
-          input1: `Status/Certainty Check`,
-          input2: `Autonomy Vector (Bk ${startBook + 5})`,
-          decision: `Threat Delta Detected?`,
-          trueStatement: `Deploy Status Shield Anchor`,
-          falseStatement: `Sustain Conversational Parity`
-        },
-        {
-          name: "Part 4: Bottleneck Verifier",
-          books: `Books ${startBook + 8}–${startBook + 9}`,
-          ruleAnchor: NON_NEGOTIABLE_RULES[(i * 2 + 3) % 20],
-          kw: ["bottleneck", "friction", "breaker", "resolve", "trigger"],
-          input1: `Friction Frequency`,
-          input2: `Bottleneck Node (Bk ${startBook + 8})`,
-          decision: `Friction > Threshold?`,
-          trueStatement: `Execute Circuit-Breaker Recess`,
-          falseStatement: `Resolve Immediate Node`
-        },
-        {
-          name: "Part 5: Combined Matrix Outcome",
-          books: `Books ${startBook + 10}–${endBook}`,
-          ruleAnchor: NON_NEGOTIABLE_RULES[(i * 2 + 4) % 20],
-          kw: ["matrix", "synthesis", "catalyst", "framework", "closure"],
-          input1: `Evidence Log (Bk ${startBook + 10})`,
-          input2: `Synthesis Weights (Bk ${endBook})`,
-          decision: `Synthesis Complete (5/5)?`,
-          trueStatement: `Seal Final Action Matrix`,
-          falseStatement: `Iterate Diagnostic Probe`
-        }
+      const subRanges = [
+        [startBk, startBk + 2],
+        [startBk + 3, startBk + 4],
+        [startBk + 5, startBk + 7],
+        [startBk + 8, startBk + 9],
+        [startBk + 10, endBk]
       ];
 
       return {
         id: i + 1,
         name: name,
-        title: `TRACK ${i + 1}: ${name.toUpperCase()} (BOOKS ${startBook}–${endBook})`,
+        title: `TRACK ${i + 1}: ${name.toUpperCase()} (BOOKS ${startBk}–${endBk})`,
         powerBadge: `${name} Mastery Matrix`,
-        parts: parts
+        parts: subRanges.map((range, pIdx) => {
+          const tierNames = [
+            "Tier 1: Identification Quest",
+            "Tier 2: Operational Tool #1",
+            "Tier 3: Operational Tool #2",
+            "Tier 4: Operational Tool #3",
+            "Tier 5: Total Synthesis Matrix"
+          ];
+          const partNames = [
+            "Part 1: Isolate Core Signal",
+            "Part 2: Primary Leverage Anchor",
+            "Part 3: Autonomy & Agency Shield",
+            "Part 4: Friction Circuit-Breaker",
+            "Part 5: Combined Matrix Outcome"
+          ];
+
+          const bStart = range[0];
+          const bEnd = range[1];
+          const assignedBooks = [];
+          for (let b = bStart; b <= bEnd; b++) {
+            assignedBooks.push(getBookData(b));
+          }
+
+          return {
+            tier: tierNames[pIdx],
+            name: partNames[pIdx],
+            booksLabel: `Books ${bStart}–${bEnd}`,
+            books: assignedBooks,
+            kw: [
+              assignedBooks[0].keyword,
+              assignedBooks[assignedBooks.length - 1].keyword,
+              "node", "logic", "flow"
+            ],
+            input1: `${name} Input (Bk ${bStart})`,
+            input2: `Criteria Standard (Bk ${bEnd})`,
+            decision: `Is True ${name} Signal Verified?`,
+            trueStatement: `Lock Operational Node`,
+            falseStatement: `Reroute to Passive Listener`,
+            principles: assignedBooks.map((bInfo, idx) => ({
+              title: `${bInfo.title}`,
+              simple: `Core operational rule: ${bInfo.theorem.slice(0, 75)}... Master this to bypass conversational traps.`,
+              book: bInfo.theorem,
+              dialogue: `Target dialogue application derived from ${bInfo.title}: 'I recognize your parameter, let us evaluate the metric directly.'`,
+              flowchart: `[${bInfo.title.slice(0, 20)}] -> (Verified?) -> [Deploy Framework]`
+            }))
+          };
+        })
       };
     });
 
@@ -1007,12 +840,12 @@
    +-----------------------------+------+
    |               ( STOP )             |
    +------------------------------------+
-   * TRACK: ${trackName} | ${sub.books}
-   * RULE: [Rule ${sub.ruleAnchor.id}] ${sub.ruleAnchor.name}`;
+   * TRACK: ${trackName} | ${sub.booksLabel}
+   * TIER: ${sub.tier}`;
     }
 
     /* =========================================================================
-       6. CANVAS RENDERING WITH DYNAMIC OVERLAY EFFECTS
+       5. PURE PIXEL CANVAS RENDERING ENGINE
        ========================================================================= */
     const canvas = document.getElementById("pixelCanvas");
     const ctx = canvas.getContext("2d");
@@ -1027,7 +860,8 @@
       face: "GRIN",
       timer: 0,
       animFrame: 0,
-      isMouthOpen: false
+      isMouthOpen: false,
+      hat: null
     };
 
     const P = {
@@ -1050,32 +884,24 @@
     }
 
     function renderScene() {
-      // Screen shake calculation for failure effects
-      let shakeX = 0;
-      let shakeY = 0;
+      let shakeX = 0, shakeY = 0;
       if (STATE.animTimer > 0) {
         STATE.animTimer--;
-        if (STATE.animEffect === "SHAKE" || STATE.animEffect === "SHATTER") {
-          shakeX = (Math.random() - 0.5) * 6;
-          shakeY = (Math.random() - 0.5) * 6;
+        if (STATE.animEffect === "EXPLODE" || STATE.animEffect === "SHAKE") {
+          shakeX = (Math.random() - 0.5) * 8;
+          shakeY = (Math.random() - 0.5) * 8;
         }
       } else {
-        STATE.animEffect = null;
+        if (STATE.animEffect !== "EXPLODE") STATE.animEffect = null;
       }
 
       ctx.save();
       ctx.translate(shakeX, shakeY);
 
-      // Arena background
       ctx.fillStyle = "#000000";
       ctx.fillRect(-10, -10, canvas.width + 20, canvas.height + 20);
 
-      // Disco effect
-      const gridColor = (STATE.animEffect === "DISCO")
-        ? `hsl(${(Date.now() / 5) % 360}, 100%, 50%)`
-        : P.gridGreen;
-
-      ctx.strokeStyle = gridColor;
+      ctx.strokeStyle = (STATE.animEffect === "EXPLODE") ? "#ff0000" : P.gridGreen;
       ctx.lineWidth = 1;
       for (let x = 0; x < canvas.width; x += 16) {
         ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
@@ -1093,7 +919,7 @@
       drawPixelRect(11, 83, 18, 5, "#fce373");
       drawPixelRect(11, 92, 18, 5, "#ff597b");
 
-      // Desk & Lamp
+      // Desk/Lamp items
       if (STATE.highestTrack >= 1) {
         drawPixelRect(150, 84, 42, 24, P.black);
         ctx.strokeRect(150, 84, 42, 24);
@@ -1104,8 +930,9 @@
         drawPixelRect(173, 54, 12, 6, "#ffff00");
       }
 
-      // Render Froggy Sprite
-      if (STATE.isSleeping) {
+      if (STATE.animEffect === "EXPLODE") {
+        renderExplosionParticles(frog.x, frog.y);
+      } else if (STATE.isSleeping) {
         drawPixelRect(80, 80, 48, 26, P.black);
         ctx.strokeStyle = P.white;
         ctx.strokeRect(80, 80, 48, 26);
@@ -1118,26 +945,36 @@
         renderFrogSprite(frog.x, frog.y, frog.face, frog.animFrame, frog.isMouthOpen);
       }
 
-      // Render Visual Effects
-      renderOverlayFX(frog.x, frog.y);
+      if (frog.hat === "SUNGLASSES") {
+        drawPixelRect(frog.x + 6, frog.y + 9, 14, 4, P.black);
+        drawPixelRect(frog.x + 7, frog.y + 10, 2, 2, P.white);
+      } else if (frog.hat === "HOTDOG") {
+        drawPixelRect(frog.x + 6, frog.y - 12, 14, 5, "#b45309");
+        drawPixelRect(frog.x + 8, frog.y - 11, 10, 3, "#ef4444");
+      }
 
       ctx.restore();
       requestAnimationFrame(renderScene);
+    }
+
+    function renderExplosionParticles(fx, fy) {
+      for (let i = 0; i < 26; i++) {
+        const ox = fx + Math.sin(i * 1.5) * (Math.random() * 45);
+        const oy = fy + Math.cos(i * 1.5) * (Math.random() * 45);
+        const color = (i % 3 === 0) ? "#ff0000" : (i % 3 === 1) ? "#ff9900" : "#ffff00";
+        drawPixelRect(ox, oy, 3, 3, color);
+      }
     }
 
     function renderFrogSprite(fx, fy, face, frame, mouthOpen) {
       const legOffset = (frog.state === "WALK") ? (Math.floor(frame / 6) % 2 === 0 ? 2 : -2) : 0;
       const shrugOffset = (face === "SHRUG") ? -3 : 0;
 
-      // Outer outline box
       drawPixelRect(fx, fy + shrugOffset, 26, 36, P.outline);
-
-      // Green Hood Base
       drawPixelRect(fx + 2, fy + 2 + shrugOffset, 22, 32, P.greenMain);
       drawPixelRect(fx + 2, fy + 2 + shrugOffset, 6, 32, P.greenDark);
       drawPixelRect(fx + 10, fy + 2 + shrugOffset, 12, 32, P.greenBright);
 
-      // Hood Frog Eyes
       drawPixelRect(fx + 3, fy - 6 + shrugOffset, 7, 7, P.white);
       drawPixelRect(fx + 16, fy - 6 + shrugOffset, 7, 7, P.white);
 
@@ -1149,7 +986,6 @@
         drawPixelRect(fx + 18, fy - 4 + shrugOffset, 3, 3, P.black);
       }
 
-      // Peach Face
       drawPixelRect(fx + 4, fy + 6 + shrugOffset, 18, 15, P.pinkTrim);
       drawPixelRect(fx + 6, fy + 8 + shrugOffset, 14, 11, P.skin);
 
@@ -1188,43 +1024,13 @@
       drawPixelRect(fx + 16, fy + 35 - legOffset, 7, 3, P.greenDark);
     }
 
-    /* Render Active Exaggerated Animation Effects */
-    function renderOverlayFX(fx, fy) {
-      if (!STATE.animEffect) return;
-
-      if (STATE.animEffect === "SUNGLASSES") {
-        // MLG Sunglasses over face
-        drawPixelRect(fx + 6, fy + 9, 14, 4, P.black);
-        drawPixelRect(fx + 7, fy + 10, 2, 2, P.white);
-      } else if (STATE.animEffect === "AURA") {
-        // Super Saiyan green plasma aura
-        ctx.strokeStyle = "#00ff66";
-        ctx.strokeRect(fx - 4, fy - 6, 34, 46);
-      } else if (STATE.animEffect === "SHATTER") {
-        // Broken red heart
-        drawPixelRect(fx + 8, fy - 12, 4, 4, "#ff0000");
-        drawPixelRect(fx + 14, fy - 12, 4, 4, "#ff0000");
-      } else if (STATE.animEffect === "CONFETTI") {
-        // Confetti dots
-        for (let i = 0; i < 8; i++) {
-          const rx = (fx - 15) + ((i * 17) % 50);
-          const ry = (fy - 20) + ((i * 23) % 40);
-          drawPixelRect(rx, ry, 2, 2, (i % 2 === 0) ? "#ffff00" : "#ff00ff");
-        }
-      } else if (STATE.animEffect === "TEARS") {
-        // Anime waterfall tears
-        drawPixelRect(fx + 7, fy + 14, 2, 10, "#00ffff");
-        drawPixelRect(fx + 16, fy + 14, 2, 10, "#00ffff");
-      } else if (STATE.animEffect === "SNORE") {
-        // Zzz
-        ctx.fillStyle = "#ffffff";
-        ctx.font = "8px 'Press Start 2P'";
-        ctx.fillText("Z", fx + 26, fy - 4);
-      }
+    function triggerVisualAnim(type, frames = 90) {
+      STATE.animEffect = type;
+      STATE.animTimer = frames;
     }
 
     function updateWanderingAI() {
-      if (STATE.isSleeping) return;
+      if (STATE.isSleeping || STATE.isExploded) return;
       frog.timer++;
       frog.animFrame++;
 
@@ -1250,32 +1056,32 @@
     renderScene();
 
     /* =========================================================================
-       7. DIALOGUE SYSTEM WITH SARCASM & UNDERTALE CHOICES
+       6. DUAL DIALOGUE ENGINE: 1 SARCASTIC & 1 EMOTIONAL
        ========================================================================= */
     const SANS_BANTER = [
       {
-        text: "* heya. what're you sweating about? week 1 doesn't even launch until 08.11.2026. take a nap, kiddo.",
+        text: "* heya. what're you sweating about? week 1 doesn't launch until 08.11.2026. but remember: you have exactly 30 weeks till 06.06.2027 to finish all 400 books. slack off on saturday 24:00, and i explode.",
         facePlan: [ {at: 0, f: "GRIN"}, {at: 20, f: "WINK"}, {at: 55, f: "SHRUG"} ],
-        c1: "are you even a certified frog?",
-        r1: "* pal, i have an honorary doctorate in sitting on this lilypad. check the 20 rules in act if you don't believe me.",
-        c2: "tell me a psychology pun.",
-        r2: "* why did the skeleton fail his behavioral diagnostic? he didn't have the *guts* to state his non-negotiable."
+        c1: "are you threatening to explode just to guilt-trip me?",
+        r1: "* threatening? nah, kiddo. it's programmed into the clock. saturday midnight is an unconditional game over. now get to work.",
+        c2: "what if i put in all this effort and people still don't understand me?",
+        r2: "* ...hey. look at me. being misunderstood is human nature. but learning the 400 books isn't about being perfect. it's about giving yourself the tools to bridge the gap when it hurts. you're doing great, kiddo."
       },
       {
-        text: "* human communication is hilarious. people will spend 4 hours screaming about dirty dishes instead of admitting they're tired.",
-        facePlan: [ {at: 0, f: "GRIN"}, {at: 30, f: "DERP"}, {at: 70, f: "EMPTY"} ],
-        c1: "is ketchup really a personality trait?",
-        r1: "* it's not a trait, kiddo. it's a foundational food group and an adult-to-adult negotiation lubricant.",
-        c2: "can i just eat the flowchart?",
-        r2: "* paper is low in fiber. just draw the arrows and hit [ FIGHT ]."
+        text: "* you know, between you and me... people would rather argue for four hours about dirty dishes than admit their feelings were hurt.",
+        facePlan: [ {at: 0, f: "GRIN"}, {at: 25, f: "DERP"}, {at: 60, f: "EMPTY"} ],
+        c1: "if i draw a smiley face on the paper will you pass me anyway?",
+        r1: "* nice try, pal. the ocr scanner has the emotional warmth of a cold refrigerator. draw the actual nodes or enjoy your 0/5.",
+        c2: "it feels exhausting having to measure every word just to keep people from getting angry.",
+        r2: "* i hear ya. it's tiring wearing armor all day. but once these frameworks become second nature, you won't be measuring words out of fear anymore. you'll be speaking with clarity. take a breath."
       },
       {
-        text: "* a week starts on sunday and finishes on sunday. until 08.11.2026 hits, you're on paid stasis vacation.",
-        facePlan: [ {at: 0, f: "GRIN"}, {at: 35, f: "WINK"}, {at: 65, f: "SHRUG"} ],
-        c1: "do you just sit here judging my handwriting?",
-        r1: "* judging? nah. neural ocr is doing the judging. i'm just here for the comic relief and the trombone fanfare.",
-        c2: "what happens if i tap a rule in act?",
-        r2: "* a giant bubble of text pops up and explains the whole book like you're five. pretty neat, huh?"
+        text: "* fourth-wall check: you're tapping on a glass phone screen while an 8-bit frog in a hoodie grades your paper diagrams. modern life is completely surreal.",
+        facePlan: [ {at: 0, f: "GRIN"}, {at: 30, f: "WINK"}, {at: 70, f: "SHRUG"} ],
+        c1: "you're just stalling so you don't have to get a real job in Snowdin.",
+        r1: "* ouch. words cut deeper than daggers, pal. lucky for you, my collision box is immune to emotional damage. hit [ FIGHT ] already.",
+        c2: "sometimes i feel like everyone else was given a manual on how to talk to people except me.",
+        r2: "* kiddo... nobody was handed that manual. everybody is out there improvising and stumbling in the dark. that's why these 400 books exist. to give you the blueprint everyone else pretends they already have."
       }
     ];
 
@@ -1333,11 +1139,14 @@
       const reply = (opt === 1) ? b.r1 : b.r2;
       document.getElementById("dialogue-choices").style.display = "none";
 
-      if (reply.includes("guts") || reply.includes("lubricant")) {
+      if (reply.includes("spineless") || reply.includes("fireworks") || reply.includes("refrigerator")) {
         setTimeout(playTrombonePun, 600);
       }
 
-      runTypewriterWithFaces({ text: reply, facePlan: [{at: 0, f: "WINK"}, {at: 30, f: "EMPTY"}, {at: 60, f: "GRIN"}] });
+      runTypewriterWithFaces({
+        text: reply,
+        facePlan: (opt === 1) ? [{at: 0, f: "WINK"}, {at: 30, f: "DERP"}, {at: 60, f: "GRIN"}] : [{at: 0, f: "EMPTY"}, {at: 40, f: "GRIN"}]
+      });
     }
 
     function pokeFrog() {
@@ -1346,21 +1155,20 @@
     }
 
     /* =========================================================================
-       8. ACT BLUEPRINT & BIG BUBBLE MODAL SYSTEM
+       7. ACT BLUEPRINT & 400-BOOK COMPARISON SYSTEM
        ========================================================================= */
     function handleActMenu(subIndex = 0) {
       playAudioBlip(380);
       const curTrack = TRACKS[STATE.activeTrack];
       STATE.selectedSubcatIdx = subIndex;
 
-      // Subcategory Tabs
       const tabsMount = document.getElementById("blueprint-tabs");
       tabsMount.innerHTML = "";
 
       curTrack.parts.forEach((p, idx) => {
         const btn = document.createElement("button");
         btn.className = `subcat-pill-btn ${idx === STATE.selectedSubcatIdx ? 'active' : ''}`;
-        btn.innerText = `Part ${idx + 1} (${p.books})`;
+        btn.innerText = `Part ${idx + 1}`;
         btn.onclick = () => {
           playAudioBlip(240);
           handleActMenu(idx);
@@ -1368,45 +1176,149 @@
         tabsMount.appendChild(btn);
       });
 
-      // Flowchart Display
       const selectedPart = curTrack.parts[STATE.selectedSubcatIdx];
       const asciiDiagram = buildCustomFlowchartASCII(curTrack.name, selectedPart);
       document.getElementById("ascii-mount").innerText = asciiDiagram;
 
-      // Populate 20 Rules
-      const rulesMount = document.getElementById("rules-mount");
-      rulesMount.innerHTML = "";
-      NON_NEGOTIABLE_RULES.forEach(r => {
+      const principlesMount = document.getElementById("principles-mount");
+      principlesMount.innerHTML = "";
+      selectedPart.principles.forEach(pr => {
         const div = document.createElement("div");
-        div.className = "rule-card";
+        div.className = "principle-card";
         div.innerHTML = `
-          <div class="rule-title">* Rule ${r.id}: ${r.name}</div>
-          <div class="rule-desc">${r.summary}</div>
-          <div class="rule-touch-hint">[TOUCH FOR BIG BUBBLE BREAKDOWN]</div>
+          <div class="principle-title">* ${pr.title}</div>
+          <div class="principle-desc">${pr.simple}</div>
+          <div style="font-size:0.32rem; color:#ff9900; margin-top:2px;">[TOUCH TO COMPARE WITH 400 BOOKS]</div>
         `;
-        div.onclick = () => openBigBubbleModal(r);
-        rulesMount.appendChild(div);
+        div.onclick = () => openBigBubbleModal(pr);
+        principlesMount.appendChild(div);
       });
 
       document.getElementById("blueprint-modal").style.display = "flex";
     }
 
-    function openBigBubbleModal(rule) {
+    function openBigBubbleModal(pr) {
       playAudioBlip(400);
-      document.getElementById("bubble-title").innerText = `* RULE ${rule.id}: ${rule.name}`;
-      document.getElementById("bubble-simple").innerText = rule.simple;
-      document.getElementById("bubble-book").innerText = rule.book;
-      document.getElementById("bubble-dialogue").innerText = rule.dialogue;
-      document.getElementById("bubble-flowchart").innerText = rule.flowchart;
+      document.getElementById("bubble-title").innerText = `* ${pr.title}`;
+      document.getElementById("bubble-simple").innerText = pr.simple;
+      document.getElementById("bubble-book").innerText = pr.book;
+      document.getElementById("bubble-dialogue").innerText = pr.dialogue;
+      document.getElementById("bubble-flowchart").innerText = pr.flowchart;
       document.getElementById("bubble-modal").style.display = "flex";
+    }
+
+    /* =========================================================================
+       8. DAILY BONUS CROSS-QUEST & INVENTORY REWARDS
+       ========================================================================= */
+    const BONUS_REWARDS_POOL = [
+      { name: "Vintage Ketchup", desc: "A bottle of vintage Heinz ketchup.", dialogue: "* glug glug glug... ah. perfection. ketchup mustache equipped." },
+      { name: "Tiny Trombone", desc: "A pocket brass trombone.", dialogue: "* wah-wah-waaaaah! pun fanfare blasts through the underground." },
+      { name: "Pixel Fly Snack", desc: "A plump, delicious 1-pixel housefly.", dialogue: "* *snap*! lightning tongue strike! delicious and high in protein." },
+      { name: "MLG Pixel Shades", desc: "Cool black 8-bit sunglasses.", dialogue: "* deal with it. swagger level increased by 400%." },
+      { name: "Squeaky Whoopee Cushion", desc: "Tactical sound defusal device.", dialogue: "* *pffffffft*! whoops. classic practical joke never gets old." },
+      { name: "Hot Dog Hat", desc: "A hot dog balanced on the head.", dialogue: "* balanced 30 hot dogs on my head. look ma, no hands." }
+    ];
+
+    function handleBonusQuestClick() {
+      playAudioBlip(360);
+      const today = new Date().toDateString();
+
+      if (STATE.lastBonusDay === today) {
+        runTypewriterWithFaces({
+          text: "* you already completed today's bonus quest, kiddo. check back tomorrow for another item.",
+          facePlan: [{at: 0, f: "WINK"}]
+        });
+        return;
+      }
+
+      const randTrack = TRACKS[Math.floor(Math.random() * TRACKS.length)];
+      const randPart = Math.floor(Math.random() * 5) + 1;
+      const curTrack = TRACKS[STATE.activeTrack];
+
+      const challenge = `Link ${curTrack.name} (Part 5) with ${randTrack.name} (Part ${randPart}). Draw their arrow connection on paper and scan via [ FIGHT ]!`;
+      document.getElementById("bonus-quest-text").innerText = `* CHALLENGE: ${challenge}`;
+
+      runTypewriterWithFaces({
+        text: `* bonus cross-quest active! associate [${curTrack.name} Part 5] with [${randTrack.name} Part ${randPart}]. draw it and hit [ FIGHT ] for an interactive item.`,
+        facePlan: [{at: 0, f: "GRIN"}]
+      });
+
+      STATE.activeBonusQuest = { trackId: curTrack.id, targetTrackId: randTrack.id, targetPart: randPart };
+      saveState();
+    }
+
+    function awardBonusItem() {
+      const available = BONUS_REWARDS_POOL.filter(b => !STATE.inventory.includes(b.name));
+      const reward = available.length ? available[0] : BONUS_REWARDS_POOL[Math.floor(Math.random() * BONUS_REWARDS_POOL.length)];
+
+      if (!STATE.inventory.includes(reward.name)) {
+        STATE.inventory.push(reward.name);
+      }
+      STATE.lastBonusDay = new Date().toDateString();
+      STATE.activeBonusQuest = null;
+      saveState();
+
+      playVictoryChime();
+      runTypewriterWithFaces({
+        text: `* bonus verified! unlocked item: [${reward.name}]. open [ ITEM ] to use it on me.`,
+        facePlan: [{at: 0, f: "WINK"}, {at: 40, f: "GRIN"}]
+      });
     }
 
     function handleItemMenu() {
       playAudioBlip(350);
-      runTypewriterWithFaces({
-        text: `* items: [desk: ${STATE.highestTrack >= 1 ? 'equipped' : 'locked'}] [lamp: ${STATE.highestTrack >= 2 ? 'equipped' : 'locked'}] [ketchup bottle: 100% full]`,
-        facePlan: [{at: 0, f: "WINK"}, {at: 50, f: "SHRUG"}]
-      });
+      const mount = document.getElementById("items-mount");
+      mount.innerHTML = "";
+
+      if (STATE.inventory.length === 0) {
+        mount.innerHTML = "<div style='font-size:0.38rem; color:#888;'>* your backpack is empty. complete daily bonus quests!</div>";
+      } else {
+        STATE.inventory.forEach(itemName => {
+          const div = document.createElement("div");
+          div.className = "item-card";
+          div.innerHTML = `
+            <div>
+              <div style="color:var(--ut-yellow); font-size:0.40rem;">* ${itemName}</div>
+              <div style="color:#aaa; font-size:0.33rem; margin-top:2px;">[USE ON FROGGY]</div>
+            </div>
+            <div style="font-size:0.55rem;">👉</div>
+          `;
+          div.onclick = () => useItemOnFroggy(itemName);
+          mount.appendChild(div);
+        });
+      }
+
+      document.getElementById("item-modal").style.display = "flex";
+    }
+
+    function useItemOnFroggy(itemName) {
+      closeModal("item-modal");
+      playAudioBlip(420);
+
+      const itemObj = BONUS_REWARDS_POOL.find(b => b.name === itemName);
+
+      if (itemName === "Vintage Ketchup") {
+        frog.face = "DERP";
+        triggerVisualAnim("SHAKE", 40);
+        runTypewriterWithFaces({ text: itemObj.dialogue, facePlan: [{at: 0, f: "DERP"}, {at: 40, f: "GRIN"}] });
+      } else if (itemName === "Tiny Trombone") {
+        playTrombonePun();
+        runTypewriterWithFaces({ text: itemObj.dialogue, facePlan: [{at: 0, f: "WINK"}] });
+      } else if (itemName === "Pixel Fly Snack") {
+        playAudioBlip(600);
+        runTypewriterWithFaces({ text: itemObj.dialogue, facePlan: [{at: 0, f: "WINK"}] });
+      } else if (itemName === "MLG Pixel Shades") {
+        frog.hat = (frog.hat === "SUNGLASSES") ? null : "SUNGLASSES";
+        runTypewriterWithFaces({ text: itemObj.dialogue, facePlan: [{at: 0, f: "GRIN"}] });
+      } else if (itemName === "Hot Dog Hat") {
+        frog.hat = (frog.hat === "HOTDOG") ? null : "HOTDOG";
+        runTypewriterWithFaces({ text: itemObj.dialogue, facePlan: [{at: 0, f: "DERP"}] });
+      } else if (itemName === "Squeaky Whoopee Cushion") {
+        playAudioBlip(110);
+        runTypewriterWithFaces({ text: itemObj.dialogue, facePlan: [{at: 0, f: "WINK"}] });
+      } else {
+        runTypewriterWithFaces({ text: `* used ${itemName}. cozy item equipped.`, facePlan: [{at: 0, f: "GRIN"}] });
+      }
     }
 
     function handleMercyMenu() {
@@ -1467,7 +1379,7 @@
         item.className = `subcat-item ${c[idx] ? 'done' : ''}`;
         item.innerHTML = `
           <div class="subcat-header-line">${p.name}</div>
-          <div class="subcat-book-tag">📖 ${p.books} | Rule ${p.ruleAnchor.id}</div>
+          <div class="subcat-tag">📖 ${p.booksLabel} | ${p.tier}</div>
         `;
         item.onclick = () => handleActMenu(idx);
         mount.appendChild(item);
@@ -1475,7 +1387,7 @@
     }
 
     /* =========================================================================
-       10. OCR SCANNER WITH 20 EXAGGERATED FAILS & SUCCESSES
+       10. OCR SCANNER & EXACT 400-BOOK COMPARISON
        ========================================================================= */
     const cameraInput = document.getElementById("camera-input");
     cameraInput.addEventListener("change", (e) => {
@@ -1484,7 +1396,7 @@
 
       playAudioBlip(440);
       runTypewriterWithFaces({
-        text: "* fight! scanning paper notes with neural ocr vision...",
+        text: "* fight! scanning paper notes and comparing to 400-book matrix...",
         facePlan: [{at: 0, f: "DERP"}]
       });
 
@@ -1508,20 +1420,33 @@
         const cur = TRACKS[STATE.activeTrack];
         const checks = STATE.checks[cur.id];
         let found = 0;
+        let matchedBookTitle = "";
         let missingParts = [];
 
         const hasArrows = text.includes("->") || text.includes("-->") || text.includes("=>") || text.includes("to") || text.includes(">");
 
+        if (STATE.activeBonusQuest && text.includes("part 5") && (text.includes("link") || hasArrows)) {
+          awardBonusItem();
+          return;
+        }
+
         cur.parts.forEach((part, idx) => {
           if (!checks[idx]) {
-            const hasKeyword = part.kw.some(k => text.includes(k.toLowerCase()));
-            const hasRuleMatch = text.includes(`rule ${part.ruleAnchor.id}`) || text.includes(part.ruleAnchor.name.toLowerCase());
+            let partMatched = false;
+            part.books.forEach(bInfo => {
+              const kwMatch = text.includes(bInfo.keyword);
+              const numMatch = text.includes(`book ${bInfo.id}`) || text.includes(`bk ${bInfo.id}`);
+              if (hasArrows && (kwMatch || numMatch)) {
+                partMatched = true;
+                matchedBookTitle = bInfo.title;
+              }
+            });
 
-            if (hasArrows && (hasKeyword || hasRuleMatch)) {
+            if (partMatched) {
               checks[idx] = true;
               found++;
             } else {
-              missingParts.push({ partIdx: idx + 1, name: part.name, books: part.books, kw: part.kw[0] });
+              missingParts.push({ partIdx: idx + 1, name: part.name, label: part.booksLabel, firstBook: part.books[0].title });
             }
           }
         });
@@ -1529,44 +1454,36 @@
         const total = checks.filter(Boolean).length;
 
         if (total === 5) {
-          // EXAGGERATED SUCCESS ANIMATION (1 of 20)
-          const sAnim = SUCCESS_ANIMATIONS[Math.floor(Math.random() * SUCCESS_ANIMATIONS.length)];
-          triggerVisualAnim(sAnim.effect, 120);
+          triggerVisualAnim("SUNGLASSES", 120);
           playVictoryChime();
-
           STATE.isSleeping = true;
           if (!STATE.powers.includes(cur.powerBadge)) STATE.powers.push(cur.powerBadge);
           if (STATE.highestTrack === STATE.activeTrack) STATE.highestTrack++;
 
           runTypewriterWithFaces({
-            text: `* 5/5 verified! [${cur.powerBadge}] unlocked! ${sAnim.msg}`,
+            text: `* 5/5 verified! [${cur.powerBadge}] unlocked! all assigned books synthesized. week completed safely without explosion. 🛌`,
             facePlan: [{at: 0, f: "WINK"}, {at: 40, f: "GRIN"}]
           });
-        } else if (!hasArrows || found === 0) {
-          // EXAGGERATED FAIL ANIMATION (1 of 20)
-          const fAnim = FAIL_ANIMATIONS[Math.floor(Math.random() * FAIL_ANIMATIONS.length)];
-          triggerVisualAnim(fAnim.effect, 90);
-          playShatterSound();
-
-          if (!hasArrows) {
-            runTypewriterWithFaces({
-              text: `* miss! ${fAnim.msg} (no arrows detected. connect your boxes with ->).`,
-              facePlan: [{at: 0, f: "EMPTY"}, {at: 40, f: "DERP"}]
-            });
-          } else {
-            const firstFail = missingParts[0];
-            runTypewriterWithFaces({
-              text: `* miss on Part ${firstFail.partIdx} (${firstFail.books})! ${fAnim.msg}`,
-              facePlan: [{at: 0, f: "EMPTY"}, {at: 50, f: "SHRUG"}]
-            });
-          }
-        } else {
-          // Partial Hit
+        } else if (!hasArrows) {
+          triggerVisualAnim("SHATTER", 90);
+          playAudioBlip(100);
+          runTypewriterWithFaces({
+            text: "* miss! where are your arrows? couldn't detect (->) connectors. connect your boxes so i know where the logic flows, kiddo.",
+            facePlan: [{at: 0, f: "DERP"}]
+          });
+        } else if (found > 0) {
           playVictoryChime();
           const nextFail = missingParts[0];
           runTypewriterWithFaces({
-            text: `* hit! recognized ${found} node(s) (${total}/5 complete). Part ${nextFail.partIdx} (${nextFail.books}) is still missing. check act tab.`,
+            text: `* hit! verified against ${matchedBookTitle}! total (${total}/5 complete). but Part ${nextFail.partIdx} (${nextFail.label}) is still missing. look at ${nextFail.firstBook} in act.`,
             facePlan: [{at: 0, f: "GRIN"}]
+          });
+        } else {
+          triggerVisualAnim("SHATTER", 90);
+          const firstFail = missingParts[0];
+          runTypewriterWithFaces({
+            text: `* miss on Part ${firstFail.partIdx} (${firstFail.label})! couldn't find concepts from ${firstFail.firstBook}. check your condition node in act.`,
+            facePlan: [{at: 0, f: "EMPTY"}]
           });
         }
 
